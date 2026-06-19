@@ -513,9 +513,9 @@ function extractMarkers(text){
   for(const key in KB){
     const m=KB[key];
     for(const alias of m.aliases){
-      // alias ... number — \b + negative lookahead stops mid-word matches
-      // (e.g. "ast" must not match inside "f-ast-ing glucose")
-      const re=new RegExp("\\b"+alias.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"s?(?![a-zA-Z])[^0-9\\n\\r]{0,18}?([0-9]+(?:\\.[0-9]+)?)","i");
+      // alias ... first number after it. Allows the value to sit on the next
+      // line or across a column gap, while \b + lookahead stops mid-word matches.
+      const re=new RegExp("\\b"+alias.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"s?(?![a-zA-Z])[^0-9]{0,24}?([0-9]+(?:\\.[0-9]+)?)(?![0-9.])(?!\\s*-\\s*[A-Za-z])","i");
       const hit=clean.match(re);
       if(hit){
         const val=parseFloat(hit[1]);
@@ -543,8 +543,12 @@ function extractDate(text){
 /* health score for a single report from its markers */
 function scoreFromMarkers(ms){
   if(!ms.length) return 80;
-  let penalty=0;
-  ms.forEach(m=>{ if(m.status==="high"||m.status==="low"){ const span=(m.ref_high-m.ref_low)||1; const dist=m.status==="low"?(m.ref_low-m.value):(m.value-m.ref_high); const rel=Math.min(1,Math.abs(dist)/span); penalty+=6+rel*9; } });
+  let penalty=0, counted=0;
+  ms.forEach(m=>{ if(m.status==="high"||m.status==="low"){ counted++;
+    const lo=m.ref_low, hi=m.ref_high;
+    if(lo==null||hi==null||!isFinite(lo)||!isFinite(hi)){ penalty+=8; return; }
+    const span=(hi-lo)||1; const dist=m.status==="low"?(lo-m.value):(m.value-hi);
+    const rel=Math.min(1,Math.abs(dist)/span); penalty+=6+rel*9; }});
   return Math.max(35,Math.min(100,Math.round(100-penalty)));
 }
 
@@ -581,13 +585,39 @@ function analyseLocally(text,type,markers){
   return {snapshot,summary,score,good_news,attention,questions:questions.slice(0,5),ai_source:"engine"};
 }
 
-/* optional: enhance the prose with Claude (secure proxy). Falls back silently. */
-async function enhanceWithClaude(text,type,markers,profile){
+/* slugify an arbitrary marker name into a stable key */
+function slug(s){ return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"").slice(0,40)||"result"; }
+/* turn a Claude-extracted marker into the app's marker shape */
+function normaliseClaudeMarker(m){
+  if(!m||m.value==null||m.value==="") return null;
+  const v=parseFloat(m.value); if(isNaN(v)) return null;
+  const areas=Object.keys(ORGANS);
+  const key=(m.key&&KB[m.key])?m.key:("x_"+slug(m.name));
+  const area=areas.includes(m.area)?m.area:(KB[m.key]?KB[m.key].area:"blood");
+  const num=(x)=>(x==null||x===""||isNaN(parseFloat(x)))?null:parseFloat(x);
+  const status=["low","normal","high"].includes(m.status)?m.status:"normal";
+  return {key,label:(m.name||(KB[m.key]&&KB[m.key].label)||"Result").toString().slice(0,80),
+    value:v,unit:(m.unit||"").toString().slice(0,20),ref_low:num(m.ref_low),ref_high:num(m.ref_high),
+    status,body_area:area};
+}
+
+/* AI layer: extract EVERY lab value + write the plain-language overview. Falls back silently. */
+async function enhanceWithClaude(text,type,profile){
   try{
     const langName=LANGS.find(l=>l[0]===S.lang)?.[1]||"English";
-    const sys="You are Nutrolis, a calm, warm medical explainer. Never diagnose or prescribe. Explain like the reader is ten, reassuring not alarming. Use 'worth a gentle look' instead of alarm. Always defer to a doctor. Write ALL output in "+langName+". Respond ONLY with strict JSON, no markdown.";
-    const prompt=`Report type: ${type.label}\nExtracted markers: ${JSON.stringify(markers.map(m=>({n:m.label,v:m.value,u:m.unit,status:m.status})))}\nReport text (truncated): ${text.slice(0,2500)}\nUser profile: age ${profile?.age||"?"}, notes: ${profile?.health_history||"none"}.\nReturn JSON: {"snapshot":"one calm sentence","summary":"2-3 sentence plain explanation a child understands","good_news":["..."],"attention":["calm, non-alarming ..."],"questions":["personalised questions for the doctor"]}`;
-    const r=await fetch(CLAUDE_PROXY,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+SUPABASE_ANON},body:JSON.stringify({system:sys,prompt,max_tokens:1100})});
+    const keys=Object.keys(KB).join(", ");
+    const areas=Object.keys(ORGANS).join(", ");
+    const sys="You are Nutrolis — a calm, warm medical explainer AND a precise lab-report parser. Never diagnose or prescribe; always defer to a doctor. Explain like the reader is ten, reassuring not alarming, using 'worth a gentle look' rather than alarm. Write all human-readable text in "+langName+". Respond ONLY with strict minified JSON — no markdown, no commentary.";
+    const prompt=`Extract EVERY test parameter that has a numeric result from the report text below. A real panel may contain dozens — capture all of them. For each parameter return: name (as printed), value (number), unit, ref_low (lower end of its reference range, or null), ref_high (upper end, or null), status ('low' | 'normal' | 'high' compared to its own reference range), key (closest match from this fixed list, else null: ${keys}), area (one of: ${areas}).
+Then write a calm, plain-language overview a child could follow.
+Report type: ${type.label}. User: age ${profile?.age||"?"}, notes: ${profile?.health_history||"none"}.
+
+REPORT TEXT:
+${text.slice(0,14000)}
+
+Return strict JSON exactly:
+{"markers":[{"name":"","value":0,"unit":"","ref_low":null,"ref_high":null,"status":"normal","key":null,"area":"blood"}],"snapshot":"one calm sentence","summary":"2-4 sentence plain explanation","good_news":["positive findings"],"attention":["one calm, non-alarming note per out-of-range value"],"questions":["personalised questions for the doctor"]}`;
+    const r=await fetch(CLAUDE_PROXY,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+SUPABASE_ANON},body:JSON.stringify({system:sys,prompt,max_tokens:3500})});
     if(!r.ok) return null;
     const j=await r.json(); if(!j.text) return null;
     const parsed=JSON.parse(j.text.replace(/```json|```/g,"").trim());
@@ -617,16 +647,20 @@ async function readPdf(file,onProg){
     const page=await pdf.getPage(p);
     const c=await page.getTextContent();
     text+=c.items.map(i=>i.str).join(" ")+"\n";
-    onProg&&onProg(0.2+0.5*(p/pdf.numPages));
+    onProg&&onProg(0.2+0.4*(p/pdf.numPages));
   }
-  // if a PDF has almost no embedded text, it's likely scanned → OCR first page image
-  if(text.replace(/\s/g,"").length<40){
-    onProg&&onProg(0.3);
-    const page=await pdf.getPage(1);
-    const vp=page.getViewport({scale:2});
-    const cv=document.createElement("canvas"); cv.width=vp.width; cv.height=vp.height;
-    await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
-    text=await ocrImage(cv,onProg);
+  // if the PDF has little embedded text, it's scanned/image-based → OCR each page
+  if(text.replace(/\s/g,"").length < 40*pdf.numPages){
+    let ocr=""; const maxPages=Math.min(pdf.numPages,15);
+    for(let p=1;p<=maxPages;p++){
+      const page=await pdf.getPage(p);
+      const vp=page.getViewport({scale:2});
+      const cv=document.createElement("canvas"); cv.width=vp.width; cv.height=vp.height;
+      await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+      ocr += await ocrImage(cv)+"\n";
+      onProg&&onProg(0.3+0.6*(p/maxPages));
+    }
+    if(ocr.replace(/\s/g,"").length > text.replace(/\s/g,"").length) text=ocr;
   }
   return text;
 }
@@ -712,12 +746,26 @@ async function runPipeline(fileOrText,onStep){
   const type=detectType(text); onStep(2,"done");
 
   onStep(3,"active");
-  const markers=extractMarkers(text); onStep(3,"done");
+  let markers=extractMarkers(text); onStep(3,"done");
 
   onStep(4,"active");
   let analysis=analyseLocally(text,type,markers);
-  const enhanced=await enhanceWithClaude(text,type,markers,S.profile);
-  if(enhanced){ analysis={...analysis,...enhanced}; }
+  const enhanced=await enhanceWithClaude(text,type,S.profile);
+  if(enhanced){
+    // prefer Claude's structured markers when it finds a richer set (real reports)
+    if(Array.isArray(enhanced.markers)){
+      const cm=enhanced.markers.map(normaliseClaudeMarker).filter(Boolean);
+      if(cm.length>=markers.length) markers=cm;
+    }
+    analysis={...analysis,
+      snapshot:enhanced.snapshot||analysis.snapshot,
+      summary:enhanced.summary||analysis.summary,
+      good_news:(enhanced.good_news&&enhanced.good_news.length)?enhanced.good_news:analysis.good_news,
+      attention:(enhanced.attention&&enhanced.attention.length)?enhanced.attention:analysis.attention,
+      questions:(enhanced.questions&&enhanced.questions.length)?enhanced.questions:analysis.questions,
+      ai_source:"claude"};
+    analysis.score=scoreFromMarkers(markers);
+  }
   onStep(4,"done");
 
   onStep(5,"active");
@@ -1227,8 +1275,23 @@ function drawerHead(title,sub){
     <button data-x="1" aria-label="Close" style="border:none;background:var(--surface-3);width:34px;height:34px;border-radius:10px;cursor:pointer;color:var(--ink-2);display:grid;place-items:center;flex:none">${I.x}</button></div>`;
 }
 function openMarkerDrawer(key){
-  const k=KB[key]; if(!k)return;
+  const k=KB[key];
   const latest=[...S.markers].filter(m=>m.key===key).pop();
+  // marker not in the local encyclopedia (e.g. Claude-extracted) → show a basic, honest panel
+  if(!k){
+    if(!latest) return;
+    const lo=latest.ref_low, hi=latest.ref_high, hasRange=(lo!=null&&hi!=null);
+    const span=hasRange?((hi-lo)||1):1;
+    const pos=hasRange?Math.max(2,Math.min(98,((latest.value-lo)/span)*100)):50;
+    const col=latest.status==="normal"?"var(--teal)":"var(--amber)";
+    const vb=`<div class="edu"><h4>Your latest reading</h4>
+      <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:34px;font-weight:800;letter-spacing:-.03em">${latest.value}</span><span class="muted" style="font-weight:600">${esc(latest.unit||"")}</span>
+      <span class="pill ${latest.status==="normal"?"pill-teal":"pill-amber"}" style="margin-left:auto">${latest.status==="normal"?"In range":latest.status==="low"?"Slightly low":"Slightly high"}</span></div>
+      ${hasRange?`<div class="range"><div class="band" style="left:30%;width:40%"></div><div class="dot" style="left:${pos}%;background:${col}"></div></div><p class="muted" style="font-size:12.5px;margin:0">Usual range ${lo}–${hi} ${esc(latest.unit||"")}</p>`:`<p class="muted" style="font-size:12.5px;margin:6px 0 0">Reference range varies by lab — check the range printed on your report.</p>`}</div>`;
+    const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([latest.body_area||"blood"])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">Body area: ${esc((ORGANS[latest.body_area]||{label:latest.body_area||"Blood"}).label)}</p></div>`;
+    openDrawer(drawerHead(latest.label||"Result","Your result")+`<div class="drawer-body">${vb}${fig}<div class="edu"><h4>What now?</h4><p>This value was read from your report and saved to your timeline. For a full medical explanation of this specific marker, your doctor is the best guide.</p></div><p class="muted" style="font-size:12px;margin-top:8px">Educational only — not a diagnosis.</p></div>`);
+    return;
+  }
   const e=k.edu;
   let valueBlock="";
   if(latest){
@@ -1248,7 +1311,7 @@ function openOrganDrawer(area){
   const o=ORGANS[area]||ORGANS.blood;
   const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">Highlighted: ${esc(o.label)}</p></div>`;
   const related=S.markers.filter(m=>m.body_area===area);
-  const relBlock=related.length?`<div class="edu"><h4>Your markers here</h4><div class="wrap">${[...new Set(related.map(m=>m.key))].map(k=>`<button class="pill pill-teal" style="cursor:pointer;border:none" data-jump="${k}">${esc(KB[k].label)}</button>`).join("")}</div></div>`:"";
+  const relBlock=related.length?`<div class="edu"><h4>Your markers here</h4><div class="wrap">${[...new Map(related.map(m=>[m.key,m])).values()].map(m=>`<button class="pill pill-teal" style="cursor:pointer;border:none" data-jump="${m.key}">${esc((KB[m.key]&&KB[m.key].label)||m.label||m.key)}</button>`).join("")}</div></div>`:"";
   openDrawer(drawerHead(o.label,"Body & systems")+`<div class="drawer-body">${fig}${relBlock}${eduBlock(o.edu)}<p class="muted" style="font-size:12px;margin-top:8px">Educational only — not a diagnosis.</p></div>`);
   $("#drawer-wrap").querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.jump));
 }
