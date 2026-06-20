@@ -95,6 +95,27 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .side-link:hover{background:var(--surface-3);color:var(--ink)}
 .side-link.active{background:var(--teal-bg);color:var(--teal-ink)}
 .side-link svg{flex:none}
+.explore-toggle .chev{margin-left:auto;transition:transform .25s}
+.explore-toggle.open .chev{transform:rotate(180deg)}
+.submenu{display:flex;flex-direction:column;gap:2px;padding:2px 0 4px 10px;margin-left:8px;border-left:1.5px solid var(--line-2)}
+.sub-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;border:none;background:transparent;color:var(--muted);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:background .18s,color .18s}
+.sub-link:hover{background:var(--surface-3);color:var(--teal-ink)}
+.sub-link svg{flex:none;color:var(--teal)}
+.edu ul{margin:6px 0 0;padding-left:18px}
+.edu li{font-size:14px;color:var(--ink-2);line-height:1.5;margin-bottom:4px}
+.edu .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.edu .two-col{grid-template-columns:1fr}}
+.food-add li::marker{color:var(--teal)}
+.food-cut li::marker{color:var(--amber)}
+.dd-btn{width:100%;margin:4px 0 12px;padding:14px 16px;border-radius:14px;border:none;cursor:pointer;font:inherit;font-weight:700;font-size:14.5px;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));box-shadow:0 12px 26px -14px var(--glow);display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .2s}
+.dd-btn:hover{transform:translateY(-1px)}
+.dd-btn:disabled{opacity:.7;cursor:default;transform:none}
+.dd-load{display:flex;align-items:center;gap:10px;padding:16px;color:var(--muted);font-size:14px;font-weight:600}
+.lang-pick{position:relative;display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 30px 0 12px;color:var(--ink-2);transition:border-color .2s}
+.lang-pick:hover{border-color:var(--teal)}
+.lang-pick>svg:first-child{flex:none;color:var(--teal)}
+.lang-pick select{appearance:none;-webkit-appearance:none;border:none;background:transparent;font:inherit;font-weight:700;font-size:14px;color:var(--ink);padding:11px 4px 11px 0;cursor:pointer;outline:none}
+.lang-pick .caret{position:absolute;right:11px;pointer-events:none;color:var(--muted)}
 .main{min-width:0;display:flex;flex-direction:column}
 .topbar{display:none}
 .content{padding:clamp(20px,4vw,40px);max-width:1100px;width:100%;margin:0 auto;flex:1}
@@ -219,7 +240,7 @@ if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc =
 /* ---------------- GLOBAL STATE ---------------- */
 const S = {
   user:null, profile:null, reports:[], markers:[],
-  route:"#/dashboard", lang:"en", theme:(function(){try{return localStorage.getItem("nutrolis-theme")||"light";}catch(e){return "light";}})(), claudeReady:false
+  route:"#/dashboard", lang:(function(){try{return localStorage.getItem("nutrolis-lang")||"en";}catch(e){return "en";}})(), theme:(function(){try{return localStorage.getItem("nutrolis-theme")||"light";}catch(e){return "light";}})(), claudeReady:false
 };
 
 /* ---------------- TINY HELPERS ---------------- */
@@ -260,7 +281,19 @@ const STR = {
       recent:"Recent reports",no_reports:"No reports yet",upload_first:"Upload your first report to begin building your health picture.",
       sign_in:"Sign in",sign_up:"Create account",email:"Email",password:"Password",name:"Full name",
       good_news:"Good news",areas_attention:"Areas worth a look",questions:"Questions for your doctor",
-      what_means:"What your report means",snapshot:"Health snapshot",key_findings:"Key findings",trends:"Your trends"},
+      what_means:"What your report means",snapshot:"Health snapshot",key_findings:"Key findings",trends:"Your trends",
+      greet_morning:"Good morning",greet_afternoon:"Good afternoon",greet_evening:"Good evening",
+      hm:"Health markers",all_markers:"All markers",ti:"Trends & improvements",aihi:"AI health insights",lc:"Learning center",hj:"Health journey",ac:"Action center",
+      ohs:"Overall health score",tracked:"markers tracked",improving:"improving",need_attn:"need attention",todays_summary:"Today's summary",
+      learn_more:"Learn more",upload_report:"Upload report",upload_new:"Upload new report",compare:"Compare reports",download:"Download summary",share:"Share with doctor",
+      healthy:"Healthy",needs_attn:"Needs attention",improving_chip:"Improving",explore:"Explore",mk_markers:"Markers",mk_trends:"Trends",mk_insights:"AI Insights",mk_learning:"Learning",mk_journey:"Journey",
+      in_range:"In range",slightly_low:"Slightly low",slightly_high:"Slightly high",below_range:"Below range",above_range:"Above range",steady:"Steady",first_report:"First report",this_report:"this report",
+      get_plan:"Get my personalized plan",manage_share:"Manage and share your health data.",read:"read",first_reading:"first reading",usual_range:"Usual range",
+      personalized_brief:"Personalized health brief",your_result:"Your result",from_encyclopedia:"From the encyclopedia",eat_more:"EAT MORE",ease_off:"EASE OFF",language:"Language",
+      nothing_here:"Nothing here right now.",sign_out:"Sign out",body_area:"Body area",not_diagnosis:"Educational only — not a diagnosis. Your doctor is the best guide for next steps.",
+      good:"Good",fair:"Fair",worth_look:"Worth a look",
+      your_reading:"Your latest reading",dd_what:"What is it?",dd_how:"How it works in your body",dd_why:"Why yours may be like this",dd_fix:"How to improve it",dd_foods:"Foods — what to add & ease off",dd_time:"How long it usually takes",dd_doctor:"When to speak with a doctor",
+      dd_prep:"Nutrolis AI is writing your personalized plan…",dd_fail:"The AI couldn't be reached just now. Please try again in a moment."},
   hi:{dashboard:"डैशबोर्ड",upload:"अपलोड",reports:"मेरी रिपोर्ट",settings:"सेटिंग्स",
       health_score:"स्वास्थ्य स्कोर",total_reports:"रिपोर्ट",active_markers:"सक्रिय मार्कर",attention:"ध्यान देने योग्य",
       recent:"हाल की रिपोर्ट",no_reports:"अभी कोई रिपोर्ट नहीं",upload_first:"शुरू करने के लिए अपनी पहली रिपोर्ट अपलोड करें।",
@@ -290,8 +323,36 @@ const LANGS = [["en","English"],["hi","हिन्दी"],["es","Español"],["
   ["fr","Français"],["de","Deutsch"],["pt","Português"],["bn","বাংলা"],["ta","தமிழ்"],
   ["te","తెలుగు"],["mr","मराठी"],["gu","ગુજરાતી"],["pa","ਪੰਜਾਬੀ"],["zh","中文"],
   ["ja","日本語"],["ko","한국어"],["ru","Русский"],["it","Italiano"],["id","Bahasa"]];
-function t(k){ return (STR[S.lang]&&STR[S.lang][k]) || STR.en[k] || k; }
+const I18N={};            // Claude-translated UI tables, cached per language
+const RI18N={};           // translated report content, cached per report+language
+function t(k){ return (I18N[S.lang]&&I18N[S.lang][k]) || (STR[S.lang]&&STR[S.lang][k]) || STR.en[k] || k; }
 function applyDir(){ const rtl=RTL.includes(S.lang); document.documentElement.dir=rtl?"rtl":"ltr"; document.documentElement.lang=S.lang; }
+function langName(code){ const f=LANGS.find(l=>l[0]===code); return f?f[1]:code; }
+async function ensureLang(code){
+  if(code==="en"||I18N[code]) return;
+  try{ const c=localStorage.getItem("nl-i18n-"+code); if(c){ I18N[code]=JSON.parse(c); return; } }catch(e){}
+  const sys="You are a professional UI localizer for a warm, friendly consumer health app used across India and Europe. Translate each value into "+langName(code)+" using simple, everyday words that a 10-year-old or a 70-year-old could understand. Keep labels short. Use the natural script of the language. Keep widely-known medical terms natural for native speakers. Return ONLY strict minified JSON with the EXACT same keys.";
+  const j=await claudeJSON(sys,"Translate every value to "+langName(code)+". Return JSON with identical keys:\n"+JSON.stringify(STR.en),2200);
+  if(j){ I18N[code]=j; try{ localStorage.setItem("nl-i18n-"+code,JSON.stringify(j)); }catch(e){} }
+}
+async function ensureReportI18n(code){
+  if(code==="en") return;
+  const r=S.reports[0]; if(!r) return;
+  const ck=r.id+"|"+code; if(RI18N[ck]) return;
+  const payload={summary:r.summary||"",snapshot:r.snapshot||"",good_news:r.good_news||[],attention:r.attention||[]};
+  const sys="You are a warm medical translator for a consumer health app. Translate into "+langName(code)+" in simple words anyone can understand, keeping the meaning exact and the tone calm. Return ONLY strict minified JSON with the same shape and keys.";
+  const j=await claudeJSON(sys,"Translate to "+langName(code)+", keep JSON shape:\n"+JSON.stringify(payload),1600);
+  if(j) RI18N[ck]=j;
+}
+function rTxt(r,field){ const c=RI18N[(r&&r.id)+"|"+S.lang]; return (c&&c[field]!=null)?c[field]:(r?r[field]:undefined); }
+async function setLanguage(code){
+  if(code===S.lang) return;
+  S.lang=code; applyDir();
+  try{ localStorage.setItem("nutrolis-lang",code); }catch(e){}
+  if(S.user&&S.profile) saveProfile({language:code});
+  if(code!=="en"){ toast(t("language")+" · "+langName(code)+" …",4000); await Promise.all([ensureLang(code),ensureReportI18n(code)]); }
+  render();
+}
 
 /* =================================================================
    MEDICAL KNOWLEDGE ENGINE
@@ -872,7 +933,7 @@ function dashboardModel(){
     improving,attention,stable,outMarkers:out,byKey,attentionAreas:Object.keys(areas)};
 }
 function scoreColor(s){ if(s>=80)return"var(--teal)"; if(s>=60)return"var(--amber)"; return"var(--red)"; }
-function scoreLabel(s){ if(s>=80)return"Good"; if(s>=60)return"Fair"; if(s>0)return"Worth a look"; return"—"; }
+function scoreLabel(s){ if(s>=80)return t("good"); if(s>=60)return t("fair"); if(s>0)return t("worth_look"); return"—"; }
 
 /* ---- new dashboard helpers ---- */
 const HEADLINE=["vitamin_d","hba1c","ldl","total_cholesterol","hdl","triglycerides","tsh","glucose_fasting","creatinine","alt","ast","hemoglobin","vitamin_b12"];
@@ -882,12 +943,12 @@ function headlineMarkers(byKey,limit){
   return latest.slice().sort((a,b)=>rank(a)-rank(b)).slice(0,limit);
 }
 function statusChip(m,tr){
-  if(tr==="improving") return `<span class="pill pill-teal" style="font-size:11px">Improving</span>`;
-  if(m.status==="normal") return `<span class="pill pill-teal" style="font-size:11px">Healthy</span>`;
-  return `<span class="pill pill-amber" style="font-size:11px">Needs attention</span>`;
+  if(tr==="improving") return `<span class="pill pill-teal" style="font-size:11px">${t("improving_chip")}</span>`;
+  if(m.status==="normal") return `<span class="pill pill-teal" style="font-size:11px">${t("healthy")}</span>`;
+  return `<span class="pill pill-amber" style="font-size:11px">${t("needs_attn")}</span>`;
 }
 function markerTrendRow(history){
-  if(history.length<2) return `<span class="muted" style="font-size:12.5px;font-weight:600">→ first reading</span>`;
+  if(history.length<2) return `<span class="muted" style="font-size:12.5px;font-weight:600">→ ${t("first_reading")}</span>`;
   const tr=trendOf(history);
   const a=history[history.length-2].value, b=history[history.length-1].value;
   const col=tr==="improving"?"var(--teal)":tr==="attention"?"var(--amber-ink)":"var(--muted)";
@@ -929,25 +990,36 @@ function catOf(s){ s=(s||"").toLowerCase();
 function insightCards(){
   const r=S.reports[0]; if(!r) return [];
   const out=[];
-  (r.good_news||[]).slice(0,2).forEach(text=>out.push({cat:catOf(text),tone:"teal",text}));
-  (r.attention||[]).slice(0,2).forEach(text=>out.push({cat:catOf(text),tone:"amber",text}));
+  (rTxt(r,"good_news")||[]).slice(0,2).forEach(text=>out.push({cat:catOf(text),tone:"teal",text}));
+  (rTxt(r,"attention")||[]).slice(0,2).forEach(text=>out.push({cat:catOf(text),tone:"amber",text}));
   return out.slice(0,4);
 }
 
 /* =================================================================
    RENDERING — shell + navigation
    ================================================================= */
+const EXPLORE=[["markers","mk_markers"],["trends","mk_trends"],["insights","mk_insights"],["learning","mk_learning"],["reports","reports"],["journey","mk_journey"]];
+let exploreOpen=false, pendingScroll=null;
 function navItems(){ return [
   ["#/dashboard",t("dashboard"),I.dash],
   ["#/upload",t("upload"),I.upload],
-  ["#/reports",t("reports"),I.reports],
   ["#/settings",t("settings"),I.settings],
 ];}
 function shell(content){
   const route=location.hash||"#/dashboard";
-  const isActive=(h)=>route.startsWith(h)||(h==="#/reports"&&route.startsWith("#/report/"));
-  const side=navItems().map(([h,l,ic])=>`<button class="side-link ${isActive(h)?"active":""}" data-nav="${h}">${ic}<span>${esc(l)}</span></button>`).join("");
-  const tabs=navItems().map(([h,l,ic])=>`<button class="tab ${isActive(h)?"active":""}" data-nav="${h}">${ic}<span>${esc(l)}</span></button>`).join("");
+  const isActive=(h)=>route.startsWith(h);
+  const dot=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>`;
+  const side=`
+    <button class="side-link ${isActive("#/dashboard")?"active":""}" data-nav="#/dashboard">${I.dash}<span>${t("dashboard")}</span></button>
+    <button class="side-link explore-toggle ${exploreOpen?"open":""}" data-explore="1">${I.reports}<span style="flex:1;text-align:left">${t("explore")}</span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="submenu" ${exploreOpen?"":'style="display:none"'}>
+      ${EXPLORE.map(([id,l])=>`<button class="sub-link" data-scroll="${id}">${dot}<span>${esc(t(l))}</span></button>`).join("")}
+    </div>
+    <button class="side-link ${isActive("#/upload")?"active":""}" data-nav="#/upload">${I.upload}<span>${t("upload")}</span></button>
+    <button class="side-link ${isActive("#/settings")?"active":""}" data-nav="#/settings">${I.settings}<span>${t("settings")}</span></button>`;
+  const tabs=[["#/dashboard",t("dashboard"),I.dash],["#/upload",t("upload"),I.upload],["#/reports",t("reports"),I.reports],["#/settings",t("settings"),I.settings]]
+    .map(([h,l,ic])=>`<button class="tab ${isActive(h)||(h==="#/reports"&&route.startsWith("#/report/"))?"active":""}" data-nav="${h}">${ic}<span>${esc(l)}</span></button>`).join("");
   const name=esc(S.profile?.full_name||S.user?.email||"You");
   return `<div class="shell">
     <aside class="sidebar">
@@ -1068,16 +1140,60 @@ function renderOnboarding(){
 }
 
 /* ---------------- DASHBOARD ---------------- */
+const LEARN=[
+  {cat:"Cardiovascular",color:"var(--teal)",title:"Understanding Cholesterol",desc:"Good vs. bad, and why the balance matters.",read:"4 min",body:"Cholesterol isn't all bad. HDL (the 'good' kind) clears cholesterol away, while LDL (the 'bad' kind) can build up in your arteries over time. The goal is high HDL, low LDL, and low triglycerides. Diet, regular movement and — when your doctor advises — medication shift the balance in your favour."},
+  {cat:"Metabolic",color:"var(--amber)",title:"What Is HbA1c?",desc:"Your three-month blood sugar average, explained.",read:"3 min",body:"HbA1c reflects your average blood sugar over roughly three months. Below 5.7% is healthy, 5.7–6.4% is the pre-diabetic range, and 6.5% or higher suggests diabetes. Because it's an average, it's a steadier, more reliable signal than a single glucose reading."},
+  {cat:"Nutrition",color:"var(--aqua)",title:"Vitamin D, Simply",desc:"Why it matters and how to raise it.",read:"3 min",body:"Vitamin D helps your body absorb calcium and supports bones, muscles and immunity. Deficiency is extremely common, especially for people who spend most of the day indoors. Sunlight, fortified foods and a daily D3 supplement usually restore healthy levels over a few months."},
+  {cat:"Liver",color:"var(--teal-2)",title:"How Liver Function Works",desc:"What ALT, AST and GGT actually tell you.",read:"5 min",body:"Liver enzymes like ALT, AST and GGT leak into the blood when liver cells are under stress. Values within range usually point to a healthy, well-functioning liver. Doctors watch for large, sustained spikes rather than small wobbles."},
+  {cat:"Kidney",color:"var(--teal-ink)",title:"Kidney Health Basics",desc:"How your body filters waste every day.",read:"4 min",body:"Your kidneys quietly filter waste and balance fluids and salts around the clock. Creatinine and BUN show how well that filtration is working. Steady, in-range values mean your kidneys are comfortably keeping up."},
+  {cat:"Blood",color:"var(--amber)",title:"Reading Your CBC",desc:"Platelets, haemoglobin and what they mean.",read:"4 min",body:"A complete blood count looks at your red cells, white cells and platelets. Small variations between tests are normal; your doctor looks at the pattern over time rather than reacting to a single number."}
+];
+function learnDrawer(i){const l=LEARN[i];
+  openDrawer(drawerHead(l.title,l.cat+" · "+l.read+" read")+`<div class="drawer-body"><div class="edu"><h4>${esc(l.cat)}</h4><p>${esc(l.body)}</p></div>
+  <p class="muted" style="font-size:12px">Plain-language education from Nutrolis. Always follow your doctor's guidance for your own care.</p></div>`);
+}
+function buildJourney(){
+  const reps=[...S.reports].filter(r=>r.report_date).sort((a,b)=>new Date(a.report_date)-new Date(b.report_date));
+  if(!reps.length) return [];
+  const byYear={};
+  reps.forEach(r=>{ const y=new Date(r.report_date).getFullYear();
+    const dot=(r.health_score>=80)?"var(--teal)":(r.health_score>=60)?"var(--amber)":"var(--red)";
+    (byYear[y]=byYear[y]||[]).push({dot,h:(r.title||"Report")+" · score "+(r.health_score||"–"),p:r.snapshot||r.summary||""}); });
+  return Object.keys(byYear).sort().map(y=>({yr:y,items:byYear[y]}));
+}
+function downloadSummary(){
+  const p=S.profile||{}, m=dashboardModel();
+  let out="NUTROLIS — HEALTH SUMMARY\n"+(p.full_name||"")+"\nGenerated "+new Date().toLocaleDateString()+"\n\nOverall health score: "+m.overall+"/100\n\nMARKERS\n";
+  Object.values(m.byKey).forEach(x=>{const mk=x.latest;out+="- "+mk.label+": "+mk.value+" "+(mk.unit||"")+"  ["+mk.status+"]\n";});
+  out+="\nEducational summary — not a medical diagnosis. Discuss any concerns with your doctor.\n";
+  const blob=new Blob([out],{type:"text/plain"}); const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="nutrolis-health-summary.txt"; a.click(); toast("Summary downloaded");
+}
+function dashAction(a){
+  if(a==="upload") return go("#/upload");
+  if(a==="compare") return toast(S.reports.length>=2?"Comparison view is coming soon":"Add another report to compare over time");
+  if(a==="download") return downloadSummary();
+  if(a==="share"){ const link="https://"+location.host+"/#/dashboard";
+    if(navigator.clipboard) navigator.clipboard.writeText(link).then(()=>toast("Share link copied")).catch(()=>toast("Copy this link: "+link));
+    else toast("Copy this link: "+link); }
+}
 function renderDashboard(){
   const m=dashboardModel();
-  const greeting=(()=>{const h=new Date().getHours();return h<12?"Good morning":h<18?"Good afternoon":"Good evening";})();
+  const h=new Date().getHours();
+  const greeting=t(h<12?"greet_morning":h<18?"greet_afternoon":"greet_evening");
   const firstName=esc((S.profile?.full_name||"").split(" ")[0]||"there");
   const today=new Date().toLocaleDateString(S.lang,{weekday:"long",month:"long",day:"numeric"});
+  const langOpts=LANGS.map(([c,n])=>`<option value="${c}" ${S.lang===c?"selected":""}>${n}</option>`).join("");
 
   const header=`<div class="dash-head">
     <div><div class="muted" style="font-size:14px;font-weight:600">${esc(today)}</div>
       <h1 style="margin:2px 0 0">${greeting}, ${firstName}</h1></div>
-    <button class="btn btn-primary" data-nav="#/upload" style="flex:none">${I.upload}Upload report</button>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="lang-pick" title="${t("language")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+        <select id="langSelect" aria-label="${t("language")}">${langOpts}</select>
+        <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+      <button class="btn btn-primary" data-nav="#/upload" style="flex:none">${I.upload}${t("upload_report")}</button>
+    </div>
   </div>`;
 
   if(!S.reports.length){
@@ -1087,15 +1203,15 @@ function renderDashboard(){
       <p class="muted" style="max-width:30em;margin:0 auto 20px">${t("upload_first")}</p>
       <button class="btn btn-primary" data-nav="#/upload">${I.upload}${t("upload")}</button>
     </div>`);
-    bindShell(); return;
+    bindShell(); wireLang(); return;
   }
 
-  // ---- AI summary (the simple explanation) ----
+  // ---- AI summary (the simple explanation, in the chosen language) ----
   const latest=S.reports[0];
-  const summaryText=esc(latest.summary||latest.snapshot||"Your latest report has been added to your timeline.");
+  const summaryText=esc(rTxt(latest,"summary")||rTxt(latest,"snapshot")||"Your latest report has been added to your timeline.");
   const summary=`<div class="dash-summary">
     <span class="ai-badge">AI</span>
-    <div><div class="eyebrow" style="color:rgba(255,255,255,.7)">Today's summary</div>
+    <div><div class="eyebrow" style="color:rgba(255,255,255,.7)">${t("todays_summary")}</div>
     <p style="margin:6px 0 0;font-size:clamp(15px,1.6vw,17px);line-height:1.55;color:#fff">${summaryText}</p></div>
   </div>`;
 
@@ -1105,13 +1221,13 @@ function renderDashboard(){
   const prev=series.length>=2?series[series.length-2].s:null;
   const delta=prev!=null?cur-prev:null;
   const deltaPill=delta!=null
-    ? `<span class="pill ${delta>=0?"pill-teal":"pill-amber"}" style="font-size:12px">${delta>=0?"▲":"▼"} ${delta>=0?"+":""}${delta} this report</span>`
-    : `<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:12px">First report</span>`;
+    ? `<span class="pill ${delta>=0?"pill-teal":"pill-amber"}" style="font-size:12px">${delta>=0?"▲":"▼"} ${delta>=0?"+":""}${delta} ${t("this_report")}</span>`
+    : `<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:12px">${t("first_report")}</span>`;
 
   const scoreCard=`<div class="card score-card">
     <div class="score-top">
       <div>
-        <div class="eyebrow">Overall health score</div>
+        <div class="eyebrow">${t("ohs")}</div>
         <div style="display:flex;align-items:flex-end;gap:10px;margin-top:6px">
           <span style="font-size:56px;font-weight:800;letter-spacing:-.04em;line-height:.9;color:${scoreColor(m.overall)}">${m.overall}</span>
           <span class="muted" style="font-weight:700;font-size:18px;margin-bottom:6px">/ 100</span>
@@ -1122,9 +1238,9 @@ function renderDashboard(){
         </div>
       </div>
       <div class="score-stats">
-        <div class="mini-stat"><span class="n">${m.activeMarkers}</span><span class="l">markers tracked</span></div>
-        <div class="mini-stat" style="background:var(--teal-bg)"><span class="n" style="color:var(--teal-ink)">${m.improving}</span><span class="l">improving</span></div>
-        <div class="mini-stat" style="background:${m.attentionCount?"var(--amber-bg)":"var(--surface-3)"}"><span class="n" style="color:${m.attentionCount?"var(--amber-ink)":"var(--ink-2)"}">${m.attentionCount}</span><span class="l">need attention</span></div>
+        <div class="mini-stat"><span class="n">${m.activeMarkers}</span><span class="l">${t("tracked")}</span></div>
+        <div class="mini-stat" style="background:var(--teal-bg)"><span class="n" style="color:var(--teal-ink)">${m.improving}</span><span class="l">${t("improving")}</span></div>
+        <div class="mini-stat" style="background:${m.attentionCount?"var(--amber-bg)":"var(--surface-3)"}"><span class="n" style="color:${m.attentionCount?"var(--amber-ink)":"var(--ink-2)"}">${m.attentionCount}</span><span class="l">${t("need_attn")}</span></div>
       </div>
     </div>
     <div style="margin-top:18px;border-top:1px solid var(--line-2);padding-top:8px">${scoreTrendChart(series)}</div>
@@ -1136,10 +1252,10 @@ function renderDashboard(){
     return `<button class="card marker-tile" data-marker="${mk.key}">
       <div class="spread"><span style="font-weight:700;font-size:15px">${esc(mk.label)}</span>${statusChip(mk,tr)}</div>
       <div style="display:flex;align-items:baseline;gap:5px;margin:14px 0 10px"><span style="font-size:32px;font-weight:800;letter-spacing:-.03em">${mk.value}</span><span class="muted" style="font-weight:600;font-size:14px">${esc(mk.unit||"")}</span></div>
-      <div class="spread" style="border-top:1px solid var(--line-2);padding-top:10px">${markerTrendRow(hist)}<span style="color:var(--teal-ink);font-weight:700;font-size:13px">Learn more ›</span></div>
+      <div class="spread" style="border-top:1px solid var(--line-2);padding-top:10px">${markerTrendRow(hist)}<span style="color:var(--teal-ink);font-weight:700;font-size:13px">${t("learn_more")} ›</span></div>
     </button>`;
   }).join("");
-  const markersSection=`<div class="section-title"><span>Health markers</span></div>
+  const markersSection=`<div class="section-title" id="sec-markers"><span>${t("hm")}</span></div>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">${cards}</div>`;
 
   // ---- trends & improvements (3 buckets) ----
@@ -1153,17 +1269,17 @@ function renderDashboard(){
   const pctChange=(hist)=>{ if(hist.length<2)return null; const a=hist[hist.length-2].value,b=hist[hist.length-1].value; if(!a)return null; return Math.round((b-a)/a*100); };
   const fillOf=(mk)=>{ if(mk.ref_low==null||mk.ref_high==null)return 60; const sp=(mk.ref_high-mk.ref_low)||1; return Math.max(8,Math.min(100,((mk.value-mk.ref_low)/sp)*100)); };
   const bar=(color,fill)=>`<div style="height:7px;border-radius:99px;background:var(--surface-3);margin-top:7px;overflow:hidden"><div style="height:100%;width:${fill}%;background:${color};border-radius:99px"></div></div>`;
-  const col=(title,dot,items,render)=>`<div class="card" style="padding:20px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><span style="width:9px;height:9px;border-radius:50%;background:${dot}"></span><strong style="font-size:15px">${title}</strong></div>${items.length?items.slice(0,4).map(render).join(""):`<p class="muted" style="margin:0;font-size:13.5px">Nothing here right now.</p>`}</div>`;
-  const trends=`<div class="section-title"><span>Trends &amp; improvements</span></div>
+  const col=(title,dot,items,render)=>`<div class="card" style="padding:20px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><span style="width:9px;height:9px;border-radius:50%;background:${dot}"></span><strong style="font-size:15px">${title}</strong></div>${items.length?items.slice(0,4).map(render).join(""):`<p class="muted" style="margin:0;font-size:13.5px">${t("nothing_here")}</p>`}</div>`;
+  const trends=`<div class="section-title" id="sec-trends"><span>${t("ti")}</span></div>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
-      ${col("Improving","var(--teal)",buckets.improving,({mk,x})=>{const p=pctChange(x.history);return `<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--teal);font-weight:700;font-size:12.5px">${p!=null?(p<0?"↓":"↑")+" "+Math.abs(p)+"%":"Improving"}</span></div>${bar("var(--teal)",fillOf(mk))}</div>`;})}
-      ${col("Stable","var(--aqua)",buckets.stable,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--muted);font-weight:700;font-size:12.5px">Steady</span></div>${bar("var(--aqua)",fillOf(mk))}</div>`)}
-      ${col("Needs attention","var(--amber)",buckets.attention,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--amber-ink);font-weight:700;font-size:12.5px">${mk.status==="low"?"Below range":"Above range"}</span></div>${bar("var(--amber)",fillOf(mk))}</div>`)}
+      ${col(t("improving_chip"),"var(--teal)",buckets.improving,({mk,x})=>{const p=pctChange(x.history);return `<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--teal);font-weight:700;font-size:12.5px">${p!=null?(p<0?"↓":"↑")+" "+Math.abs(p)+"%":"Improving"}</span></div>${bar("var(--teal)",fillOf(mk))}</div>`;})}
+      ${col(t("steady"),"var(--aqua)",buckets.stable,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--muted);font-weight:700;font-size:12.5px">${t("steady")}</span></div>${bar("var(--aqua)",fillOf(mk))}</div>`)}
+      ${col(t("needs_attn"),"var(--amber)",buckets.attention,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--amber-ink);font-weight:700;font-size:12.5px">${mk.status==="low"?t("below_range"):t("above_range")}</span></div>${bar("var(--amber)",fillOf(mk))}</div>`)}
     </div>`;
 
   // ---- AI insights ----
   const ins=insightCards();
-  const insights=ins.length?`<div class="section-title"><span>AI health insights</span></div>
+  const insights=ins.length?`<div class="section-title" id="sec-insights"><span>${t("aihi")}</span></div>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
     ${ins.map(c=>`<div class="card" style="padding:20px;display:flex;gap:14px">
       <span class="ins-dot" style="background:${c.tone==="teal"?"var(--teal-bg)":"var(--amber-bg)"}"><span style="width:9px;height:9px;border-radius:50%;background:${c.tone==="teal"?"var(--teal)":"var(--amber)"}"></span></span>
@@ -1171,18 +1287,57 @@ function renderDashboard(){
       <p style="margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-2)">${esc(c.text)}</p></div>
     </div>`).join("")}</div>`:"";
 
-  // ---- recent reports (compact) ----
-  const recent=`<div class="section-title"><span>${t("recent")}</span></div>`+
-    S.reports.slice(0,4).map(r=>`<a class="card report-row" data-report="${r.id}">
+  // ---- learning center ----
+  const learning=`<div class="section-title" id="sec-learning"><span>${t("lc")}</span></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+    ${LEARN.map((l,i)=>`<button class="card" data-learn="${i}" style="text-align:left;font:inherit;color:inherit;overflow:hidden;padding:0;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+      <div style="height:5px;background:${l.color}"></div>
+      <div style="padding:18px 20px">
+        <div class="eyebrow" style="color:${l.color}">${esc(l.cat)}</div>
+        <div style="font-size:17px;font-weight:800;letter-spacing:-.01em;margin:8px 0 6px">${esc(l.title)}</div>
+        <div class="muted" style="font-size:13.5px;line-height:1.5;min-height:38px">${esc(l.desc)}</div>
+        <div class="spread" style="margin-top:14px;font-size:12.5px;font-weight:700"><span class="muted">${esc(l.read)} ${t("read")}</span><span style="color:var(--teal-ink)">Read ›</span></div>
+      </div></button>`).join("")}</div>`;
+
+  // ---- health journey ----
+  const jy=buildJourney();
+  const journey=jy.length?`<div class="section-title" id="sec-journey"><span>${t("hj")}</span></div>
+    <div class="card" style="padding:24px 26px">
+    ${jy.map(y=>`<div style="display:grid;grid-template-columns:60px 1fr;gap:8px">
+      <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;padding-top:2px">${esc(y.yr)}</div>
+      <div style="border-left:2px solid var(--line);padding:2px 0 16px 22px;margin-left:6px">
+        ${y.items.map(it=>`<div style="position:relative;margin-bottom:16px">
+          <span style="position:absolute;left:-30px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--surface);border:3px solid ${it.dot}"></span>
+          <div style="font-weight:700;font-size:15px">${esc(it.h)}</div>${it.p?`<div class="muted" style="font-size:13px;margin-top:2px">${esc(it.p)}</div>`:""}</div>`).join("")}
+      </div></div>`).join("")}</div>`:"";
+
+  // ---- recent reports ----
+  const recent=`<div class="section-title" id="sec-reports"><span>${t("recent")}</span></div>`+
+    S.reports.slice(0,5).map(r=>`<a class="card report-row" data-report="${r.id}">
       <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink)">${reportIcon(r.report_type)}</span>
       <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(r.title||"Report")}</div><div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.snapshot||"")}</div></div>
       <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
     </a>`).join("");
 
-  app().innerHTML=shell(header+summary+scoreCard+markersSection+trends+insights+recent);
+  // ---- action center ----
+  const action=`<div class="card" style="padding:24px 26px;margin-top:30px;background:linear-gradient(135deg,var(--surface),var(--surface-2))">
+    <h3 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em">${t("ac")}</h3>
+    <p class="muted" style="margin:6px 0 0;font-size:14px">${t("manage_share")}</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+      <button class="btn btn-primary" data-dash="upload">${I.upload}${t("upload_new")}</button>
+      <button class="btn btn-ghost" data-dash="compare">${t("compare")}</button>
+      <button class="btn btn-ghost" data-dash="download">${t("download")}</button>
+      <button class="btn btn-ghost" data-dash="share">${t("share")}</button>
+    </div></div>`;
+
+  app().innerHTML=shell(header+summary+scoreCard+markersSection+trends+insights+learning+journey+recent+action);
   bindShell();
   app().querySelectorAll("[data-marker]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.marker));
   app().querySelectorAll("[data-report]").forEach(b=>b.onclick=()=>go("#/report/"+b.dataset.report));
+  app().querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>learnDrawer(+b.dataset.learn));
+  app().querySelectorAll("[data-dash]").forEach(b=>b.onclick=()=>dashAction(b.dataset.dash));
+  wireLang();
+  if(pendingScroll){ const id=pendingScroll; pendingScroll=null; setTimeout(()=>scrollToSection(id),60); }
 }
 function reportIcon(type){
   const map={blood:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 10.5a6 6 0 0 1-12 0C6 9.5 12 3 12 3Z"/></svg>',
@@ -1392,38 +1547,87 @@ function drawerHead(title,sub){
     <div style="flex:1;min-width:0"><div style="font-weight:800;letter-spacing:-.01em">${esc(title)}</div>${sub?`<div class="muted" style="font-size:12.5px">${esc(sub)}</div>`:""}</div>
     <button data-x="1" aria-label="Close" style="border:none;background:var(--surface-3);width:34px;height:34px;border-radius:10px;cursor:pointer;color:var(--ink-2);display:grid;place-items:center;flex:none">${I.x}</button></div>`;
 }
+/* ---- AI personalized deep-dive (uses the Claude proxy, cached) ---- */
+const DEEP_CACHE={};
+async function claudeJSON(system,prompt,max_tokens){
+  try{
+    const r=await fetch(CLAUDE_PROXY,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+SUPABASE_ANON},body:JSON.stringify({system,prompt,max_tokens:max_tokens||1400})});
+    if(!r.ok) return null;
+    const j=await r.json(); if(!j.text) return null;
+    return JSON.parse(j.text.replace(/```json|```/g,"").trim());
+  }catch(e){ return null; }
+}
+function deepKey(m){ return (m.key||"x")+"|"+m.value+"|"+S.lang; }
+async function fetchDeepDive(m){
+  const ck=deepKey(m); if(DEEP_CACHE[ck]) return DEEP_CACHE[ck];
+  const langName=LANGS.find(l=>l[0]===S.lang)?.[1]||"English";
+  const sys="You are Nutrolis — a calm, warm medical educator. Never diagnose or prescribe; always defer to a doctor. Explain like the reader is ten, reassuring not alarming, never use alarm language. Write ALL text in "+langName+". Respond ONLY with strict minified JSON, no markdown.";
+  const status=m.status==="low"?"below the usual range":m.status==="high"?"above the usual range":"within the usual range";
+  const prompt=`Explain the lab marker "${m.label}" for a person whose latest reading is ${m.value} ${m.unit||""} (${status}; usual range ${m.ref_low==null?"?":m.ref_low}–${m.ref_high==null?"?":m.ref_high}). Person's age: ${S.profile?.age||"unknown"}.
+Return strict JSON exactly:
+{"what":"what it is, 1-2 simple sentences","how":"how it works in the body, 1-2 sentences","why":"gentle, likely everyday reasons a value like theirs sits ${m.status==="normal"?"where it is":m.status}, 1-2 sentences","fix":["3-5 simple lifestyle steps"],"foods_add":["4-6 specific foods to eat more of"],"foods_limit":["3-5 foods or habits to ease off"],"timeline":"how long improvement usually takes, 1 sentence","doctor":"when to speak with a doctor, 1 sentence"}`;
+  const j=await claudeJSON(sys,prompt,1500);
+  if(j) DEEP_CACHE[ck]=j;
+  return j;
+}
+function renderDeepDive(j){
+  if(!j) return `<div class="edu"><p style="margin:0;color:var(--ink-2)">${t("dd_fail")}</p></div>`;
+  const sec=(title,c)=>c?`<div class="edu"><h4>${title}</h4>${c}</div>`:"";
+  const list=(a,cls)=>a&&a.length?`<ul class="${cls||""}">${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
+  return sec(t("dd_what"),`<p>${esc(j.what)}</p>`)+
+    sec(t("dd_how"),`<p>${esc(j.how)}</p>`)+
+    sec(t("dd_why"),`<p>${esc(j.why)}</p>`)+
+    sec(t("dd_fix"),list(j.fix))+
+    `<div class="edu"><h4>${t("dd_foods")}</h4><div class="two-col">
+      <div><div style="font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--teal-ink);margin-bottom:3px">${t("eat_more")}</div>${list(j.foods_add,"food-add")||"<p class='muted' style='margin:0'>—</p>"}</div>
+      <div><div style="font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--amber-ink);margin-bottom:3px">${t("ease_off")}</div>${list(j.foods_limit,"food-cut")||"<p class='muted' style='margin:0'>—</p>"}</div>
+    </div></div>`+
+    sec(t("dd_time"),`<p>${esc(j.timeline)}</p>`)+
+    sec(t("dd_doctor"),`<p>${esc(j.doctor)}</p>`);
+}
+async function runDeepDive(key){
+  const m=[...S.markers].filter(x=>x.key===key).pop(); if(!m) return;
+  const host=$("#deep-dive"); if(!host) return;
+  const btn=document.querySelector("#drawer-wrap [data-deepdive]");
+  if(btn){ btn.disabled=true; btn.innerHTML='<span class="spinner" style="width:16px;height:16px;border-top-color:#fff;border-color:rgba(255,255,255,.45)"></span> Preparing your plan…'; }
+  host.innerHTML=`<div class="dd-load"><span class="spinner"></span>${t("dd_prep")}</div>`;
+  const j=await fetchDeepDive(m);
+  host.innerHTML=renderDeepDive(j);
+  if(btn){ if(j){ btn.style.display="none"; } else { btn.disabled=false; btn.innerHTML="✦ Try again"; } }
+}
+
 function openMarkerDrawer(key){
   const k=KB[key];
   const latest=[...S.markers].filter(m=>m.key===key).pop();
-  // marker not in the local encyclopedia (e.g. Claude-extracted) → show a basic, honest panel
-  if(!k){
-    if(!latest) return;
-    const lo=latest.ref_low, hi=latest.ref_high, hasRange=(lo!=null&&hi!=null);
-    const span=hasRange?((hi-lo)||1):1;
-    const pos=hasRange?Math.max(2,Math.min(98,((latest.value-lo)/span)*100)):50;
-    const col=latest.status==="normal"?"var(--teal)":"var(--amber)";
-    const vb=`<div class="edu"><h4>Your latest reading</h4>
-      <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:34px;font-weight:800;letter-spacing:-.03em">${latest.value}</span><span class="muted" style="font-weight:600">${esc(latest.unit||"")}</span>
-      <span class="pill ${latest.status==="normal"?"pill-teal":"pill-amber"}" style="margin-left:auto">${latest.status==="normal"?"In range":latest.status==="low"?"Slightly low":"Slightly high"}</span></div>
-      ${hasRange?`<div class="range"><div class="band" style="left:30%;width:40%"></div><div class="dot" style="left:${pos}%;background:${col}"></div></div><p class="muted" style="font-size:12.5px;margin:0">Usual range ${lo}–${hi} ${esc(latest.unit||"")}</p>`:`<p class="muted" style="font-size:12.5px;margin:6px 0 0">Reference range varies by lab — check the range printed on your report.</p>`}</div>`;
-    const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([latest.body_area||"blood"])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">Body area: ${esc((ORGANS[latest.body_area]||{label:latest.body_area||"Blood"}).label)}</p></div>`;
-    openDrawer(drawerHead(latest.label||"Result","Your result")+`<div class="drawer-body">${vb}${fig}<div class="edu"><h4>What now?</h4><p>This value was read from your report and saved to your timeline. For a full medical explanation of this specific marker, your doctor is the best guide.</p></div><p class="muted" style="font-size:12px;margin-top:8px">Educational only — not a diagnosis.</p></div>`);
-    return;
-  }
-  const e=k.edu;
+  if(!latest && !k) return;
+  const label=(k&&k.label)||(latest&&latest.label)||"Result";
+  const lo=latest?latest.ref_low:(k?k.low:null);
+  const hi=latest?latest.ref_high:(k?k.high:null);
+  const unit=(latest&&latest.unit)||(k&&k.unit)||"";
+  const status=latest?latest.status:"normal";
+  const hasRange=lo!=null&&hi!=null;
   let valueBlock="";
   if(latest){
-    const lo=k.low,hi=k.high,span=(hi-lo)||1;
-    const pos=Math.max(2,Math.min(98,((latest.value-lo)/span)*100));
-    const col=latest.status==="normal"?"var(--teal)":"var(--amber)";
-    valueBlock=`<div class="edu"><h4>Your latest reading</h4>
-      <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:34px;font-weight:800;letter-spacing:-.03em">${latest.value}</span><span class="muted" style="font-weight:600">${esc(latest.unit)}</span>
-      <span class="pill ${latest.status==="normal"?"pill-teal":"pill-amber"}" style="margin-left:auto">${latest.status==="normal"?"In range":latest.status==="low"?"Slightly low":"Slightly high"}</span></div>
-      <div class="range"><div class="band" style="left:30%;width:40%"></div><div class="dot" style="left:${pos}%;background:${col}"></div></div>
-      <p class="muted" style="font-size:12.5px;margin:0">Usual range ${lo}–${hi} ${esc(k.unit)}</p></div>`;
+    const span=hasRange?((hi-lo)||1):1;
+    const pos=hasRange?Math.max(2,Math.min(98,((latest.value-lo)/span)*100)):50;
+    const col=status==="normal"?"var(--teal)":"var(--amber)";
+    valueBlock=`<div class="edu"><h4>${t("your_reading")}</h4>
+      <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:34px;font-weight:800;letter-spacing:-.03em">${latest.value}</span><span class="muted" style="font-weight:600">${esc(unit)}</span>
+      <span class="pill ${status==="normal"?"pill-teal":"pill-amber"}" style="margin-left:auto">${status==="normal"?t("in_range"):status==="low"?t("slightly_low"):t("slightly_high")}</span></div>
+      ${hasRange?`<div class="range"><div class="band" style="left:30%;width:40%"></div><div class="dot" style="left:${pos}%;background:${col}"></div></div><p class="muted" style="font-size:12.5px;margin:0">${t("usual_range")} ${lo}–${hi} ${esc(unit)}</p>`:`<p class="muted" style="font-size:12.5px;margin:6px 0 0">Reference range varies by lab — check the range printed on your report.</p>`}</div>`;
   }
-  const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([k.area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">Body area: ${esc((ORGANS[k.area]||{label:k.area}).label)}</p></div>`;
-  openDrawer(drawerHead(k.label,"Health encyclopedia")+`<div class="drawer-body">${valueBlock}${fig}${eduBlock(e)}<p class="muted" style="font-size:12px;margin-top:8px">Educational only — not a diagnosis. Discuss concerns with your doctor.</p></div>`);
+  const area=(k&&k.area)||(latest&&latest.body_area)||"blood";
+  const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">${t("body_area")}: ${esc((ORGANS[area]||{label:area}).label)}</p></div>`;
+  const ddBtn=`<button class="dd-btn" data-deepdive="${key}">✦ ${t("get_plan")}</button>`;
+  const ddHost=`<div id="deep-dive"></div>`;
+  const encyclopedia=(k&&S.lang==="en")?`<div class="section-title" style="font-size:15px;margin:20px 0 10px"><span>${t("from_encyclopedia")}</span></div>${eduBlock(k.edu)}`:"";
+  openDrawer(drawerHead(label,k?t("personalized_brief"):t("your_result"))+
+    `<div class="drawer-body">${valueBlock}${fig}${ddBtn}${ddHost}${encyclopedia}
+     <p class="muted" style="font-size:12px;margin-top:8px">${t("not_diagnosis")}</p></div>`);
+  const btn=document.querySelector("#drawer-wrap [data-deepdive]");
+  if(btn) btn.onclick=()=>runDeepDive(key);
+  // auto-prepare the plan for anything out of range, or markers with no encyclopedia entry
+  if(status!=="normal" || !k) runDeepDive(key);
 }
 function openOrganDrawer(area){
   const o=ORGANS[area]||ORGANS.blood;
@@ -1464,7 +1668,7 @@ function renderSettings(){
     <p class="muted" style="font-size:12.5px;text-align:center;margin:18px 0 0">Nutrolis AI · educational companion, never a replacement for your doctor.</p>`);
   bindShell();
   $("#s-save").onclick=async()=>{ await saveProfile({full_name:$("#s-name").value.trim(),age:parseInt($("#s-age").value)||null,gender:$("#s-gender").value||null,health_history:$("#s-hist").value.trim(),allergies:$("#s-all").value.trim(),medications:$("#s-med").value.trim(),lifestyle:$("#s-life").value.trim()}); toast("Profile saved."); };
-  $("#s-lang").onchange=async(e)=>{ S.lang=e.target.value; applyDir(); await saveProfile({language:S.lang}); toast("Language updated."); renderSettings(); };
+  $("#s-lang").onchange=(e)=>setLanguage(e.target.value);
   $("#s-theme").onclick=()=>{ toggleTheme(); renderSettings(); };
   $("#s-notif").onclick=async()=>{ const v=!(S.profile.notifications!==false); await saveProfile({notifications:v}); renderSettings(); };
   $("#s-export").onclick=()=>{ const blob=new Blob([JSON.stringify({profile:S.profile,reports:S.reports,markers:S.markers},null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="nutrolis-health-data.json"; a.click(); toast("Your data is downloading."); };
@@ -1480,6 +1684,21 @@ function bindShell(){
   app().querySelectorAll("[data-nav]").forEach(b=>b.onclick=(e)=>{e.preventDefault();go(b.dataset.nav);});
   app().querySelectorAll('[data-act="theme"]').forEach(b=>b.onclick=()=>{toggleTheme();render();});
   app().querySelectorAll('[data-act="signout"]').forEach(b=>b.onclick=doSignOut);
+  // Explore dropdown toggle (no re-render — pure DOM)
+  const tog=app().querySelector("[data-explore]");
+  if(tog){ tog.onclick=()=>{ exploreOpen=!exploreOpen; const sm=app().querySelector(".submenu"); if(sm)sm.style.display=exploreOpen?"":"none"; tog.classList.toggle("open",exploreOpen); }; }
+  // Section scroll (jump to a dashboard section; route there first if needed)
+  app().querySelectorAll("[data-scroll]").forEach(b=>b.onclick=()=>scrollToSection(b.dataset.scroll));
+}
+function scrollToSection(id){
+  const cur=location.hash||"#/dashboard";
+  if(!cur.startsWith("#/dashboard")){ pendingScroll=id; go("#/dashboard"); return; }
+  const el=document.getElementById("sec-"+id);
+  if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function wireLang(){
+  const sel=document.getElementById("langSelect");
+  if(sel) sel.onchange=()=>setLanguage(sel.value);
 }
 
 function render(){
@@ -1504,6 +1723,7 @@ async function boot(){
   await loadProfile();
   applyTheme(); applyDir();
   await loadData();
+  if(S.lang!=="en"){ try{ await ensureLang(S.lang); await ensureReportI18n(S.lang); }catch(e){} }
   if(!location.hash||location.hash==="#/login") location.hash="#/dashboard";
   render();
 }

@@ -59,6 +59,7 @@
       </div>
       <div style="display:flex;align-items:center;gap:30px;font-size:15px;font-weight:600;color:var(--ink-2);">
         <a href="#how" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">How it works</a>
+        <a href="#languages" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Languages</a>
         <a href="#features" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Features</a>
         <a href="#faq" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">FAQ</a>
       </div>
@@ -461,6 +462,106 @@
       </figure>
     </div>
   </section>
+
+  <!-- ============ LANGUAGE SHOWCASE ============ -->
+  <section id="languages" style="position:relative;overflow:hidden;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);">
+    <div style="max-width:1100px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
+      <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);text-align:center;max-width:680px;margin:0 auto 44px;">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);">Your language</span>
+        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 12px;line-height:1.1;">A 10-year-old or a 70-year-old can read it.</h2>
+        <p style="margin:0;color:var(--ink-2);font-size:clamp(16px,1.7vw,18px);line-height:1.6;">The same report, explained in plain words — in major Indian languages, English, and European ones. Tap a language, or just watch.</p>
+      </div>
+
+      <!-- morphing report card -->
+      <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s .1s cubic-bezier(.22,1,.36,1),transform .7s .1s cubic-bezier(.22,1,.36,1);max-width:620px;margin:0 auto 30px;">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:26px;box-shadow:0 30px 70px -44px var(--shadow);padding:26px 28px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+            <span style="width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;flex:none;box-shadow:0 8px 18px -8px var(--glow);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2 5 4-12 2 9 2-4h5"/></svg></span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:800;letter-spacing:-.01em;">Vitamin D</div>
+              <div id="lang-name" style="font-size:13px;color:var(--teal);font-weight:700;">English</div>
+            </div>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.13em;color:var(--amber-ink);background:var(--amber-bg);padding:6px 12px;border-radius:999px;white-space:nowrap;">A LITTLE LOW</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:16px;">
+            <span style="font-size:40px;font-weight:800;letter-spacing:-.04em;">14.8</span><span style="color:var(--muted);font-weight:600;">ng/mL</span>
+            <div style="flex:1;height:8px;border-radius:99px;background:var(--surface-3);position:relative;margin-left:6px;">
+              <span style="position:absolute;left:25%;width:50%;height:100%;border-radius:99px;background:var(--teal-bg);"></span>
+              <span style="position:absolute;left:9%;top:50%;width:15px;height:15px;border-radius:50%;background:var(--amber);border:3px solid var(--surface);transform:translate(-50%,-50%);"></span>
+            </div>
+          </div>
+          <p id="lang-sentence" style="margin:0;font-size:clamp(16px,2vw,19px);line-height:1.6;color:var(--ink);min-height:3.3em;transition:opacity .4s ease,transform .4s ease;font-weight:500;">Your Vitamin D is a little low — easy to fix with some sun and the right foods.</p>
+        </div>
+      </div>
+
+      <!-- language pills -->
+      <div id="lang-pills" data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s .2s cubic-bezier(.22,1,.36,1),transform .7s .2s cubic-bezier(.22,1,.36,1);display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:760px;margin:0 auto;"></div>
+    </div>
+  </section>
+
+  <script>
+  (function(){
+    var LANGS=[
+      {code:"en",name:"English",dir:"ltr",pill:"English",text:"Your Vitamin D is a little low — easy to fix with some sun and the right foods."},
+      {code:"hi",name:"हिन्दी",dir:"ltr",pill:"हिन्दी",text:"आपका विटामिन डी थोड़ा कम है — थोड़ी धूप और सही खाने से आसानी से ठीक हो जाएगा।"},
+      {code:"bn",name:"বাংলা",dir:"ltr",pill:"বাংলা",text:"আপনার ভিটামিন ডি একটু কম — কিছুটা রোদ আর সঠিক খাবারে সহজেই ঠিক হয়ে যাবে।"},
+      {code:"ta",name:"தமிழ்",dir:"ltr",pill:"தமிழ்",text:"உங்கள் வைட்டமின் டி சற்று குறைவாக உள்ளது — கொஞ்சம் வெயிலும் சரியான உணவும் இருந்தால் எளிதில் சரியாகும்."},
+      {code:"te",name:"తెలుగు",dir:"ltr",pill:"తెలుగు",text:"మీ విటమిన్ డి కొంచెం తక్కువగా ఉంది — కొంచెం ఎండ, సరైన ఆహారంతో సులభంగా సరిచేయవచ్చు."},
+      {code:"mr",name:"मराठी",dir:"ltr",pill:"मराठी",text:"तुमचं व्हिटॅमिन डी थोडं कमी आहे — थोडं ऊन आणि योग्य आहाराने सहज ठीक होईल."},
+      {code:"gu",name:"ગુજરાતી",dir:"ltr",pill:"ગુજરાતી",text:"તમારું વિટામિન ડી થોડું ઓછું છે — થોડો તડકો અને યોગ્ય ખોરાકથી સરળતાથી ઠીક થઈ જશે."},
+      {code:"kn",name:"ಕನ್ನಡ",dir:"ltr",pill:"ಕನ್ನಡ",text:"ನಿಮ್ಮ ವಿಟಮಿನ್ ಡಿ ಸ್ವಲ್ಪ ಕಡಿಮೆಯಿದೆ — ಸ್ವಲ್ಪ ಬಿಸಿಲು ಮತ್ತು ಸರಿಯಾದ ಆಹಾರದಿಂದ ಸುಲಭವಾಗಿ ಸರಿಪಡಿಸಬಹುದು."},
+      {code:"ml",name:"മലയാളം",dir:"ltr",pill:"മലയാളം",text:"നിങ്ങളുടെ വിറ്റാമിൻ ഡി അല്പം കുറവാണ് — കുറച്ച് വെയിലും ശരിയായ ഭക്ഷണവും കൊണ്ട് എളുപ്പത്തിൽ ശരിയാക്കാം."},
+      {code:"pa",name:"ਪੰਜਾਬੀ",dir:"ltr",pill:"ਪੰਜਾਬੀ",text:"ਤੁਹਾਡਾ ਵਿਟਾਮਿਨ ਡੀ ਥੋੜ੍ਹਾ ਘੱਟ ਹੈ — ਥੋੜ੍ਹੀ ਧੁੱਪ ਅਤੇ ਸਹੀ ਖਾਣੇ ਨਾਲ ਆਸਾਨੀ ਨਾਲ ਠੀਕ ਹੋ ਜਾਵੇਗਾ।"},
+      {code:"ur",name:"اردو",dir:"rtl",pill:"اردو",text:"آپ کا وٹامن ڈی تھوڑا کم ہے — تھوڑی دھوپ اور صحیح خوراک سے آسانی سے ٹھیک ہو جائے گا۔"},
+      {code:"ar",name:"العربية",dir:"rtl",pill:"العربية",text:"فيتامين د لديك منخفض قليلاً — من السهل تصحيحه ببعض الشمس والطعام المناسب."},
+      {code:"es",name:"Español",dir:"ltr",pill:"Español",text:"Tu vitamina D está un poco baja — fácil de corregir con algo de sol y la comida adecuada."},
+      {code:"fr",name:"Français",dir:"ltr",pill:"Français",text:"Votre vitamine D est un peu basse — facile à corriger avec du soleil et une bonne alimentation."},
+      {code:"de",name:"Deutsch",dir:"ltr",pill:"Deutsch",text:"Ihr Vitamin D ist etwas niedrig — leicht zu beheben mit etwas Sonne und der richtigen Ernährung."},
+      {code:"pt",name:"Português",dir:"ltr",pill:"Português",text:"A sua vitamina D está um pouco baixa — fácil de corrigir com sol e a alimentação certa."}
+    ];
+    var pills=document.getElementById("lang-pills");
+    var nameEl=document.getElementById("lang-name");
+    var sentEl=document.getElementById("lang-sentence");
+    if(!pills||!sentEl) return;
+    var active=0, timer=null, INTERVAL=2600;
+    LANGS.forEach(function(l,i){
+      var b=document.createElement("button");
+      b.type="button"; b.textContent=l.pill; b.dataset.i=i;
+      b.style.cssText="font:inherit;font-weight:700;font-size:14px;padding:9px 16px;border-radius:999px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);transition:all .25s cubic-bezier(.34,1.56,.5,1);";
+      b.addEventListener("click",function(){ select(i,true); });
+      pills.appendChild(b);
+    });
+    var btns=pills.querySelectorAll("button");
+    function paint(){
+      btns.forEach(function(b,i){
+        if(i===active){ b.style.background="linear-gradient(135deg,var(--teal),var(--aqua))"; b.style.color="#fff"; b.style.borderColor="transparent"; b.style.transform="translateY(-2px) scale(1.04)"; b.style.boxShadow="0 10px 22px -10px var(--glow)"; }
+        else { b.style.background="var(--surface)"; b.style.color="var(--ink-2)"; b.style.borderColor="var(--line)"; b.style.transform="none"; b.style.boxShadow="none"; }
+      });
+    }
+    function show(i){
+      var l=LANGS[i];
+      sentEl.style.opacity="0"; sentEl.style.transform="translateY(8px)";
+      setTimeout(function(){
+        sentEl.textContent=l.text; sentEl.dir=l.dir; sentEl.style.textAlign=l.dir==="rtl"?"right":"left";
+        nameEl.textContent=l.name;
+        sentEl.style.opacity="1"; sentEl.style.transform="none";
+      },380);
+    }
+    function select(i,manual){
+      active=i; paint(); show(i);
+      if(manual){ stop(); setTimeout(start,7000); }
+    }
+    function next(){ active=(active+1)%LANGS.length; paint(); show(active); }
+    function start(){ stop(); timer=setInterval(next,INTERVAL); }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+    paint();
+    if(!window.matchMedia||!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting?start():stop(); }); },{threshold:.3});
+      io.observe(document.getElementById("languages"));
+    }
+  })();
+  </script>
 
   <!-- ============ FAQ ============ -->
   <section id="faq" style="background:var(--surface-2);border-top:1px solid var(--line-2);">
