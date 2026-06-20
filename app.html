@@ -116,6 +116,8 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .lang-pick>svg:first-child{flex:none;color:var(--teal)}
 .lang-pick select{appearance:none;-webkit-appearance:none;border:none;background:transparent;font:inherit;font-weight:700;font-size:14px;color:var(--ink);padding:11px 4px 11px 0;cursor:pointer;outline:none}
 .lang-pick .caret{position:absolute;right:11px;pointer-events:none;color:var(--muted)}
+.plos-info{border:none;background:none;font:inherit;font-size:12px;font-weight:700;color:var(--teal-ink);cursor:pointer;padding:0;opacity:.85;transition:opacity .2s}
+.plos-info:hover{opacity:1;text-decoration:underline}
 .main{min-width:0;display:flex;flex-direction:column}
 .topbar{display:none}
 .content{padding:clamp(20px,4vw,40px);max-width:1100px;width:100%;margin:0 auto;flex:1}
@@ -293,7 +295,13 @@ const STR = {
       nothing_here:"Nothing here right now.",sign_out:"Sign out",body_area:"Body area",not_diagnosis:"Educational only — not a diagnosis. Your doctor is the best guide for next steps.",
       good:"Good",fair:"Fair",worth_look:"Worth a look",
       your_reading:"Your latest reading",dd_what:"What is it?",dd_how:"How it works in your body",dd_why:"Why yours may be like this",dd_fix:"How to improve it",dd_foods:"Foods — what to add & ease off",dd_time:"How long it usually takes",dd_doctor:"When to speak with a doctor",
-      dd_prep:"Nutrolis AI is writing your personalized plan…",dd_fail:"The AI couldn't be reached just now. Please try again in a moment."},
+      dd_prep:"Nutrolis AI is writing your personalized plan…",dd_fail:"The AI couldn't be reached just now. Please try again in a moment.",
+      plos_score:"PLOS Score",plos_full:"Preventive Lifestyle Operating System",plos_ontrack:"On track",plos_improve:"Room to improve",plos_attn:"Needs attention",
+      how_calc:"How your score works",plos_pillars:"PLOS pillars",mk_pillars:"Pillars",
+      plos_what:"What is the PLOS Score?",
+      plos_method:"PLOS — your Preventive Lifestyle Operating System — turns a whole lab report into one simple number from 0 to 100. We check each result against its healthy range: the closer everything sits inside range, the higher your score. It's the easy way to see your whole health at a glance and watch it improve over time.",
+      plos_bands:"What the bands mean",band_high:"80 to 100 — On track. Keep doing what you're doing.",band_mid:"60 to 80 — Room to improve. A few small changes will help.",band_low:"Under 60 — Needs attention. Worth a focused look with your doctor.",
+      plos_pillar_note:"Each pillar is the same score for one part of your body — so you can see exactly where to focus."},
   hi:{dashboard:"डैशबोर्ड",upload:"अपलोड",reports:"मेरी रिपोर्ट",settings:"सेटिंग्स",
       health_score:"स्वास्थ्य स्कोर",total_reports:"रिपोर्ट",active_markers:"सक्रिय मार्कर",attention:"ध्यान देने योग्य",
       recent:"हाल की रिपोर्ट",no_reports:"अभी कोई रिपोर्ट नहीं",upload_first:"शुरू करने के लिए अपनी पहली रिपोर्ट अपलोड करें।",
@@ -933,7 +941,33 @@ function dashboardModel(){
     improving,attention,stable,outMarkers:out,byKey,attentionAreas:Object.keys(areas)};
 }
 function scoreColor(s){ if(s>=80)return"var(--teal)"; if(s>=60)return"var(--amber)"; return"var(--red)"; }
-function scoreLabel(s){ if(s>=80)return t("good"); if(s>=60)return t("fair"); if(s>0)return t("worth_look"); return"—"; }
+function scoreLabel(s){ if(s>=80)return t("plos_ontrack"); if(s>=60)return t("plos_improve"); if(s>0)return t("plos_attn"); return"—"; }
+/* ---- PLOS: pillars (same engine as the main score, per body domain) ---- */
+const PILLAR_LABELS={Cardiovascular:"Heart",Metabolic:"Metabolic",Liver:"Liver",Kidney:"Kidney",Nutrition:"Nutrition",Thyroid:"Thyroid",Blood:"Blood",General:"General"};
+function plosPillars(){
+  const byKey=latestByKey(), groups={};
+  Object.values(byKey).forEach(x=>{ const m=x.latest; const d=catOf(m.label||m.key); (groups[d]=groups[d]||[]).push(m); });
+  const order=["Cardiovascular","Metabolic","Liver","Kidney","Nutrition","Thyroid","Blood","General"];
+  return order.filter(d=>groups[d]&&groups[d].length).map(d=>({domain:d,label:PILLAR_LABELS[d]||d,score:scoreFromMarkers(groups[d]),count:groups[d].length}));
+}
+function plosRing(score,size){
+  size=size||70; const r=size/2-5, c=2*Math.PI*r, off=c*(1-score/100), col=scoreColor(score);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="flex:none">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--surface-3)" stroke-width="6"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/>
+    <text x="${size/2}" y="${size/2}" text-anchor="middle" dominant-baseline="central" font-size="${size*0.28}" font-weight="800" fill="var(--ink)">${score}</text></svg>`;
+}
+function bandPill(s){ const st=s>=80?"color:var(--teal-ink);background:var(--teal-bg)":s>=60?"color:var(--amber-ink);background:var(--amber-bg)":"color:#fff;background:var(--red)"; return `<span class="pill" style="font-size:10.5px;${st}">${scoreLabel(s)}</span>`; }
+function plosInfoDrawer(){
+  const m=dashboardModel();
+  const band=(c,txt)=>`<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:9px"><span style="width:12px;height:12px;border-radius:50%;background:${c};flex:none;margin-top:4px"></span><span style="font-size:14px;color:var(--ink-2);line-height:1.45">${esc(txt)}</span></div>`;
+  openDrawer(drawerHead(t("plos_score"),t("plos_full"))+`<div class="drawer-body">
+    <div class="edu" style="display:flex;align-items:center;gap:16px">${plosRing(m.overall,84)}<div><div style="font-weight:800;font-size:15px">${scoreLabel(m.overall)}</div><div class="muted" style="font-size:13px">${m.activeMarkers} ${t("tracked")}</div></div></div>
+    <div class="edu"><h4>${t("plos_what")}</h4><p>${t("plos_method")}</p></div>
+    <div class="edu"><h4>${t("plos_bands")}</h4>${band("var(--teal)",t("band_high"))}${band("var(--amber)",t("band_mid"))}${band("var(--red)",t("band_low"))}</div>
+    <div class="edu"><h4>${t("plos_pillars")}</h4><p>${t("plos_pillar_note")}</p></div>
+    <p class="muted" style="font-size:12px;margin-top:8px">${t("not_diagnosis")}</p></div>`);
+}
 
 /* ---- new dashboard helpers ---- */
 const HEADLINE=["vitamin_d","hba1c","ldl","total_cholesterol","hdl","triglycerides","tsh","glucose_fasting","creatinine","alt","ast","hemoglobin","vitamin_b12"];
@@ -998,7 +1032,7 @@ function insightCards(){
 /* =================================================================
    RENDERING — shell + navigation
    ================================================================= */
-const EXPLORE=[["markers","mk_markers"],["trends","mk_trends"],["insights","mk_insights"],["learning","mk_learning"],["reports","reports"],["journey","mk_journey"]];
+const EXPLORE=[["pillars","mk_pillars"],["markers","mk_markers"],["trends","mk_trends"],["insights","mk_insights"],["learning","mk_learning"],["reports","reports"],["journey","mk_journey"]];
 let exploreOpen=false, pendingScroll=null;
 function navItems(){ return [
   ["#/dashboard",t("dashboard"),I.dash],
@@ -1227,8 +1261,9 @@ function renderDashboard(){
   const scoreCard=`<div class="card score-card">
     <div class="score-top">
       <div>
-        <div class="eyebrow">${t("ohs")}</div>
-        <div style="display:flex;align-items:flex-end;gap:10px;margin-top:6px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div class="eyebrow">${t("plos_score")}</div><button class="plos-info" data-plos-info="1">${t("how_calc")} ›</button></div>
+        <div class="muted" style="font-size:12px;font-weight:600;margin-top:2px">${t("plos_full")}</div>
+        <div style="display:flex;align-items:flex-end;gap:10px;margin-top:8px">
           <span style="font-size:56px;font-weight:800;letter-spacing:-.04em;line-height:.9;color:${scoreColor(m.overall)}">${m.overall}</span>
           <span class="muted" style="font-weight:700;font-size:18px;margin-bottom:6px">/ 100</span>
           <span class="pill pill-teal" style="margin-bottom:9px">${scoreLabel(m.overall)}</span>
@@ -1245,6 +1280,16 @@ function renderDashboard(){
     </div>
     <div style="margin-top:18px;border-top:1px solid var(--line-2);padding-top:8px">${scoreTrendChart(series)}</div>
   </div>`;
+
+  // ---- PLOS pillars (per-domain sub-scores) ----
+  const pillars=plosPillars();
+  const pillarsSection=pillars.length?`<div class="section-title" id="sec-pillars"><span>${t("plos_pillars")}</span></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(148px,1fr))">
+    ${pillars.map(p=>`<div class="card" style="padding:18px 14px;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center">
+      ${plosRing(p.score)}
+      <div style="font-weight:700;font-size:14.5px">${esc(p.label)}</div>
+      ${bandPill(p.score)}
+    </div>`).join("")}</div>`:"";
 
   // ---- health markers grid ----
   const cards=headlineMarkers(m.byKey,6).map(mk=>{
@@ -1330,9 +1375,10 @@ function renderDashboard(){
       <button class="btn btn-ghost" data-dash="share">${t("share")}</button>
     </div></div>`;
 
-  app().innerHTML=shell(header+summary+scoreCard+markersSection+trends+insights+learning+journey+recent+action);
+  app().innerHTML=shell(header+summary+scoreCard+pillarsSection+markersSection+trends+insights+learning+journey+recent+action);
   bindShell();
   app().querySelectorAll("[data-marker]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.marker));
+  app().querySelectorAll("[data-plos-info]").forEach(b=>b.onclick=plosInfoDrawer);
   app().querySelectorAll("[data-report]").forEach(b=>b.onclick=()=>go("#/report/"+b.dataset.report));
   app().querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>learnDrawer(+b.dataset.learn));
   app().querySelectorAll("[data-dash]").forEach(b=>b.onclick=()=>dashAction(b.dataset.dash));

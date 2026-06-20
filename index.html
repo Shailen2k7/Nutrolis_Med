@@ -59,6 +59,7 @@
       </div>
       <div style="display:flex;align-items:center;gap:30px;font-size:15px;font-weight:600;color:var(--ink-2);">
         <a href="#how" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">How it works</a>
+        <a href="#plos" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">PLOS Score</a>
         <a href="#languages" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Languages</a>
         <a href="#features" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Features</a>
         <a href="#faq" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">FAQ</a>
@@ -462,6 +463,41 @@
       </figure>
     </div>
   </section>
+
+  <!-- ============ PLOS SCORE ============ -->
+  <section id="plos" style="max-width:1100px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,4vw,56px);align-items:center;">
+      <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);">The PLOS Score</span>
+        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 12px;line-height:1.1;">Your whole report, as one honest number.</h2>
+        <p style="margin:0 0 18px;color:var(--ink-2);font-size:clamp(16px,1.7vw,18px);line-height:1.6;">PLOS — your <strong>Preventive Lifestyle Operating System</strong> — turns a page full of lab values into a single score from 0 to 100. The closer everything sits inside its healthy range, the higher it climbs. One figure you can actually track.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:var(--teal);flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>80–100</strong> · On track</span></div>
+          <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:var(--amber);flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>60–80</strong> · Room to improve</span></div>
+          <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:#cc6450;flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>Under 60</strong> · Needs attention</span></div>
+        </div>
+      </div>
+      <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s .1s cubic-bezier(.22,1,.36,1),transform .7s .1s cubic-bezier(.22,1,.36,1);display:flex;justify-content:center;">
+        <div style="position:relative;width:min(300px,80vw);aspect-ratio:1;background:var(--surface);border:1px solid var(--line);border-radius:30px;box-shadow:0 34px 80px -46px var(--shadow);display:grid;place-items:center;">
+          <svg viewBox="0 0 200 200" style="width:74%;height:74%;">
+            <circle cx="100" cy="100" r="84" fill="none" stroke="var(--surface-3)" stroke-width="16"/>
+            <circle id="plos-arc" cx="100" cy="100" r="84" fill="none" stroke="url(#pg)" stroke-width="16" stroke-linecap="round" stroke-dasharray="528" stroke-dashoffset="528" transform="rotate(-90 100 100)" style="transition:stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1);"/>
+            <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--teal)"/><stop offset="1" stop-color="var(--aqua)"/></linearGradient></defs>
+            <text x="100" y="96" text-anchor="middle" font-size="56" font-weight="800" fill="var(--ink)" style="letter-spacing:-2px;">79</text>
+            <text x="100" y="124" text-anchor="middle" font-size="14" font-weight="700" fill="var(--teal)" letter-spacing="1">PLOS SCORE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function(){
+    var arc=document.getElementById("plos-arc"); if(!arc) return;
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ arc.style.strokeDashoffset=String(528*(1-79/100)); io.disconnect(); } }); },{threshold:.4});
+    io.observe(arc);
+  })();
+  </script>
 
   <!-- ============ LANGUAGE SHOWCASE ============ -->
   <section id="languages" style="position:relative;overflow:hidden;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);">
