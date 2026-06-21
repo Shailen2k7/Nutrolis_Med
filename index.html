@@ -8,12 +8,12 @@
 <meta name="description" content="Upload a blood report, scan, or prescription. Nutrolis turns clinical jargon into one calm, plain-language explanation — in your language.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 
   *{box-sizing:border-box}
   body{
-    margin:0;font-family:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
+    margin:0;font-family:'Hanken Grotesk','Noto Sans Devanagari',system-ui,-apple-system,sans-serif;
     --bg:#f1f6f4;--bg-2:#e7f0ec;--surface:#ffffff;--surface-2:#f6faf8;--surface-3:#eaf2ef;
     --ink:#0e1c1a;--ink-2:#33453f;--muted:#647571;--line:rgba(14,28,26,.09);--line-2:rgba(14,28,26,.055);
     --teal:#0d8c7c;--teal-2:#0a6e62;--teal-ink:#0a5b51;--aqua:#16b59f;--aqua-2:#34cdb6;
@@ -44,17 +44,80 @@
 
   a[style-hover],button[style-hover]{transition:color .2s,transform .25s,border-color .25s,box-shadow .3s}
 
-  /* hero fold + A4 transform visual */
-  @keyframes a4scan{0%{top:-16%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:112%;opacity:0}}
+  /* hero fold + input -> output visual */
   .hero-fold{min-height:calc(100svh - 78px);display:flex;align-items:center}
-  .a4-wrap{flex:1 1 400px;min-width:300px;display:flex;justify-content:center;align-items:center}
-  .a4{position:relative;height:min(72svh,600px);aspect-ratio:210/297;max-width:94vw;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 44px 100px -52px var(--shadow);overflow:hidden}
-  .a4-layer{position:absolute;inset:0;padding:clamp(18px,2.6vh,28px);transition:opacity .55s ease;display:flex;flex-direction:column}
-  .a4-beam{position:absolute;top:-16%;left:0;right:0;height:16%;pointer-events:none;background:linear-gradient(180deg,transparent,var(--teal-bg),transparent);z-index:5;opacity:0}
-  .a4-beam.on{animation:a4scan 1.3s ease}
-  .a4-beam::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--teal);box-shadow:0 0 14px 2px var(--glow)}
-  .a4-tag{position:absolute;top:0;left:0;z-index:6;font-size:11px;font-weight:800;letter-spacing:.16em;padding:6px 15px;border-radius:0 0 13px 0;color:#fff;background:var(--ink);transition:background .45s}
-  .a4-tag.after{background:linear-gradient(135deg,var(--teal),var(--aqua))}
+  .io-wrap{flex:1 1 460px;min-width:300px;display:flex;justify-content:center;align-items:center;perspective:1100px}
+  .io-stage{position:relative;width:min(560px,96vw);height:min(540px,62svh);will-change:transform;transition:transform .12s ease-out}
+  .io-card{position:absolute;border-radius:20px;border:1px solid var(--line);background:var(--surface);box-shadow:0 36px 80px -48px var(--shadow)}
+  .io-tab{position:absolute;top:0;left:22px;transform:translateY(-48%);font-size:10.5px;font-weight:800;letter-spacing:.18em;padding:7px 15px;border-radius:999px;color:#fff;box-shadow:0 6px 16px -8px var(--shadow)}
+  /* INPUT — the official document */
+  .io-input{left:-4%;top:16%;width:55%;background:var(--surface-2);transform:rotate(-5deg);padding:20px 20px 18px;animation:io-fade .8s ease both;will-change:transform}
+  .io-input .io-tab{background:var(--ink)}
+  .io-doc-title{font-family:'Newsreader',serif;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.05em}
+  .io-doc-sub{font-size:10px;color:var(--muted);margin-top:3px}
+  .io-rule{height:1px;background:var(--line);margin:12px 0}
+  .io-doc{font-family:'Newsreader',serif;font-size:12.5px;line-height:1.95;color:var(--ink-2);margin:0}
+  .io-chip{font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:11.5px;color:var(--red);background:rgba(204,100,80,.12);padding:1px 7px;border-radius:6px;white-space:nowrap}
+  /* OUTPUT — the clear human version */
+  .io-output{right:-3%;top:0;width:64%;padding:22px 22px 18px;transform:rotate(2.5deg);box-shadow:0 52px 104px -44px var(--shadow);animation:io-fade .8s ease .12s both;z-index:3;will-change:transform}
+  .io-output .io-tab{background:linear-gradient(135deg,var(--teal),var(--aqua))}
+  .io-head{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+  .io-logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;flex:none}
+  .io-name{font-weight:800;font-size:15.5px;letter-spacing:-.01em}
+  .io-simplified{margin-left:auto;font-size:9.5px;font-weight:800;letter-spacing:.12em;color:var(--teal-ink);background:var(--teal-bg);padding:4px 10px;border-radius:999px}
+  .io-lang{position:relative;display:inline-flex;align-items:center;background:var(--surface-3);border-radius:999px;padding:3px;width:72px;flex:none}
+  .io-lang button{position:relative;z-index:1;flex:1;border:none;background:none;font:inherit;font-weight:700;font-size:10.5px;line-height:1;color:var(--muted);padding:5px 0;border-radius:999px;cursor:pointer;text-align:center;transition:color .25s}
+  .io-lang button.on{color:#fff}
+  .io-lang-thumb{position:absolute;top:3px;left:3px;width:calc(50% - 3px);height:calc(100% - 6px);background:linear-gradient(135deg,var(--teal),var(--aqua));border-radius:999px;transition:transform .3s cubic-bezier(.34,1.5,.5,1);z-index:0}
+  .io-lang.hi .io-lang-thumb{transform:translateX(100%)}
+  /* PLOS "what is" CTA + modal */
+  .plos-cta{margin-top:28px;display:inline-flex;align-items:center;gap:10px;font:inherit;font-size:15.5px;font-weight:700;color:var(--teal-ink);background:var(--teal-bg);border:1px solid transparent;padding:13px 22px;border-radius:13px;cursor:pointer;transition:transform .25s cubic-bezier(.34,1.56,.5,1),background .25s,color .25s,box-shadow .3s}
+  .plos-cta:hover{transform:translateY(-2px);background:linear-gradient(135deg,var(--teal),var(--aqua));color:#fff;box-shadow:0 16px 32px -14px var(--glow)}
+  .plos-cta-ic{display:grid;place-items:center}
+  .plos-cta-arrow{transition:transform .25s}
+  .plos-cta:hover .plos-cta-arrow{transform:translateX(4px)}
+  .plos-scrim{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(8,17,15,.5);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .3s}
+  .plos-scrim.open{opacity:1;pointer-events:auto}
+  .plos-modal{position:relative;width:min(560px,100%);max-height:88vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:26px;box-shadow:0 50px 120px -38px rgba(8,17,15,.55);padding:clamp(26px,4vw,38px);transform:translateY(20px) scale(.965);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .35s}
+  .plos-scrim.open .plos-modal{transform:none;opacity:1}
+  .plos-modal-x{position:absolute;top:15px;right:15px;width:38px;height:38px;border:none;background:var(--surface-3);border-radius:11px;cursor:pointer;display:grid;place-items:center;color:var(--ink-2);transition:background .2s,transform .2s}
+  .plos-modal-x:hover{background:var(--line);transform:rotate(90deg)}
+  .plos-feat{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line-2)}
+  .plos-feat:last-of-type{border-bottom:none}
+  .plos-feat-ic{width:42px;height:42px;border-radius:13px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none}
+  .plos-feat h4{margin:0 0 3px;font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .plos-feat p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+  .plos-band-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+  .plos-band{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);padding:7px 13px;border-radius:999px}
+  .plos-band i{width:9px;height:9px;border-radius:50%;flex:none}
+  .io-bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+  .io-bullets li{display:flex;gap:9px;font-size:12.5px;line-height:1.42;color:var(--ink-2);animation:io-rise .55s cubic-bezier(.22,1,.36,1) both}
+  .io-bullets li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none;margin-top:6px}
+  .io-bullets li b{color:var(--ink);font-weight:700}
+  .io-bullets li:nth-child(1){animation-delay:.32s}
+  .io-bullets li:nth-child(2){animation-delay:.42s}
+  .io-bullets li:nth-child(3){animation-delay:.52s}
+  .io-bullets li:nth-child(4){animation-delay:.62s}
+  .io-dash{border:none;border-top:1px dashed var(--line);margin:16px 0 13px}
+  .io-q-h{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;letter-spacing:.12em;color:var(--teal-ink);margin-bottom:10px}
+  .io-q{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .io-q li{display:flex;gap:8px;font-size:12px;line-height:1.4;color:var(--ink-2)}
+  .io-q li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);opacity:.5;flex:none;margin-top:6px}
+  .io-more{font-size:11.5px;font-weight:700;color:var(--teal-ink);margin-top:9px}
+  .io-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px;padding-top:13px;border-top:1px solid var(--line-2)}
+  .io-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);padding:4px 9px;border-radius:999px}
+  .io-tag i{width:6px;height:6px;border-radius:50%;flex:none}
+  @keyframes io-fade{from{opacity:0}to{opacity:1}}
+  @keyframes io-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (max-width:600px){
+    .io-stage{height:auto;display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:12px}
+    .io-card{position:relative;transform:none!important;width:100%!important;max-width:380px}
+    .io-input{order:1;animation:none;opacity:1}
+    .io-output{order:2;animation:none;opacity:1}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .io-input,.io-output,.io-bullets li{animation:none!important;opacity:1!important}
+  }
   </style>
 </head>
 <body>
@@ -117,41 +180,57 @@
         </div>
       </div>
 
-      <!-- A4 transform visual: one page, BEFORE → scan → AFTER -->
-      <div class="a4-wrap" style="animation:nl-rise 1s .2s both;">
-        <div class="a4" id="a4">
-          <div class="a4-beam" id="hero-beam"></div>
-          <span class="a4-tag" id="hero-tag">BEFORE</span>
+      <!-- input -> output transform visual -->
+      <div class="io-wrap">
+        <div class="io-stage">
 
-          <!-- BEFORE: the confusing clinical printout -->
-          <div class="a4-layer" id="hero-before">
-            <div style="border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:12px;">
-              <div style="font-weight:800;font-size:13px;letter-spacing:.01em;">CITY PATHOLOGY LAB</div>
-              <div style="font-size:10px;color:var(--muted);margin-top:2px;">Serum · Collected 12-Mar-2026 · Ref CBP-22910</div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr auto 70px 22px;gap:0 8px;align-items:center;font-variant-numeric:tabular-nums;">
-              <div style="font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--muted);padding-bottom:4px;">TEST</div>
-              <div style="font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-align:right;padding-bottom:4px;">RESULT</div>
-              <div style="font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-align:right;padding-bottom:4px;">REF</div>
-              <div style="padding-bottom:4px;"></div>
-              <div style="font-size:12px;font-weight:600;">HGB</div><div style="font-size:12px;font-weight:700;text-align:right;">11.2 <span style="color:var(--muted);font-weight:500;font-size:10px;">g/dL</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">12.0–15.5</div><div style="text-align:center;"><span style="font-size:9px;font-weight:800;color:#fff;background:var(--red);padding:1px 5px;border-radius:4px;">L</span></div><div style="font-size:12px;font-weight:600;">HCT</div><div style="font-size:12px;font-weight:700;text-align:right;">34.1 <span style="color:var(--muted);font-weight:500;font-size:10px;">%</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">36–46</div><div style="text-align:center;"><span style="font-size:9px;font-weight:800;color:#fff;background:var(--red);padding:1px 5px;border-radius:4px;">L</span></div><div style="font-size:12px;font-weight:600;">LDL-C</div><div style="font-size:12px;font-weight:700;text-align:right;">144 <span style="color:var(--muted);font-weight:500;font-size:10px;">mg/dL</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">&lt;100</div><div style="text-align:center;"><span style="font-size:9px;font-weight:800;color:#fff;background:var(--red);padding:1px 5px;border-radius:4px;">H</span></div><div style="font-size:12px;font-weight:600;">TSH</div><div style="font-size:12px;font-weight:700;text-align:right;">2.10 <span style="color:var(--muted);font-weight:500;font-size:10px;">µIU/mL</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">0.40–4.00</div><div style="text-align:center;"></div><div style="font-size:12px;font-weight:600;">25-OH-D</div><div style="font-size:12px;font-weight:700;text-align:right;">14.8 <span style="color:var(--muted);font-weight:500;font-size:10px;">ng/mL</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">30–100</div><div style="text-align:center;"><span style="font-size:9px;font-weight:800;color:#fff;background:var(--red);padding:1px 5px;border-radius:4px;">L</span></div><div style="font-size:12px;font-weight:600;">HbA1c</div><div style="font-size:12px;font-weight:700;text-align:right;">5.6 <span style="color:var(--muted);font-weight:500;font-size:10px;">%</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">&lt;5.7</div><div style="text-align:center;"></div><div style="font-size:12px;font-weight:600;">CREAT</div><div style="font-size:12px;font-weight:700;text-align:right;">0.90 <span style="color:var(--muted);font-weight:500;font-size:10px;">mg/dL</span></div><div style="font-size:10px;color:var(--muted);text-align:right;">0.70–1.30</div><div style="text-align:center;"></div>
-            </div>
-            <div style="margin-top:auto;font-size:9px;color:var(--muted);border-top:1px solid var(--line-2);padding-top:8px;line-height:1.45;">H = above range · L = below range. Reference ranges vary by laboratory. For use of the referring physician only.</div>
+          <!-- INPUT: the official, jargon-dense document -->
+          <div class="io-card io-input">
+            <span class="io-tab">INPUT</span>
+            <div class="io-doc-title">Pathology Report</div>
+            <div class="io-doc-sub">Serum &middot; Collected 12 Mar 2026 &middot; Ref CBP&#8209;22910</div>
+            <div class="io-rule"></div>
+            <p class="io-doc"><strong style="color:var(--ink);font-weight:700;">Impression:</strong>
+              <span class="io-chip">HbA1c 6.1%</span> &mdash; <span class="io-chip">prediabetes</span>.
+              <span class="io-chip">LDL&#8209;C 144</span> mg/dL with <span class="io-chip">dyslipidaemia</span>.
+              <span class="io-chip">25&#8209;OH&#8209;D 14.8</span> &mdash; vitamin D <span class="io-chip">deficiency</span>.
+              TSH, eGFR within normal limits. Advise TLC; repeat <span class="io-chip">FLP</span> at <span class="io-chip">3/12</span>.</p>
           </div>
 
-          <!-- AFTER: the same page, made human -->
-          <div class="a4-layer" id="hero-after" style="opacity:0;">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-              <span style="width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;flex:none;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2 5 4-12 2 9 2-4h5"/></svg></span>
-              <div><div style="font-weight:800;font-size:14.5px;letter-spacing:-.01em;">Your report, in plain words</div><div style="font-size:10.5px;color:var(--muted);">March 2026 · easy to read</div></div>
+          <!-- OUTPUT: the same report, made human -->
+          <div class="io-card io-output">
+            <span class="io-tab">OUTPUT</span>
+            <div class="io-head">
+              <span class="io-logo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2 5 4-12 2 9 2-4h5"/></svg></span>
+              <span class="io-name">Nutrolis</span>
+              <span class="io-simplified" id="ioSimp">SIMPLIFIED</span>
+              <div class="io-lang" id="ioLang" style="margin-left:8px;">
+                <span class="io-lang-thumb"></span>
+                <button type="button" data-lang="en" class="on">EN</button>
+                <button type="button" data-lang="hi">हिं</button>
+              </div>
             </div>
-            <div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line-2);"><span style="width:9px;height:9px;border-radius:50%;background:var(--amber);flex:none;margin-top:5px;"></span><div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><span style="font-weight:700;font-size:13.5px;">Hemoglobin</span><span style="font-size:10px;font-weight:700;color:var(--amber-ink);background:var(--amber-bg);padding:2px 8px;border-radius:999px;">a little low</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:1px;line-height:1.4;">Carries oxygen — can leave you feeling tired.</div></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line-2);"><span style="width:9px;height:9px;border-radius:50%;background:var(--amber);flex:none;margin-top:5px;"></span><div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><span style="font-weight:700;font-size:13.5px;">LDL Cholesterol</span><span style="font-size:10px;font-weight:700;color:var(--amber-ink);background:var(--amber-bg);padding:2px 8px;border-radius:999px;">a touch high</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:1px;line-height:1.4;">Ease up on fried, oily food and keep moving.</div></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line-2);"><span style="width:9px;height:9px;border-radius:50%;background:var(--amber);flex:none;margin-top:5px;"></span><div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><span style="font-weight:700;font-size:13.5px;">Vitamin D</span><span style="font-size:10px;font-weight:700;color:var(--amber-ink);background:var(--amber-bg);padding:2px 8px;border-radius:999px;">low</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:1px;line-height:1.4;">The sunshine vitamin — easy to top back up.</div></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line-2);"><span style="width:9px;height:9px;border-radius:50%;background:var(--teal);flex:none;margin-top:5px;"></span><div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"><span style="font-weight:700;font-size:13.5px;">Thyroid · Blood sugar · Kidney</span><span style="font-size:10px;font-weight:700;color:var(--teal-ink);background:var(--teal-bg);padding:2px 8px;border-radius:999px;">all healthy</span></div><div style="font-size:11.5px;color:var(--muted);margin-top:1px;line-height:1.4;">These are sitting comfortably in range.</div></div></div>
-            <div style="display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:14px;">
-              <svg width="62" height="62" viewBox="0 0 62 62" style="flex:none;"><circle cx="31" cy="31" r="24" fill="none" stroke="var(--surface-3)" stroke-width="5.5"/><circle cx="31" cy="31" r="24" fill="none" stroke="url(#hr)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="31.7" transform="rotate(-90 31 31)"/><defs><linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--teal)"/><stop offset="1" stop-color="var(--aqua)"/></linearGradient></defs><text x="31" y="32" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="800" fill="var(--ink)">79</text></svg>
-              <div><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);">PLOS Score · Room to improve</div><div style="font-weight:700;font-size:14px;margin-top:1px;">Preventive Lifestyle Operating System</div></div>
+            <ul class="io-bullets" id="ioBul">
+              <li><span>Your <b>blood sugar</b> is <b>slightly raised</b> &mdash; in the prediabetes range. Small daily changes usually bring it back.</span></li>
+              <li><span>Your <b>bad cholesterol (LDL)</b> is <b>a little high</b>. Lighter, less oily food and regular movement help.</span></li>
+              <li><span>Your <b>vitamin D is low</b> &mdash; the sunshine vitamin, easy to top back up.</span></li>
+              <li><span>Your <b>thyroid and kidney</b> results are <b>healthy and in range</b>.</span></li>
+            </ul>
+            <hr class="io-dash">
+            <div class="io-q-h"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.3 9a2.7 2.7 0 0 1 5.2 1c0 1.8-2.5 2-2.5 2"/><path d="M12 17h.01"/></svg><span id="ioQH">QUESTIONS FOR YOUR DOCTOR</span></div>
+            <ul class="io-q" id="ioQ">
+              <li>What diet changes would help my cholesterol and blood sugar?</li>
+              <li>When should I recheck my vitamin D?</li>
+            </ul>
+            <div class="io-more" id="ioMore">+ 3 more</div>
+            <div class="io-tags" id="ioTags">
+              <span class="io-tag"><i style="background:#5b8def;"></i>Simple</span>
+              <span class="io-tag"><i style="background:var(--teal);"></i>Calm</span>
+              <span class="io-tag"><i style="background:#9b7ede;"></i>Brief</span>
+              <span class="io-tag"><i style="background:var(--amber);"></i>English</span>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -493,6 +572,11 @@
           <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:var(--amber);flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>60–80</strong> · Room to improve</span></div>
           <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:#cc6450;flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>Under 60</strong> · Needs attention</span></div>
         </div>
+        <button class="plos-cta" data-plos-open type="button">
+          <span class="plos-cta-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+          What is PLOS?
+          <svg class="plos-cta-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
       </div>
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s .1s cubic-bezier(.22,1,.36,1),transform .7s .1s cubic-bezier(.22,1,.36,1);display:flex;justify-content:center;">
         <div style="position:relative;width:min(300px,80vw);aspect-ratio:1;background:var(--surface);border:1px solid var(--line);border-radius:30px;box-shadow:0 34px 80px -46px var(--shadow);display:grid;place-items:center;">
@@ -507,6 +591,55 @@
       </div>
     </div>
   </section>
+
+  <!-- PLOS explainer modal -->
+  <div class="plos-scrim" id="plosModal" role="dialog" aria-modal="true" aria-label="What is PLOS">
+    <div class="plos-modal">
+      <button class="plos-modal-x" data-plos-close aria-label="Close"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;flex:none;box-shadow:0 12px 26px -10px var(--glow);">
+          <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a9 9 0 1 1 16 0"/><path d="M12 13a3.5 3.5 0 0 1 0-7"/><path d="M12 13l3.2-3.2"/></svg>
+        </span>
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);">PLOS Score</div>
+          <div style="font-size:clamp(22px,3.4vw,27px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:2px;">What is PLOS?</div>
+        </div>
+      </div>
+
+      <p style="color:var(--ink-2);font-size:15.5px;line-height:1.62;margin:16px 0 6px;">A lab report can carry dozens of numbers. <strong>PLOS</strong> — your <span style="font-family:'Newsreader',serif;font-style:italic;color:var(--ink);">Preventive Lifestyle Operating System</span> — gathers them into one simple score from <strong>0 to 100</strong>, so you always know where your health stands today.</p>
+
+      <div style="margin-top:12px;">
+        <div class="plos-feat">
+          <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a9 9 0 1 1 16 0"/><path d="M12 14a4 4 0 0 1 0-8"/><path d="M12 14l3.5-3.5"/></svg></span>
+          <div><h4>One number, your whole report</h4><p>Every value is checked against its healthy range, then rolled into a single, easy score.</p></div>
+        </div>
+        <div class="plos-feat">
+          <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8M21 7v6h-6"/></svg></span>
+          <div><h4>Track it over time</h4><p>Watch one figure climb or dip across reports — no more guessing from scattered results.</p></div>
+        </div>
+        <div class="plos-feat">
+          <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <div><h4>Catch small drifts early</h4><p>A gentle slide in your score can show up long before anything becomes a worry.</p></div>
+        </div>
+        <div class="plos-feat">
+          <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>
+          <div><h4>Always in plain words</h4><p>Explained simply, in your language, with calm next steps — never clinical jargon.</p></div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <div style="font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">What the score means</div>
+        <div class="plos-band-row">
+          <span class="plos-band"><i style="background:var(--teal);"></i><strong>80–100</strong>&nbsp;· On track</span>
+          <span class="plos-band"><i style="background:var(--amber);"></i><strong>60–80</strong>&nbsp;· Room to improve</span>
+          <span class="plos-band"><i style="background:#cc6450;"></i><strong>Under 60</strong>&nbsp;· Needs attention</span>
+        </div>
+      </div>
+
+      <p style="font-size:12.5px;color:var(--muted);margin:20px 0 0;line-height:1.55;">A friendly guide to your health, not a diagnosis — your doctor is always the best guide for your care.</p>
+    </div>
+  </div>
 
   <script>
   (function(){
@@ -528,33 +661,6 @@
     io.observe(sec);
     // safety net: if it's already on screen at load, fire shortly after
     setTimeout(function(){ var r=sec.getBoundingClientRect(); if(r.top<window.innerHeight&&r.bottom>0) run(); },400);
-  })();
-  </script>
-  <script>
-  (function(){
-    var card=document.getElementById("a4"); if(!card) return;
-    var before=document.getElementById("hero-before"), after=document.getElementById("hero-after"),
-        beam=document.getElementById("hero-beam"), tag=document.getElementById("hero-tag");
-    if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){ return; }
-    var showAfter=false, busy=false;
-    function scan(){ beam.classList.remove("on"); void beam.offsetWidth; beam.classList.add("on"); }
-    function flip(){
-      if(busy) return; busy=true;
-      scan();
-      setTimeout(function(){
-        showAfter=!showAfter;
-        after.style.opacity=showAfter?"1":"0";
-        before.style.opacity=showAfter?"0":"1";
-        tag.textContent=showAfter?"AFTER":"BEFORE";
-        tag.classList.toggle("after",showAfter);
-      },580);
-      setTimeout(function(){ busy=false; },1350);
-    }
-    var started=false;
-    var io=new IntersectionObserver(function(es){ es.forEach(function(e){
-      if(e.isIntersecting&&!started){ started=true; setTimeout(flip,1100); setInterval(flip,3400); }
-    }); },{threshold:.25});
-    io.observe(card);
   })();
   </script>
 
@@ -864,6 +970,85 @@
     timers.push(setTimeout(function(){ if(scan) scan.style.opacity='0'; show('done'); },5*820+450));
   };
   window.resetDemo=function(){ timers.forEach(clearTimeout); timers=[]; var scan=document.getElementById('scanwrap'); if(scan) scan.style.opacity='0'; show('idle'); };
+})();
+</script>
+<script>
+(function(){
+  /* ---- cursor parallax: the card pair floats toward the cursor ---- */
+  var hero=document.querySelector('.hero-fold'),
+      stage=document.querySelector('.io-stage'),
+      input=document.querySelector('.io-input'),
+      output=document.querySelector('.io-output');
+  if(hero&&stage&&input&&output){
+    var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(fine&&!reduce){
+      var tx=0,ty=0,cx=0,cy=0,raf=null,live=false;
+      function frame(){
+        cx+=(tx-cx)*0.09; cy+=(ty-cy)*0.09;
+        stage.style.transform='rotateY('+(cx*7).toFixed(2)+'deg) rotateX('+(-cy*7).toFixed(2)+'deg)';
+        output.style.transform='rotate(2.5deg) translate('+(cx*16).toFixed(1)+'px,'+(cy*12).toFixed(1)+'px)';
+        input.style.transform='rotate(-5deg) translate('+(cx*-11).toFixed(1)+'px,'+(cy*-8).toFixed(1)+'px)';
+        if(live||Math.abs(tx-cx)>0.0008||Math.abs(ty-cy)>0.0008){ raf=requestAnimationFrame(frame); } else { raf=null; }
+      }
+      function kick(){ if(!raf) raf=requestAnimationFrame(frame); }
+      hero.addEventListener('mousemove',function(e){
+        var r=hero.getBoundingClientRect();
+        tx=(e.clientX-r.left)/r.width-0.5;
+        ty=(e.clientY-r.top)/r.height-0.5;
+        live=true; kick();
+      });
+      hero.addEventListener('mouseleave',function(){ tx=0; ty=0; live=false; kick(); });
+    }
+  }
+
+  /* ---- output card: English / Hindi live toggle ---- */
+  var lang=document.getElementById('ioLang');
+  if(lang){
+    var C={
+      en:{ simp:'SIMPLIFIED', qh:'QUESTIONS FOR YOUR DOCTOR', more:'+ 3 more',
+        bullets:[
+          'Your <b>blood sugar</b> is <b>slightly raised</b> &mdash; in the prediabetes range. Small daily changes usually bring it back.',
+          'Your <b>bad cholesterol (LDL)</b> is <b>a little high</b>. Lighter, less oily food and regular movement help.',
+          'Your <b>vitamin D is low</b> &mdash; the sunshine vitamin, easy to top back up.',
+          'Your <b>thyroid and kidney</b> results are <b>healthy and in range</b>.'],
+        q:['What diet changes would help my cholesterol and blood sugar?','When should I recheck my vitamin D?'],
+        tags:[['#5b8def','Simple'],['var(--teal)','Calm'],['#9b7ede','Brief'],['var(--amber)','English']] },
+      hi:{ simp:'सरल भाषा', qh:'डॉक्टर से पूछने के सवाल', more:'+ 3 और',
+        bullets:[
+          'आपका <b>ब्लड शुगर</b> थोड़ा <b>बढ़ा हुआ</b> है &mdash; प्री-डायबिटीज़ की सीमा में। रोज़ के छोटे बदलाव इसे सामान्य कर देते हैं।',
+          'आपका <b>खराब कोलेस्ट्रॉल (LDL)</b> थोड़ा <b>ज़्यादा</b> है। हल्का, कम तला खाना और रोज़ टहलना मदद करता है।',
+          'आपका <b>विटामिन D कम</b> है &mdash; धूप वाला विटामिन, आसानी से पूरा हो जाता है।',
+          'आपकी <b>थायरॉइड और किडनी</b> की रिपोर्ट <b>ठीक और सामान्य</b> है।'],
+        q:['मेरे कोलेस्ट्रॉल और ब्लड शुगर के लिए खाने में क्या बदलाव अच्छे रहेंगे?','मुझे विटामिन D दोबारा कब जँचवाना चाहिए?'],
+        tags:[['#5b8def','सरल'],['var(--teal)','शांत'],['#9b7ede','संक्षिप्त'],['var(--amber)','हिंदी']] }
+    };
+    function paint(l){
+      var d=C[l], el;
+      if(el=document.getElementById('ioBul')) el.innerHTML=d.bullets.map(function(b){return '<li><span>'+b+'</span></li>';}).join('');
+      if(el=document.getElementById('ioQH')) el.textContent=d.qh;
+      if(el=document.getElementById('ioQ')) el.innerHTML=d.q.map(function(x){return '<li>'+x+'</li>';}).join('');
+      if(el=document.getElementById('ioMore')) el.textContent=d.more;
+      if(el=document.getElementById('ioSimp')) el.textContent=d.simp;
+      if(el=document.getElementById('ioTags')) el.innerHTML=d.tags.map(function(t){return '<span class="io-tag"><i style="background:'+t[0]+';"></i>'+t[1]+'</span>';}).join('');
+      lang.classList.toggle('hi',l==='hi');
+      lang.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on',b.dataset.lang===l); });
+    }
+    lang.querySelectorAll('button').forEach(function(b){ b.addEventListener('click',function(){ paint(b.dataset.lang); }); });
+  }
+})();
+</script>
+<script>
+(function(){
+  var openBtn=document.querySelector('[data-plos-open]'), scrim=document.getElementById('plosModal');
+  if(!openBtn||!scrim) return;
+  var closeBtn=scrim.querySelector('[data-plos-close]');
+  function esc(e){ if(e.key==='Escape') hide(); }
+  function show(){ scrim.classList.add('open'); document.body.style.overflow='hidden'; document.addEventListener('keydown',esc); }
+  function hide(){ scrim.classList.remove('open'); document.body.style.overflow=''; document.removeEventListener('keydown',esc); }
+  openBtn.addEventListener('click',show);
+  closeBtn.addEventListener('click',hide);
+  scrim.addEventListener('click',function(e){ if(e.target===scrim) hide(); });
 })();
 </script>
 </body>
