@@ -80,7 +80,10 @@ input,select,textarea{font-family:inherit}
 .pill-amber{color:var(--amber-ink);background:var(--amber-bg)}
 .pill-teal{color:var(--teal-ink);background:var(--teal-bg)}
 .pill-red{color:var(--red);background:var(--red-bg)}
-.input{width:100%;font:inherit;font-size:15px;padding:13px 14px;border-radius:13px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);transition:border-color .2s}
+.input{width:100%;font:inherit;font-size:16px;padding:13px 14px;border-radius:13px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);transition:border-color .2s}
+select.input{appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;padding-right:42px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a958f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 15px center}
+[data-theme="dark"] select.input{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a7b3ad' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>")}
+[dir="rtl"] select.input{padding-right:14px;padding-left:42px;background-position:left 15px center}
 .input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-bg)}
 label.field{display:block;margin-bottom:14px}
 label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:6px}
@@ -113,6 +116,10 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .dd-load{display:flex;align-items:center;gap:10px;padding:16px;color:var(--muted);font-size:14px;font-weight:600}
 .lang-pick{position:relative;display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 30px 0 12px;color:var(--ink-2);transition:border-color .2s}
 .lang-pick:hover{border-color:var(--teal)}
+.lang-pick.attn{border-color:var(--teal);animation:nl-attn 4.6s ease-in-out infinite}
+.lang-pick.attn::after{content:"";position:absolute;inset:-4px;border-radius:15px;border:2px solid var(--teal);opacity:0;pointer-events:none;animation:nl-attn-ring 4.6s ease-in-out infinite}
+@keyframes nl-attn{0%,90%,100%{transform:none}91%{transform:rotate(-3.5deg)}93%{transform:rotate(3deg)}95%{transform:rotate(-2deg)}97%{transform:rotate(1deg)}99%{transform:rotate(0)}}
+@keyframes nl-attn-ring{0%{opacity:.55;transform:scale(1)}14%{opacity:0;transform:scale(1.18)}100%{opacity:0}}
 .lang-pick>svg:first-child{flex:none;color:var(--teal)}
 .lang-pick select{appearance:none;-webkit-appearance:none;border:none;background:transparent;font:inherit;font-weight:700;font-size:14px;color:var(--ink);padding:11px 4px 11px 0;cursor:pointer;outline:none}
 .lang-pick .caret{position:absolute;right:11px;pointer-events:none;color:var(--muted)}
@@ -127,6 +134,12 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .bottom-nav{display:none}
 
 /* mobile */
+@media (max-width:520px){
+  .ob-top{padding:18px 18px 0}.ob-prog{padding:0 18px}.ob-wrap{padding:16px 18px 40px}
+  .ob-h{font-size:24px}.ob-sub{font-size:14.5px}
+  .ob-nav{gap:10px}.ob-nav .btn{padding:13px 14px}
+  .lang-grid{grid-template-columns:1fr 1fr}
+}
 @media (max-width:860px){
   .shell{grid-template-columns:1fr}
   .sidebar{display:none}
@@ -256,6 +269,48 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .rr-act{display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line-2)}
 .rr-act:first-child{border-top:none}
 .rr-act-n{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:12.5px;flex:none}
+
+/* ---- settings option chips, trends, delete, confirm ---- */
+.optchip{font:inherit;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.optchip:hover{border-color:var(--teal)}
+.optchip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.optwrap{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.optgroup{margin-top:26px}
+.optgroup:first-of-type{margin-top:22px}
+.optlbl{display:block;font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.optchip{padding:9px 15px}
+.delta{font-weight:800;font-size:13px;white-space:nowrap}
+.delta.up{color:var(--teal)} .delta.down{color:var(--red)} .delta.flat{color:var(--muted)}
+.rep-del{border:none;background:var(--surface-2);color:var(--muted);width:36px;height:36px;border-radius:11px;cursor:pointer;display:grid;place-items:center;flex:none;transition:background .15s,color .15s}
+.rep-del:hover{background:var(--red-bg);color:var(--red)}
+.cf-scrim{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(8,17,15,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
+.cf-scrim.open{opacity:1;pointer-events:auto}
+.cf-modal{width:min(420px,100%);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 40px 90px -30px rgba(8,17,15,.5);transform:translateY(14px) scale(.97);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .25s}
+.cf-scrim.open .cf-modal{transform:none;opacity:1}
+
+/* ---- multi-step onboarding ---- */
+.ob{min-height:100vh;display:flex;flex-direction:column}
+.ob-top{padding:22px 24px 0;display:flex;align-items:center;gap:11px;max-width:600px;margin:0 auto;width:100%}
+.ob-prog{max-width:600px;margin:18px auto 0;width:100%;padding:0 24px}
+.ob-bar{height:7px;border-radius:999px;background:var(--surface-3);overflow:hidden}
+.ob-bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--aqua));border-radius:999px;transition:width .55s cubic-bezier(.22,1,.36,1)}
+.ob-step-n{font-size:12.5px;font-weight:700;color:var(--muted);margin-top:9px;letter-spacing:.02em}
+.ob-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:20px 24px 44px}
+.ob-card{width:100%;max-width:600px}
+.ob-step{animation:nl-rise .46s cubic-bezier(.22,1,.36,1) both}
+.ob-eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-ink)}
+.ob-h{font-size:28px;font-weight:800;letter-spacing:-.03em;margin:9px 0 7px;line-height:1.14}
+.ob-sub{color:var(--muted);margin:0 0 24px;font-size:15px;line-height:1.55}
+.ob-nav{display:flex;gap:12px;margin-top:28px}
+.lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:11px}
+.lang-opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:13px 16px;border:1.5px solid var(--line);border-radius:15px;background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s,transform .12s;text-align:left;font:inherit}
+.lang-opt:hover{border-color:var(--teal);transform:translateY(-1px)}
+.lang-opt.on{border-color:var(--teal);background:var(--teal-bg)}
+.lang-opt b{font-size:16px;font-weight:700;color:var(--ink)}
+.lang-opt span{font-size:12px;color:var(--muted)}
+.lang-opt.on b{color:var(--teal-ink)}
+.ob-badge{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;margin:2px auto 22px;color:#fff;box-shadow:0 24px 50px -16px var(--teal);animation:nl-pop .55s cubic-bezier(.22,1,.36,1) both}
+.ob-badge svg{animation:nl-pop .6s .15s both}
 </style>
 </head>
 <body>
@@ -835,13 +890,19 @@ Creatinine 0.9 mg/dL`;
 async function loadProfile(){
   const{data}=await sb.from("profiles").select("*").eq("id",S.user.id).maybeSingle();
   S.profile=data||{id:S.user.id,language:"en",theme:"light",onboarded:false};
+  try{ const ls=JSON.parse(localStorage.getItem("nutrolis-profile-"+S.user.id)||"null");
+    if(ls){ if(!data){ S.profile={...ls,...S.profile}; } ["weight","height","health_goal"].forEach(k=>{ if(S.profile[k]==null && ls[k]!=null) S.profile[k]=ls[k]; }); } }catch(e){}
   S.lang=S.profile.language||"en"; S.theme=S.profile.theme||"light";
 }
+const PROFILE_CORE=["full_name","age","gender","health_history","allergies","medications","lifestyle","language","theme","onboarded","notifications"];
+const PROFILE_EXTRA=["weight","height","health_goal"];
 async function saveProfile(patch){
   if(!S.user) return;
   S.profile={...S.profile,...patch};
-  const row={id:S.user.id,...S.profile}; delete row.created_at; delete row.updated_at;
-  await sb.from("profiles").upsert(row);
+  try{ localStorage.setItem("nutrolis-profile-"+S.user.id, JSON.stringify(S.profile)); }catch(e){}
+  const build=(cols)=>{ const o={id:S.user.id}; cols.forEach(c=>{ if(S.profile[c]!==undefined) o[c]=S.profile[c]; }); return o; };
+  let res=await sb.from("profiles").upsert(build([...PROFILE_CORE,...PROFILE_EXTRA]));
+  if(res&&res.error){ await sb.from("profiles").upsert(build(PROFILE_CORE)); }  // schema may lack the extra columns
 }
 async function loadData(){
   const[{data:reps},{data:mks}]=await Promise.all([
@@ -870,6 +931,12 @@ async function deleteAllData(){
   await sb.from("markers").delete().eq("user_id",S.user.id);
   await sb.from("reports").delete().eq("user_id",S.user.id);
   S.reports=[]; S.markers=[];
+}
+async function deleteReport(id){
+  try{ await sb.from("markers").delete().eq("report_id",id); await sb.from("reports").delete().eq("id",id); }
+  catch(e){ console.error(e); }
+  S.markers=S.markers.filter(m=>m.report_id!==id);
+  S.reports=S.reports.filter(r=>r.id!==id);
 }
 
 /* =================================================================
@@ -1101,14 +1168,10 @@ function shell(content){
   const dot=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>`;
   const side=`
     <button class="side-link ${isActive("#/dashboard")?"active":""}" data-nav="#/dashboard">${I.dash}<span>${t("dashboard")}</span></button>
-    <button class="side-link explore-toggle ${exploreOpen?"open":""}" data-explore="1">${I.reports}<span style="flex:1;text-align:left">${t("explore")}</span>
-      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
-    <div class="submenu" ${exploreOpen?"":'style="display:none"'}>
-      ${EXPLORE.map(([id,l])=>`<button class="sub-link" data-scroll="${id}">${dot}<span>${esc(t(l))}</span></button>`).join("")}
-    </div>
+    <button class="side-link ${isActive("#/reports")||route.startsWith("#/report/")?"active":""}" data-nav="#/reports">${I.reports}<span>My Reports</span></button>
     <button class="side-link ${isActive("#/upload")?"active":""}" data-nav="#/upload">${I.upload}<span>${t("upload")}</span></button>
     <button class="side-link ${isActive("#/settings")?"active":""}" data-nav="#/settings">${I.settings}<span>${t("settings")}</span></button>`;
-  const tabs=[["#/dashboard",t("dashboard"),I.dash],["#/upload",t("upload"),I.upload],["#/reports",t("reports"),I.reports],["#/settings",t("settings"),I.settings]]
+  const tabs=[["#/dashboard",t("dashboard"),I.dash],["#/upload",t("upload"),I.upload],["#/reports","My Reports",I.reports],["#/settings",t("settings"),I.settings]]
     .map(([h,l,ic])=>`<button class="tab ${isActive(h)||(h==="#/reports"&&route.startsWith("#/report/"))?"active":""}" data-nav="${h}">${ic}<span>${esc(l)}</span></button>`).join("");
   const name=esc(S.profile?.full_name||S.user?.email||"You");
   return `<div class="shell">
@@ -1198,36 +1261,126 @@ function $$bindAuth(){
 }
 
 /* ---------------- ONBOARDING ---------------- */
-function renderOnboarding(){
-  app().innerHTML=`<div class="center">
-    <div style="width:100%;max-width:480px;animation:nl-rise .5s both">
-      <span class="pill pill-teal" style="margin-bottom:14px">Welcome</span>
-      <h1 style="font-size:28px;font-weight:800;letter-spacing:-.03em;margin:0 0 6px">A few details to personalise your health picture</h1>
-      <p class="muted" style="margin:0 0 22px">All optional — you can change everything later in Settings. We use this only to make explanations more relevant.</p>
-      <div class="card" style="padding:24px">
-        <label class="field"><span>${t("name")}</span><input class="input" id="o-name" value="${esc(S.profile?.full_name||"")}"></label>
-        <div style="display:flex;gap:12px">
-          <label class="field" style="flex:1"><span>Age</span><input class="input" id="o-age" type="number" min="0" max="120" value="${esc(S.profile?.age||"")}"></label>
-          <label class="field" style="flex:1"><span>Gender (optional)</span>
-            <select class="input" id="o-gender"><option value="">Prefer not to say</option><option>Female</option><option>Male</option><option>Other</option></select></label>
-        </div>
-        <label class="field"><span>Health history (optional)</span><textarea class="input" id="o-hist" rows="2" placeholder="e.g. mild hypertension, family history of diabetes">${esc(S.profile?.health_history||"")}</textarea></label>
-        <div style="display:flex;gap:12px;margin-top:6px">
-          <button class="btn btn-ghost" id="o-skip" style="flex:1">Skip for now</button>
-          <button class="btn btn-primary" id="o-save" style="flex:2">Continue to my dashboard</button>
-        </div>
-      </div>
-    </div></div>`;
-  const finish=async(save)=>{
-    if(save){
-      const g=$("#o-gender");
-      await saveProfile({full_name:$("#o-name").value.trim(),age:parseInt($("#o-age").value)||null,gender:g.value||null,health_history:$("#o-hist").value.trim(),onboarded:true});
-    }else{ await saveProfile({onboarded:true}); }
-    go("#/dashboard");
-  };
-  $("#o-save").onclick=()=>finish(true);
-  $("#o-skip").onclick=()=>finish(false);
+/* ============ MULTI-STEP ONBOARDING ============ */
+const LANG_EN={en:"English",hi:"Hindi",es:"Spanish",ar:"Arabic",ur:"Urdu",fr:"French",de:"German",pt:"Portuguese",bn:"Bengali",ta:"Tamil",te:"Telugu",mr:"Marathi",gu:"Gujarati",pa:"Punjabi",zh:"Chinese",ja:"Japanese",ko:"Korean",ru:"Russian",it:"Italian",id:"Indonesian"};
+const GOAL_OPTS=["Understand my reports","Track my health over time","Prevent future problems","Manage a condition","Lose weight / get fit","Just exploring"];
+let OB=null, obStep=0;
+const OB_STEPS=6;
+function rangeOpts(min,max,val){ let o=""; for(let i=min;i<=max;i++){ o+=`<option ${String(val)===String(i)?"selected":""}>${i}</option>`; } return o; }
+function obInit(){
+  const p=S.profile||{};
+  OB={ full_name:p.full_name||"", age:p.age||"", gender:p.gender||"", height:p.height||"", weight:p.weight||"",
+       health_history:p.health_history||"", allergies:p.allergies||"", medications:p.medications||"",
+       lifestyle:p.lifestyle||"", health_goal:p.health_goal||"", language:S.lang||p.language||"en" };
+  obStep=0;
 }
+function obChips(field,opts,multi){
+  if(multi===undefined) multi=true;
+  const cur=(OB[field]||"").toLowerCase().split(",").map(x=>x.trim()).filter(Boolean);
+  return `<div class="optwrap">${opts.map(o=>`<button type="button" class="optchip ${cur.includes(o.toLowerCase())?"on":""}" data-obchip="${field}" data-val="${esc(o)}" data-multi="${multi?1:0}">${esc(o)}</button>`).join("")}</div>`;
+}
+function bindObChips(){
+  $("#ob-step").querySelectorAll("[data-obchip]").forEach(b=>b.onclick=()=>{
+    const f=b.dataset.obchip, v=b.dataset.val, multi=b.dataset.multi==="1";
+    let cur=(OB[f]||"").split(",").map(x=>x.trim()).filter(Boolean);
+    const low=cur.map(x=>x.toLowerCase());
+    if(!multi){ cur = low.includes(v.toLowerCase())?[]:[v]; }
+    else if(v==="None"){ cur = low.includes("none")?[]:["None"]; }
+    else { cur=cur.filter(x=>x.toLowerCase()!=="none"); cur = low.includes(v.toLowerCase())?cur.filter(x=>x.toLowerCase()!==v.toLowerCase()):cur.concat([v]); }
+    OB[f]=cur.join(", ");
+    const set=OB[f].toLowerCase().split(",").map(x=>x.trim());
+    $("#ob-step").querySelectorAll(`[data-obchip="${f}"]`).forEach(x=>x.classList.toggle("on",set.includes(x.dataset.val.toLowerCase())));
+  });
+}
+function obBack(){ if(obStep>0){ obStep--; obRender(); } }
+function obNext(){ if(obStep<OB_STEPS-1){ obStep++; obRender(); } }
+function bindObBack(){ const b=$("#ob-back"); if(b) b.onclick=obBack; }
+const OB_VIEWS=[
+  // 0 — about you
+  ()=>({eyebrow:"About you",title:"Tell us a little<br>about you",
+    sub:"This helps tailor explanations to you. Everything's optional except your name.",
+    body:`<label class="field"><span>Your name</span><input class="input" id="ob-name" value="${esc(OB.full_name)}" placeholder="e.g. Shailen"></label>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <label class="field" style="flex:1;min-width:130px"><span>Age</span><select class="input" id="ob-age"><option value="">—</option>${rangeOpts(13,100,OB.age)}</select></label>
+        <div class="field" style="flex:2;min-width:210px"><span style="display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:6px">Gender</span>${obChips("gender",["Female","Male","Other","Prefer not to say"],false)}</div>
+      </div>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    bind:()=>{ bindObBack(); bindObChips();
+      $("#ob-next").onclick=()=>{ OB.full_name=$("#ob-name").value.trim(); OB.age=$("#ob-age").value;
+        if(!OB.full_name){ toast("Please add your name to continue."); $("#ob-name").focus(); return; } obNext(); }; }}),
+  // 2 — body basics
+  ()=>({eyebrow:"Body basics",title:"Your height<br>& weight",
+    sub:"Used to put your results in context — like which ranges are healthy for you. Optional.",
+    body:`<div style="display:flex;gap:12px;flex-wrap:wrap">
+        <label class="field" style="flex:1;min-width:150px"><span>Height (cm)</span><select class="input" id="ob-height"><option value="">—</option>${rangeOpts(120,220,OB.height)}</select></label>
+        <label class="field" style="flex:1;min-width:150px"><span>Weight (kg)</span><select class="input" id="ob-weight"><option value="">—</option>${rangeOpts(30,200,OB.weight)}</select></label>
+      </div>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    bind:()=>{ bindObBack(); $("#ob-next").onclick=()=>{ OB.height=$("#ob-height").value; OB.weight=$("#ob-weight").value; obNext(); }; }}),
+  // 3 — conditions
+  ()=>({eyebrow:"Your health",title:"Any ongoing<br>health conditions?",
+    sub:"Pick any that apply — it helps us flag what matters most for you. \u201CNone\u201D is perfectly fine.",
+    body:obChips("health_history",HEALTH_OPTS),
+    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    bind:()=>{ bindObBack(); bindObChips(); $("#ob-next").onclick=obNext; }}),
+  // 4 — allergies & meds
+  ()=>({eyebrow:"Care details",title:"Allergies &<br>medications",
+    sub:"Optional, but useful for safer and more relevant guidance over time.",
+    body:`<div class="optgroup" style="margin-top:0"><span class="optlbl">Allergies</span>${obChips("allergies",ALLERGY_OPTS)}</div>
+      <div class="optgroup"><span class="optlbl">Current medications</span>${obChips("medications",MED_OPTS)}</div>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    bind:()=>{ bindObBack(); bindObChips(); $("#ob-next").onclick=obNext; }}),
+  // 5 — lifestyle & goal
+  ()=>({eyebrow:"Lifestyle",title:"Your lifestyle<br>& main goal",
+    sub:"Last bit — this shapes the suggestions and nudges you'll get as you add reports.",
+    body:`<div class="optgroup" style="margin-top:0"><span class="optlbl">Lifestyle</span>${obChips("lifestyle",LIFE_OPTS)}</div>
+      <div class="optgroup"><span class="optlbl">What brings you to Nutrolis?</span>${obChips("health_goal",GOAL_OPTS,false)}</div>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Review &amp; finish</button>`,
+    bind:()=>{ bindObBack(); bindObChips(); $("#ob-next").onclick=obNext; }}),
+  // 6 — finish
+  ()=>{ const first=OB.full_name?(", "+esc(OB.full_name.split(" ")[0])):""; const nat=(LANGS.find(l=>l[0]===OB.language)||["","English"])[1];
+    const condN=(OB.health_history||"").split(",").map(x=>x.trim()).filter(x=>x&&x.toLowerCase()!=="none").length;
+    return {eyebrow:"All set",title:`You're all set${first}!`,
+    sub:`Your private health companion is ready. Upload a report any time and we'll explain it in plain language, keep it on your timeline, and gently nudge you when something needs a look.`,
+    body:`<div class="ob-badge"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L20 6.5"/></svg></div>
+      <div class="card" style="padding:16px 20px;display:flex;flex-direction:column;gap:11px">
+        ${OB.full_name?`<div class="spread"><span class="muted">Name</span><b>${esc(OB.full_name)}</b></div>`:""}
+        ${condN?`<div class="spread"><span class="muted">Health notes</span><b>${condN} added</b></div>`:""}
+        ${OB.health_goal?`<div class="spread"><span class="muted">Your goal</span><b>${esc(OB.health_goal)}</b></div>`:""}
+      </div>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-finish" style="flex:1">Create my dashboard</button>`,
+    bind:()=>{ bindObBack(); $("#ob-finish").onclick=obFinish; }}; }
+];
+function obRender(){
+  const host=$("#ob-step"); if(!host) return;
+  const v=OB_VIEWS[obStep]();
+  host.innerHTML=`<div class="ob-step"><div class="ob-eyebrow">${v.eyebrow}</div><h1 class="ob-h">${v.title}</h1>${v.sub?`<p class="ob-sub">${v.sub}</p>`:""}${v.body}<div class="ob-nav">${v.nav}</div></div>`;
+  if(obStep===0){ const bk=$("#ob-back"); if(bk) bk.remove(); }
+  const pct=Math.round(((obStep+1)/OB_STEPS)*100);
+  const fill=$("#ob-fill"); if(fill) requestAnimationFrame(()=>{ fill.style.width=pct+"%"; });
+  const sn=$("#ob-stepn"); if(sn) sn.textContent=`Step ${obStep+1} of ${OB_STEPS}`;
+  if(v.bind) v.bind();
+}
+async function obFinish(){
+  const btn=$("#ob-finish"); if(btn){ btn.disabled=true; btn.textContent="Setting up…"; }
+  S.lang=OB.language||"en";
+  await saveProfile({ full_name:OB.full_name, age:parseInt(OB.age)||null, gender:OB.gender||null,
+    height:parseInt(OB.height)||null, weight:parseInt(OB.weight)||null,
+    health_history:OB.health_history||"", allergies:OB.allergies||"", medications:OB.medications||"",
+    lifestyle:OB.lifestyle||"", health_goal:OB.health_goal||"", language:OB.language||"en", onboarded:true });
+  if(S.lang!=="en"){ try{ await Promise.all([ensureLang(S.lang),ensureReportI18n(S.lang)]); }catch(e){} }
+  OB=null; go("#/dashboard");
+}
+function renderOnboarding(){
+  if(!OB) obInit();
+  app().innerHTML=`<div class="ob">
+    <div class="ob-top"><span class="brand-logo">${I.logo}</span><span class="wordmark">Nutrolis<span> AI</span></span></div>
+    <div class="ob-prog"><div class="ob-bar"><i id="ob-fill"></i></div><div class="ob-step-n" id="ob-stepn"></div></div>
+    <div class="ob-wrap"><div class="ob-card"><div id="ob-step"></div></div></div>
+  </div>`;
+  obRender();
+}
+
 
 /* ---------------- DASHBOARD ---------------- */
 const LEARN=[
@@ -1279,7 +1432,7 @@ function renderDashboard(){
     <div><div class="muted" style="font-size:14px;font-weight:600">${esc(today)}</div>
       <h1 style="margin:2px 0 0">${greeting}, ${firstName}</h1></div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <div class="lang-pick" title="${t("language")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+      <div class="lang-pick ${langSeen()?"":"attn"}" title="${t("language")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
         <select id="langSelect" aria-label="${t("language")}">${langOpts}</select>
         <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
       <button class="btn btn-primary" data-nav="#/upload" style="flex:none">${I.upload}${t("upload_report")}</button>
@@ -1436,6 +1589,7 @@ function renderDashboard(){
   app().querySelectorAll("[data-marker]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.marker));
   app().querySelectorAll("[data-plos-info]").forEach(b=>b.onclick=plosInfoDrawer);
   app().querySelectorAll("[data-report]").forEach(b=>b.onclick=()=>go("#/report/"+b.dataset.report));
+  app().querySelectorAll("[data-del]").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); confirmDialog("Delete this report?","This permanently removes the report and its markers from your timeline. This can't be undone.","Delete",async()=>{ await deleteReport(b.dataset.del); toast("Report deleted."); renderReports(); }); });
   app().querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>learnDrawer(+b.dataset.learn));
   app().querySelectorAll("[data-dash]").forEach(b=>b.onclick=()=>dashAction(b.dataset.dash));
   wireLang();
@@ -1534,18 +1688,20 @@ function renderReports(){
       <div style="position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)"></div>
       ${list.map(r=>`<div style="position:relative;margin-bottom:16px;animation:nl-pop .4s both">
         <span style="position:absolute;left:-26px;top:18px;width:14px;height:14px;border-radius:50%;background:${scoreColor(r.health_score||80)};border:3px solid var(--bg)"></span>
-        <a class="card report-row" data-report="${r.id}">
+        <div class="card report-row" data-report="${r.id}" role="button" tabindex="0" style="cursor:pointer">
           <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink)">${reportIcon(r.report_type)}</span>
           <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(r.title||"Report")}</div><div class="muted" style="font-size:13px">${esc(r.snapshot||"")}</div></div>
-          <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
-        </a></div>`).join("")}
+          <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}${deltaChip(r)}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
+          <button class="rep-del" data-del="${r.id}" aria-label="Delete report" title="Delete report"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
+        </div></div>`).join("")}
     </div>`;
   }else{
-    body=list.map(r=>`<a class="card report-row" data-report="${r.id}" style="margin-bottom:12px">
+    body=list.map(r=>`<div class="card report-row" data-report="${r.id}" role="button" tabindex="0" style="margin-bottom:12px;cursor:pointer">
       <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink)">${reportIcon(r.report_type)}</span>
       <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(r.title||"Report")}</div><div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.snapshot||"")}</div></div>
-      <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
-    </a>`).join("");
+      <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}${deltaChip(r)}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
+      <button class="rep-del" data-del="${r.id}" aria-label="Delete report" title="Delete report"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
+    </div>`).join("");
   }
   app().innerHTML=shell(`<div class="page-head"><span class="eyebrow">${t("reports")}</span><h1>${t("reports")}</h1><p>Your full health journey — search, filter, and open any report for a plain-language read.</p></div>${search}${segs}${view}${body}`);
   bindShell();
@@ -1589,6 +1745,7 @@ function renderReport(id){
   const abn=ms.filter(m=>m.status!=="normal").sort((a,b)=>rrSev(b)-rrSev(a));
   const normN=ms.length-abn.length;
   const qs=(r.questions||[]), good=(r.good_news||[]);
+  const rd=reportScoreDelta(r);
   const aiBadge=r.ai_source==="claude"?`<span class="pill pill-teal" style="font-size:11px">✦ AI-enhanced</span>`:`<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:11px">Knowledge engine</span>`;
 
   // ---- HERO : Am I healthy? ----
@@ -1603,6 +1760,7 @@ function renderReport(id){
         <span class="rr-chip"><span class="rr-dot" style="background:var(--teal)"></span>${normN} healthy</span>
         ${abn.length?`<span class="rr-chip"><span class="rr-dot" style="background:var(--amber)"></span>${abn.length} worth a look</span>`:""}
         <span class="rr-chip" style="color:var(--muted)">${ms.length} markers</span>
+        ${rd&&rd.delta!==0?`<span class="rr-chip"><span class="delta ${rd.delta>0?"up":"down"}">${rd.delta>0?"&#9650;":"&#9660;"} ${Math.abs(rd.delta)}</span>&nbsp;vs last report</span>`:""}
       </div>
     </div>
   </div>`;
@@ -1617,7 +1775,7 @@ function renderReport(id){
           <span class="rr-pri-ic">${I.alert}</span>
           <span style="flex:1;min-width:0">
             <span class="spread" style="gap:8px"><span style="font-weight:700;font-size:14.5px;line-height:1.25">${esc(m.label)}</span><span class="pill ${tone==="red"?"pill-red":"pill-amber"}" style="font-size:10.5px;flex:none">${word}</span></span>
-            <span style="display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;margin:4px 0 5px">${m.value} <span class="muted" style="font-size:12px;font-weight:600">${esc(m.unit||"")}</span></span>
+            <span style="display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;margin:4px 0 5px">${m.value} <span class="muted" style="font-size:12px;font-weight:600">${esc(m.unit||"")}</span>${miniTrend(m)}</span>
             <span class="muted" style="font-size:12.5px;line-height:1.4;display:block">${esc(rrNote(m).slice(0,92))}</span>
           </span>
           ${RR_ARROW}
@@ -1758,6 +1916,90 @@ async function claudeJSON(system,prompt,max_tokens){
   }catch(e){ return null; }
 }
 
+/* ---- expanded plain-language marker knowledge (fallback for non-KB markers) ---- */
+const MINFO=[
+ {kw:["mchc","corp.hemo","corp hemo","haemoglobin conc","hemoglobin conc"],what:"How tightly packed the oxygen-carrying pigment (haemoglobin) is inside each red blood cell.",why:"It helps point to the type of anaemia when your blood count is off.",low:"Often linked to iron-deficiency anaemia, where cells carry less haemoglobin.",high:"Less common — can show up with dehydration or some inherited red-cell conditions."},
+ {kw:["mcv","mean corpuscular volume","mean cell volume"],what:"The average size of your red blood cells.",why:"Cell size hints at the cause of anaemia — small cells often mean iron shortfall, large cells often mean B12 or folate shortfall.",low:"Iron deficiency or thalassaemia (smaller cells).",high:"B12 or folate deficiency, or alcohol (larger cells)."},
+ {kw:["mch","mean corpuscular haemoglobin","mean cell haemoglobin"],what:"The average amount of haemoglobin packed into each red blood cell.",why:"Another clue to which type of anaemia may be present.",low:"Iron-deficiency anaemia.",high:"B12 or folate deficiency."},
+ {kw:["rdw","red cell distribution","distribution width (rdw"],what:"How much your red blood cells vary in size.",why:"A wider spread can be an early hint of a nutritional gap before other numbers shift.",low:"Rarely a concern on its own.",high:"Often an early sign of iron, B12 or folate fluctuations."},
+ {kw:["mpv","mean platelet volume"],what:"The average size of your platelets — the tiny cells that help blood clot.",why:"Platelet size reflects how actively your body is making fresh ones.",low:"Can appear with some marrow or immune conditions.",high:"Usually means your body is making new, larger platelets."},
+ {kw:["pdw","platelet distribution"],what:"How much your platelets vary in size.",why:"Usually a minor finding, read alongside platelet count and MPV.",low:"Generally not a concern alone.",high:"Platelets varying a little more in size — often minor."},
+ {kw:["plateletcrit","pct)"],what:"The share of your blood made up of platelets — a kind of 'platelet volume'.",why:"It moves together with your platelet count.",low:"Tends to track a lower platelet count.",high:"Tends to track a higher platelet count."},
+ {kw:["platelet count","platelet"],what:"The number of tiny cells that help your blood clot and stop bleeding.",why:"Too few can mean easier bruising or bleeding; too many can raise clotting risk.",low:"Viral infections, some medicines, or platelets being used faster than they're made.",high:"Infection, inflammation, or the marrow making extra."},
+ {kw:["haematocrit","hematocrit","pcv","packed cell"],what:"The percentage of your blood made up of red blood cells.",why:"Low can mean anaemia; high can mean dehydration or thicker blood.",low:"Anaemia, blood loss, or over-hydration.",high:"Dehydration, smoking, or living at altitude."},
+ {kw:["neutrophil"],what:"The most common white blood cell — your first responders to bacterial infection.",why:"They rise with infection or stress and settle as you recover.",low:"Some viral infections or medicines.",high:"Bacterial infection, inflammation, or stress."},
+ {kw:["lymphocyte"],what:"White blood cells that handle viruses and build long-term immunity.",why:"They shift with viral infections and immune activity.",low:"Some infections, steroids, or stress.",high:"Often viral infections."},
+ {kw:["eosinophil"],what:"White blood cells involved in allergies and fighting parasites.",why:"They rise with allergies, asthma, or certain infections.",low:"Usually not a concern.",high:"Allergies, asthma, or parasites."},
+ {kw:["monocyte"],what:"White blood cells that clean up and tackle longer-running infections.",why:"They support healing and fight chronic infection.",low:"Usually minor.",high:"Ongoing infection or inflammation."},
+ {kw:["basophil"],what:"A small group of white blood cells involved in allergic responses.",why:"They rarely change much; read with the other white cells.",low:"Usually not significant.",high:"Allergic reactions or inflammation."},
+ {kw:["non-hdl","non hdl"],what:"All your 'less helpful' cholesterol added together.",why:"A simple overall marker of heart-related cholesterol.",low:"Generally good for your heart.",high:"Diet, low activity, or genetics."},
+ {kw:["vldl"],what:"A cholesterol that mainly carries triglycerides (blood fats).",why:"It moves with your triglyceride level.",low:"Usually fine.",high:"High triglycerides, or a sugary or fatty diet."},
+ {kw:["ldl"],what:"The 'less helpful' cholesterol that can build up in artery walls.",why:"Keeping it lower protects your heart and blood vessels.",low:"Generally good for heart health.",high:"Saturated fat, low activity, or genetics."},
+ {kw:["hdl"],what:"The 'helpful' cholesterol that clears excess fat from your blood.",why:"Higher HDL is generally protective for your heart.",low:"Low activity, smoking, or genetics.",high:"Often a good sign — regular exercise raises it."},
+ {kw:["total cholesterol"],what:"The overall amount of cholesterol (a waxy fat) in your blood.",why:"Higher levels over time can build up in arteries and raise heart risk.",low:"Usually fine; very low is uncommon.",high:"Saturated fat, low activity, genetics, or thyroid issues."},
+ {kw:["triglyceride"],what:"Fat that circulates in your blood and is stored for energy.",why:"High levels are linked to heart and metabolic risk.",low:"Usually fine.",high:"Sugary or fatty food, alcohol, or low activity."},
+ {kw:["alanine","sgpt"],what:"An enzyme that lives mainly inside your liver cells.",why:"A rise can be an early sign the liver is irritated.",low:"Not a concern.",high:"Fatty liver, alcohol, some medicines, or viral hepatitis."},
+ {kw:["aspartate","sgot"],what:"An enzyme found in your liver and muscles.",why:"Read together with ALT to check liver health.",low:"Not a concern.",high:"Liver irritation, intense exercise, or muscle strain."},
+ {kw:["gamma glutamyl","ggt"],what:"A liver enzyme that is sensitive to alcohol and bile flow.",why:"Helps clarify the cause of other raised liver markers.",low:"Not a concern.",high:"Alcohol, fatty liver, or bile-duct issues."},
+ {kw:["alkaline phosphatase"],what:"An enzyme that comes from your liver and bones.",why:"Levels shift with liver, bile, or bone activity.",low:"Usually not significant.",high:"Bile-flow issues, bone growth, or pregnancy."},
+ {kw:["bilirubin"],what:"A yellow pigment made as old red blood cells are recycled.",why:"High levels can yellow the skin or eyes (jaundice).",low:"Not a concern.",high:"Liver or bile issues, or faster red-cell breakdown; mild rises can be harmless."},
+ {kw:["protein - total","total protein","protein-total"],what:"All the proteins in your blood added together.",why:"Reflects nutrition, liver, and immune health.",low:"Poor nutrition or liver/kidney issues.",high:"Dehydration or some inflammatory conditions."},
+ {kw:["albumin"],what:"The main protein your liver makes to keep fluid balanced in your body.",why:"Low levels can point to liver, kidney, or nutrition issues.",low:"Liver or kidney problems, or poor nutrition.",high:"Usually just dehydration."},
+ {kw:["globulin"],what:"A group of blood proteins, many made by your immune system.",why:"Read with albumin to check liver and immune balance.",low:"Immune or liver issues.",high:"Chronic infection or inflammation."},
+ {kw:["alb/globulin","a/g ratio","albumin/globulin"],what:"The balance between your two main blood proteins, albumin and globulin.",why:"A quick check of overall protein balance.",low:"Can shift with liver or immune changes.",high:"Can shift with dehydration or low globulin."},
+ {kw:["total iron binding","tibc"],what:"How much iron your blood could carry if every carrier were full.",why:"It rises when iron is low, helping spot iron deficiency.",low:"Inflammation or some chronic conditions.",high:"Often a sign of iron deficiency."},
+ {kw:["unsat.iron","unsaturated iron","uibc"],what:"The spare iron-carrying capacity that isn't being used yet.",why:"Read with iron and TIBC to judge your iron stores.",low:"Can suggest fuller iron stores.",high:"Can suggest lower iron stores."},
+ {kw:["transferrin"],what:"The share of your blood's iron-carrying capacity that is currently filled.",why:"A low value is a classic early sign of iron deficiency.",low:"Iron deficiency.",high:"Iron overload."},
+ {kw:["ferritin"],what:"Your body's stored iron.",why:"The best single marker of how much iron you have in reserve.",low:"Iron deficiency.",high:"Inflammation or iron overload."},
+ {kw:["bun / sr","bun/creatinine","bun / creatinine"],what:"A ratio that helps tell dehydration apart from a kidney issue.",why:"Read alongside urea and creatinine.",low:"Can point toward low protein intake or liver factors.",high:"Often dehydration or reduced kidney filtering."},
+ {kw:["creatinine"],what:"A muscle waste product that your kidneys clear from the blood.",why:"One of the best simple checks of kidney function.",low:"Low muscle mass; usually not a concern.",high:"Reduced kidney function or dehydration."},
+ {kw:["urea","bun"],what:"A waste product your kidneys filter out of your blood.",why:"Levels reflect kidney function and hydration.",low:"Low protein intake or over-hydration.",high:"Dehydration, a high-protein diet, or reduced kidney function."},
+ {kw:["uric acid"],what:"A waste product from breaking down certain foods and cells.",why:"High levels can trigger gout or kidney stones.",low:"Usually not a concern.",high:"A rich diet, alcohol, or reduced clearance."},
+ {kw:["sodium"],what:"A key salt that balances your body's fluids and nerve signals.",why:"Big shifts can affect hydration and how nerves fire.",low:"Over-hydration or some medicines.",high:"Usually dehydration."},
+ {kw:["potassium"],what:"A mineral that's vital for your heart and muscle function.",why:"Both high and low levels can affect heart rhythm.",low:"Vomiting, diarrhoea, or some medicines.",high:"Kidney issues or certain medicines."},
+ {kw:["chloride"],what:"A salt that works with sodium to balance body fluids.",why:"Helps round out the picture of hydration and acid balance.",low:"Fluid loss.",high:"Dehydration."},
+ {kw:["calcium"],what:"A mineral your body needs for bones, muscles, and nerves.",why:"It's tightly controlled, so shifts can affect bones and nerves.",low:"Vitamin D shortfall or parathyroid issues.",high:"Parathyroid or other less common causes."},
+ {kw:["tsh","thyroid stimulating"],what:"The brain's signal telling your thyroid how hard to work.",why:"The main screen for an under- or over-active thyroid.",low:"Can suggest an over-active thyroid.",high:"Can suggest an under-active thyroid."},
+ {kw:["thyroxine","free t4","t4"],what:"The main hormone your thyroid makes.",why:"It sets your body's overall pace and energy.",low:"Under-active thyroid.",high:"Over-active thyroid."},
+ {kw:["triiodothyronine","free t3","t3"],what:"The active thyroid hormone that drives your metabolism.",why:"Read together with TSH and T4.",low:"Under-active thyroid.",high:"Over-active thyroid."},
+ {kw:["vitamin d","25-oh","25 oh","cholecalciferol"],what:"The 'sunshine vitamin' that helps you absorb calcium for strong bones.",why:"Low levels are very common and can affect bones, mood, and immunity.",low:"Little sun exposure, darker skin, or low intake.",high:"Usually from high-dose supplements."},
+ {kw:["b-12","b12","cobalamin"],what:"A vitamin that's vital for your nerves and for making red blood cells.",why:"Low levels can cause tiredness, tingling, or anaemia.",low:"Low intake (common on vegetarian diets) or poor absorption.",high:"Usually from supplements."},
+ {kw:["folate","folic"],what:"A B-vitamin needed to build healthy red blood cells.",why:"Low levels can cause a type of anaemia.",low:"Low intake or poor absorption.",high:"Usually from supplements."},
+ {kw:["hba1c","glycated","a1c"],what:"Your average blood sugar over the past two to three months.",why:"The key marker for spotting and tracking diabetes.",low:"Rarely a concern.",high:"Prediabetes or diabetes."},
+ {kw:["glucose","fasting sugar","blood sugar"],what:"The sugar your body uses for energy.",why:"Consistently high levels point toward prediabetes or diabetes.",low:"Skipping meals or some medicines.",high:"Prediabetes, diabetes, or a recent meal."},
+ {kw:["c-reactive","hs-crp","crp"],what:"A marker of inflammation in your body.",why:"Higher levels can reflect infection or longer-term inflammation linked to heart risk.",low:"A reassuring sign.",high:"Infection, injury, or ongoing inflammation."},
+ {kw:["sedimentation","esr"],what:"A general marker of inflammation in the body.",why:"It's non-specific, but a rise signals something worth looking into.",low:"Not a concern.",high:"Infection or inflammation."},
+ {kw:["ratio"],what:"A ratio that compares two related results to summarise them in one number.",why:"Doctors use ratios as a quick at-a-glance read on balance.",low:"Best understood next to the individual values it comes from.",high:"Best understood next to the individual values it comes from."}
+];
+function markerInfo(label){ const s=(label||"").toLowerCase(); for(const e of MINFO){ if(e.kw.some(k=>s.includes(k))) return e; } return null; }
+function eduBlockBasic(e,status){
+  const sec=(tt,c)=>c?`<div class="edu"><h4>${tt}</h4><p>${esc(c)}</p></div>`:"";
+  let parts=sec("What is it?",e.what)+sec("Why it matters",e.why);
+  if(status==="low"&&e.low) parts+=sec("What a low reading can mean",e.low);
+  else if(status==="high"&&e.high) parts+=sec("What a high reading can mean",e.high);
+  else parts+=sec("What a high reading can mean",e.high)+sec("What a low reading can mean",e.low);
+  return parts;
+}
+/* ---- report-to-report trend helpers ---- */
+function healthDist(m){ if(m.ref_low==null||m.ref_high==null) return 0; const span=(m.ref_high-m.ref_low)||1; if(m.value<m.ref_low) return (m.ref_low-m.value)/span; if(m.value>m.ref_high) return (m.value-m.ref_high)/span; return 0; }
+function prevReading(key,date){ const h=S.markers.filter(m=>m.key===key&&m.report_date<date); return h.length?h[h.length-1]:null; }
+function markerTrend(m){ if(!m) return null; const p=prevReading(m.key,m.report_date); if(!p) return null; const dc=healthDist(m),dp=healthDist(p); const dir=dc<dp-1e-9?"better":dc>dp+1e-9?"worse":"same"; return {dir,prev:p.value,unit:m.unit}; }
+function trendChip(tr){ if(!tr) return ""; if(tr.dir==="better") return `<span class="delta up">&#9650; improving</span>`; if(tr.dir==="worse") return `<span class="delta down">&#9660; worsening</span>`; return `<span class="delta flat">no real change</span>`; }
+function miniTrend(m){ const tr=markerTrend(m); return tr&&tr.dir!=="same"?" "+trendChip(tr):""; }
+function reportScoreDelta(r){ const i=S.reports.findIndex(x=>x.id===r.id); const prev=S.reports[i+1]; if(!prev||r.health_score==null||prev.health_score==null) return null; return {delta:r.health_score-prev.health_score,prev:prev.health_score}; }
+function deltaChip(r){ const d=reportScoreDelta(r); if(!d||d.delta===0) return ""; const up=d.delta>0; return ` <span class="delta ${up?"up":"down"}" style="font-size:12.5px">${up?"&#9650;":"&#9660;"}${Math.abs(d.delta)}</span>`; }
+/* ---- confirm dialog ---- */
+function confirmDialog(title,msg,okLabel,onOk){
+  const wrap=document.createElement("div"); wrap.className="cf-scrim";
+  wrap.innerHTML=`<div class="cf-modal"><h3 style="margin:0 0 7px;font-size:18px;font-weight:800;letter-spacing:-.01em">${esc(title)}</h3><p class="muted" style="margin:0 0 18px;font-size:14px;line-height:1.5">${esc(msg)}</p><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn btn-ghost" data-cf="0">Cancel</button><button class="btn btn-danger" data-cf="1">${esc(okLabel)}</button></div></div>`;
+  document.body.appendChild(wrap);
+  requestAnimationFrame(()=>wrap.classList.add("open"));
+  const close=()=>{ wrap.classList.remove("open"); setTimeout(()=>wrap.remove(),260); };
+  wrap.querySelector('[data-cf="0"]').onclick=close;
+  wrap.addEventListener("click",e=>{ if(e.target===wrap) close(); });
+  wrap.querySelector('[data-cf="1"]').onclick=()=>{ close(); onOk&&onOk(); };
+}
+
 function openMarkerDrawer(key){
   const k=KB[key];
   const latest=[...S.markers].filter(m=>m.key===key).pop();
@@ -1780,9 +2022,13 @@ function openMarkerDrawer(key){
   }
   const area=(k&&k.area)||(latest&&latest.body_area)||"blood";
   const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">${t("body_area")}: ${esc((ORGANS[area]||{label:area}).label)}</p></div>`;
-  const encyclopedia=k?eduBlock(k.edu):`<div class="edu"><p style="margin:0;color:var(--ink-2)">This value was read from your report and saved to your timeline. For what this specific marker means for you, your doctor is the best guide.</p></div>`;
-  openDrawer(drawerHead(label,k?t("from_encyclopedia"):t("your_result"))+
-    `<div class="drawer-body">${valueBlock}${fig}${encyclopedia}
+  let encyclopedia;
+  if(k){ encyclopedia=eduBlock(k.edu); }
+  else { const mi=markerInfo(label); encyclopedia = mi?eduBlockBasic(mi,status):`<div class="edu"><p style="margin:0;color:var(--ink-2)">This value was read from your report and saved to your timeline. We'll keep tracking it over time so you can watch how it changes.</p></div>`; }
+  const tr=markerTrend(latest);
+  const trendBlock = tr?`<div class="edu"><h4>Since your last report</h4><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">${trendChip(tr)}<span class="muted" style="font-size:13px">Previous reading: ${tr.prev} ${esc(unit)}</span></div></div>`:"";
+  openDrawer(drawerHead(label,k?t("from_encyclopedia"):(markerInfo(label)?"Plain-language guide":t("your_result")))+
+    `<div class="drawer-body">${valueBlock}${trendBlock}${fig}${encyclopedia}
      <p class="muted" style="font-size:12px;margin-top:8px">${t("not_diagnosis")}</p></div>`);
 }
 function openOrganDrawer(area){
@@ -1795,19 +2041,30 @@ function openOrganDrawer(area){
 }
 
 /* ---------------- SETTINGS ---------------- */
+const HEALTH_OPTS=["None","Diabetes","High blood pressure","High cholesterol","Heart disease","Thyroid disorder","Anaemia","Kidney disease","Liver disease","Asthma","PCOS","Cancer history"];
+const ALLERGY_OPTS=["None","Pollen / dust","Penicillin","Sulfa drugs","Peanuts / nuts","Lactose","Gluten","Seafood","Eggs"];
+const MED_OPTS=["None","Blood pressure","Diabetes","Cholesterol","Thyroid","Blood thinners","Antidepressants","Supplements / vitamins"];
+const LIFE_OPTS=["Vegetarian","Vegan","Eggetarian","Non-vegetarian","Smoker","Non-smoker","Drinks alcohol","No alcohol","Exercises regularly","Mostly sedentary"];
 function renderSettings(){
   const p=S.profile||{};
   const langOpts=LANGS.map(([c,n])=>`<option value="${c}" ${S.lang===c?"selected":""}>${n}</option>`).join("");
+  const ageOpts=`<option value="">—</option>`+Array.from({length:88},(_,i)=>i+13).map(a=>`<option ${String(p.age)===String(a)?"selected":""}>${a}</option>`).join("");
+  const genderOpts=["Female","Male","Other","Prefer not to say"].map(g=>`<option ${p.gender===g?"selected":""}>${esc(g)}</option>`).join("");
+  const _has=(val,opt)=>(val||"").toLowerCase().split(",").map(x=>x.trim()).includes(opt.toLowerCase());
+  const chips=(id,opts,val)=>`<div class="optwrap">${opts.map(o=>`<button type="button" class="optchip ${_has(val,o)?"on":""}" data-chip="${id}" data-val="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
   app().innerHTML=shell(`<div class="page-head"><span class="eyebrow">${t("settings")}</span><h1>${t("settings")}</h1></div>
     <div class="card rsection"><h3>Profile</h3>
+      <p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Tap to select — no typing needed. This helps us tailor your insights and reminders.</p>
       <label class="field"><span>${t("name")}</span><input class="input" id="s-name" value="${esc(p.full_name||"")}"></label>
-      <div style="display:flex;gap:12px;flex-wrap:wrap"><label class="field" style="flex:1;min-width:120px"><span>Age</span><input class="input" id="s-age" type="number" value="${esc(p.age||"")}"></label>
-      <label class="field" style="flex:1;min-width:120px"><span>Gender</span><select class="input" id="s-gender"><option value="">—</option>${["Female","Male","Other"].map(g=>`<option ${p.gender===g?"selected":""}>${g}</option>`).join("")}</select></label></div>
-      <label class="field"><span>Health history</span><textarea class="input" id="s-hist" rows="2">${esc(p.health_history||"")}</textarea></label>
-      <label class="field"><span>Allergies (optional)</span><input class="input" id="s-all" value="${esc(p.allergies||"")}"></label>
-      <label class="field"><span>Medications (optional)</span><input class="input" id="s-med" value="${esc(p.medications||"")}"></label>
-      <label class="field"><span>Lifestyle (optional)</span><input class="input" id="s-life" value="${esc(p.lifestyle||"")}" placeholder="e.g. vegetarian, runs 3x/week"></label>
-      <button class="btn btn-primary" id="s-save">Save profile</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <label class="field" style="flex:1;min-width:120px"><span>Age</span><select class="input" id="s-age">${ageOpts}</select></label>
+        <label class="field" style="flex:1;min-width:120px"><span>Gender</span><select class="input" id="s-gender"><option value="">—</option>${genderOpts}</select></label>
+      </div>
+      <div class="optgroup"><span class="optlbl">Health history</span>${chips("s-hist",HEALTH_OPTS,p.health_history)}</div>
+      <div class="optgroup"><span class="optlbl">Allergies</span>${chips("s-all",ALLERGY_OPTS,p.allergies)}</div>
+      <div class="optgroup"><span class="optlbl">Current medications</span>${chips("s-med",MED_OPTS,p.medications)}</div>
+      <div class="optgroup"><span class="optlbl">Lifestyle</span>${chips("s-life",LIFE_OPTS,p.lifestyle)}</div>
+      <button class="btn btn-primary" id="s-save" style="margin-top:12px">Save profile</button>
     </div>
     <div class="card rsection"><h3>Language</h3><p class="muted" style="margin:0 0 10px;font-size:14px">The interface adapts instantly to your language, and Arabic and Urdu switch to right-to-left automatically. New report explanations are written in your language when the Claude layer is connected.</p>
       <select class="input" id="s-lang">${langOpts}</select></div>
@@ -1823,7 +2080,12 @@ function renderSettings(){
       <button class="btn btn-danger" id="s-delete" disabled style="opacity:.5">Delete everything</button></div>
     <p class="muted" style="font-size:12.5px;text-align:center;margin:18px 0 0">Nutrolis AI · educational companion, never a replacement for your doctor.</p>`);
   bindShell();
-  $("#s-save").onclick=async()=>{ await saveProfile({full_name:$("#s-name").value.trim(),age:parseInt($("#s-age").value)||null,gender:$("#s-gender").value||null,health_history:$("#s-hist").value.trim(),allergies:$("#s-all").value.trim(),medications:$("#s-med").value.trim(),lifestyle:$("#s-life").value.trim()}); toast("Profile saved."); };
+  const chipVals=(id)=>[...app().querySelectorAll(`[data-chip="${id}"].on`)].map(b=>b.dataset.val).join(", ");
+  app().querySelectorAll(".optchip").forEach(b=>b.onclick=()=>{ const g=b.dataset.chip, v=b.dataset.val;
+    if(v==="None"){ app().querySelectorAll(`[data-chip="${g}"]`).forEach(x=>{ if(x!==b) x.classList.remove("on"); }); }
+    else { const none=[...app().querySelectorAll(`[data-chip="${g}"]`)].find(x=>x.dataset.val==="None"); if(none) none.classList.remove("on"); }
+    b.classList.toggle("on"); });
+  $("#s-save").onclick=async()=>{ await saveProfile({full_name:$("#s-name").value.trim(),age:parseInt($("#s-age").value)||null,gender:$("#s-gender").value||null,health_history:chipVals("s-hist"),allergies:chipVals("s-all"),medications:chipVals("s-med"),lifestyle:chipVals("s-life")}); toast("Profile saved."); };
   $("#s-lang").onchange=(e)=>setLanguage(e.target.value);
   $("#s-theme").onclick=()=>{ toggleTheme(); renderSettings(); };
   $("#s-notif").onclick=async()=>{ const v=!(S.profile.notifications!==false); await saveProfile({notifications:v}); renderSettings(); };
@@ -1852,12 +2114,17 @@ function scrollToSection(id){
   const el=document.getElementById("sec-"+id);
   if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
 }
+function langSeen(){ try{ return localStorage.getItem("nutrolis-lang-seen")==="1"; }catch(e){ return true; } }
+function markLangSeen(){ try{ localStorage.setItem("nutrolis-lang-seen","1"); }catch(e){} const el=document.querySelector(".lang-pick"); if(el) el.classList.remove("attn"); }
 function wireLang(){
   const sel=document.getElementById("langSelect");
-  if(sel) sel.onchange=()=>setLanguage(sel.value);
+  const pick=document.querySelector(".lang-pick");
+  if(sel) sel.onchange=()=>{ markLangSeen(); setLanguage(sel.value); };
+  if(pick){ pick.addEventListener("pointerdown",markLangSeen,{once:true}); if(sel) sel.addEventListener("focus",markLangSeen,{once:true}); }
 }
 
 function render(){
+  if(typeof closeDrawer==="function") closeDrawer();
   if(!S.user){ renderLogin(); return; }
   if(S.profile && !S.profile.onboarded){ renderOnboarding(); return; }
   applyTheme(); applyDir();
