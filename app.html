@@ -311,6 +311,18 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .lang-opt.on b{color:var(--teal-ink)}
 .ob-badge{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;margin:2px auto 22px;color:#fff;box-shadow:0 24px 50px -16px var(--teal);animation:nl-pop .55s cubic-bezier(.22,1,.36,1) both}
 .ob-badge svg{animation:nl-pop .6s .15s both}
+/* ---- mobile topbar account menu ---- */
+.acct-btn{flex:none;width:38px;height:38px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--teal),var(--aqua));color:#fff;font-weight:800;font-size:15px;cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 16px -8px var(--glow)}
+.acct-menu{position:absolute;top:calc(100% + 8px);right:14px;min-width:224px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 30px 60px -22px var(--shadow);padding:8px;opacity:0;transform:translateY(-8px) scale(.98);transform-origin:top right;pointer-events:none;transition:opacity .2s,transform .22s cubic-bezier(.22,1,.36,1);z-index:50}
+.acct-menu.open{opacity:1;transform:none;pointer-events:auto}
+.acct-id{padding:9px 12px 12px;border-bottom:1px solid var(--line-2);margin-bottom:6px}
+.acct-name{font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.acct-email{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.acct-item{display:flex;width:100%;align-items:center;gap:11px;padding:11px 12px;border:none;background:none;font:inherit;font-size:14px;font-weight:600;color:var(--ink-2);cursor:pointer;border-radius:11px;text-align:left}
+.acct-item svg{flex:none}
+.acct-item:hover{background:var(--surface-3);color:var(--ink)}
+.acct-item.danger{color:var(--red)}
+.acct-item.danger:hover{background:var(--red-bg)}
 </style>
 </head>
 <body>
@@ -403,35 +415,11 @@ const STR = {
       plos_method:"PLOS — your Preventive Lifestyle Operating System — turns a whole lab report into one simple number from 0 to 100. We check each result against its healthy range: the closer everything sits inside range, the higher your score. It's the easy way to see your whole health at a glance and watch it improve over time.",
       plos_bands:"What the bands mean",band_high:"80 to 100 — On track. Keep doing what you're doing.",band_mid:"60 to 80 — Room to improve. A few small changes will help.",band_low:"Under 60 — Needs attention. Worth a focused look with your doctor.",
       plos_pillar_note:"Each pillar is the same score for one part of your body — so you can see exactly where to focus."},
-  hi:{dashboard:"डैशबोर्ड",upload:"अपलोड",reports:"मेरी रिपोर्ट",settings:"सेटिंग्स",
-      health_score:"स्वास्थ्य स्कोर",total_reports:"रिपोर्ट",active_markers:"सक्रिय मार्कर",attention:"ध्यान देने योग्य",
-      recent:"हाल की रिपोर्ट",no_reports:"अभी कोई रिपोर्ट नहीं",upload_first:"शुरू करने के लिए अपनी पहली रिपोर्ट अपलोड करें।",
-      sign_in:"साइन इन",sign_up:"खाता बनाएं",email:"ईमेल",password:"पासवर्ड",name:"पूरा नाम",
-      good_news:"अच्छी खबर",areas_attention:"ध्यान देने योग्य क्षेत्र",questions:"डॉक्टर के लिए प्रश्न",
-      what_means:"आपकी रिपोर्ट का अर्थ",snapshot:"स्वास्थ्य झलक",key_findings:"मुख्य निष्कर्ष",trends:"आपके रुझान"},
-  es:{dashboard:"Panel",upload:"Subir",reports:"Mis informes",settings:"Ajustes",
-      health_score:"Puntuación",total_reports:"Informes",active_markers:"Marcadores",attention:"Áreas de atención",
-      recent:"Informes recientes",no_reports:"Aún no hay informes",upload_first:"Sube tu primer informe para empezar.",
-      sign_in:"Iniciar sesión",sign_up:"Crear cuenta",email:"Correo",password:"Contraseña",name:"Nombre completo",
-      good_news:"Buenas noticias",areas_attention:"Áreas a revisar",questions:"Preguntas para tu médico",
-      what_means:"Qué significa tu informe",snapshot:"Resumen de salud",key_findings:"Hallazgos clave",trends:"Tus tendencias"},
-  ar:{dashboard:"لوحة التحكم",upload:"رفع",reports:"تقاريري",settings:"الإعدادات",
-      health_score:"درجة الصحة",total_reports:"التقارير",active_markers:"المؤشرات",attention:"مناطق الانتباه",
-      recent:"التقارير الأخيرة",no_reports:"لا توجد تقارير بعد",upload_first:"ارفع تقريرك الأول للبدء.",
-      sign_in:"تسجيل الدخول",sign_up:"إنشاء حساب",email:"البريد",password:"كلمة المرور",name:"الاسم الكامل",
-      good_news:"أخبار جيدة",areas_attention:"مناطق تستحق النظر",questions:"أسئلة لطبيبك",
-      what_means:"ماذا يعني تقريرك",snapshot:"لمحة صحية",key_findings:"النتائج الرئيسية",trends:"اتجاهاتك"},
-  ur:{dashboard:"ڈیش بورڈ",upload:"اپ لوڈ",reports:"میری رپورٹس",settings:"ترتیبات",
-      health_score:"صحت اسکور",total_reports:"رپورٹس",active_markers:"مارکر",attention:"توجہ طلب",
-      recent:"حالیہ رپورٹس",no_reports:"ابھی کوئی رپورٹ نہیں",upload_first:"شروع کرنے کے لیے اپنی پہلی رپورٹ اپ لوڈ کریں۔",
-      sign_in:"سائن ان",sign_up:"اکاؤنٹ بنائیں",email:"ای میل",password:"پاس ورڈ",name:"پورا نام",
-      good_news:"اچھی خبر",areas_attention:"دیکھنے کے قابل علاقے",questions:"ڈاکٹر کے لیے سوالات",
-      what_means:"آپ کی رپورٹ کا مطلب",snapshot:"صحت کی جھلک",key_findings:"اہم نتائج",trends:"آپ کے رجحانات"},
+  hi:{"dashboard": "डैशबोर्ड", "upload": "अपलोड", "reports": "मेरी रिपोर्ट", "settings": "सेटिंग्स", "health_score": "स्वास्थ्य स्कोर", "total_reports": "रिपोर्ट", "active_markers": "सक्रिय मार्कर", "attention": "ध्यान देने योग्य", "recent": "हाल की रिपोर्ट", "no_reports": "अभी कोई रिपोर्ट नहीं", "upload_first": "शुरू करने के लिए अपनी पहली रिपोर्ट अपलोड करें।", "sign_in": "साइन इन", "sign_up": "खाता बनाएं", "email": "ईमेल", "password": "पासवर्ड", "name": "पूरा नाम", "good_news": "अच्छी खबर", "areas_attention": "ध्यान देने योग्य क्षेत्र", "questions": "डॉक्टर के लिए प्रश्न", "what_means": "आपकी रिपोर्ट का अर्थ", "snapshot": "स्वास्थ्य झलक", "key_findings": "मुख्य निष्कर्ष", "trends": "आपके रुझान", "greet_morning": "सुप्रभात", "greet_afternoon": "शुभ दोपहर", "greet_evening": "शुभ संध्या", "hm": "स्वास्थ्य मार्कर", "all_markers": "सभी मार्कर", "ti": "रुझान और सुधार", "aihi": "एआई स्वास्थ्य अंतर्दृष्टि", "lc": "लर्निंग सेंटर", "hj": "स्वास्थ्य यात्रा", "ac": "एक्शन सेंटर", "ohs": "समग्र स्वास्थ्य स्कोर", "tracked": "मार्कर ट्रैक किए गए", "improving": "सुधर रहे", "need_attn": "ध्यान चाहिए", "todays_summary": "आज का सारांश", "learn_more": "और जानें", "upload_report": "रिपोर्ट अपलोड करें", "upload_new": "नई रिपोर्ट अपलोड करें", "compare": "रिपोर्ट की तुलना करें", "download": "सारांश डाउनलोड करें", "share": "डॉक्टर के साथ साझा करें", "healthy": "स्वस्थ", "needs_attn": "ध्यान चाहिए", "improving_chip": "सुधर रहे", "explore": "एक्सप्लोर करें", "mk_markers": "मार्कर", "mk_trends": "रुझान", "mk_insights": "एआई इनसाइट्स", "mk_learning": "लर्निंग", "mk_journey": "यात्रा", "in_range": "सामान्य सीमा में", "slightly_low": "थोड़ा कम", "slightly_high": "थोड़ा अधिक", "below_range": "सीमा से नीचे", "above_range": "सीमा से ऊपर", "steady": "स्थिर", "first_report": "पहली रिपोर्ट", "this_report": "इस रिपोर्ट", "get_plan": "मेरी व्यक्तिगत योजना पाएं", "manage_share": "अपना स्वास्थ्य डेटा प्रबंधित करें और साझा करें।", "read": "पढ़ें", "first_reading": "पहली रीडिंग", "usual_range": "सामान्य सीमा", "personalized_brief": "व्यक्तिगत स्वास्थ्य ब्रीफ", "your_result": "आपका परिणाम", "from_encyclopedia": "विश्वकोश से", "eat_more": "अधिक खाएं", "ease_off": "कम करें", "language": "भाषा", "nothing_here": "अभी यहाँ कुछ नहीं है।", "sign_out": "साइन आउट", "body_area": "शरीर का भाग", "not_diagnosis": "केवल शैक्षिक — कोई निदान नहीं। अगले कदमों के लिए आपका डॉक्टर सबसे अच्छा मार्गदर्शक है।", "good": "अच्छा", "fair": "ठीक-ठाक", "worth_look": "देखने योग्य", "your_reading": "आपकी नवीनतम रीडिंग", "dd_what": "यह क्या है?", "dd_how": "यह आपके शरीर में कैसे काम करता है", "dd_why": "आपका ऐसा क्यों हो सकता है", "dd_fix": "इसे कैसे सुधारें", "dd_foods": "भोजन — क्या जोड़ें और क्या कम करें", "dd_time": "इसमें आमतौर पर कितना समय लगता है", "dd_doctor": "डॉक्टर से कब बात करें", "dd_prep": "Nutrolis AI आपकी व्यक्तिगत योजना लिख रहा है…", "dd_fail": "अभी एआई से संपर्क नहीं हो सका। कृपया थोड़ी देर में पुनः प्रयास करें।", "plos_score": "PLOS स्कोर", "plos_full": "प्रिवेंटिव लाइफस्टाइल ऑपरेटिंग सिस्टम", "plos_ontrack": "सही राह पर", "plos_improve": "सुधार की गुंजाइश", "plos_attn": "ध्यान चाहिए", "how_calc": "आपका स्कोर कैसे काम करता है", "plos_pillars": "PLOS स्तंभ", "mk_pillars": "स्तंभ", "plos_what": "PLOS स्कोर क्या है?", "plos_method": "PLOS — आपका प्रिवेंटिव लाइफस्टाइल ऑपरेटिंग सिस्टम — पूरी लैब रिपोर्ट को 0 से 100 तक के एक सरल अंक में बदल देता है। हम हर परिणाम को उसकी स्वस्थ सीमा से मिलाते हैं: जितना सब कुछ सीमा के भीतर होगा, आपका स्कोर उतना ही ऊँचा होगा। यह एक नज़र में अपने पूरे स्वास्थ्य को देखने और समय के साथ उसमें सुधार देखने का आसान तरीका है।", "plos_bands": "बैंड का क्या अर्थ है", "band_high": "80 से 100 — सही राह पर। जो कर रहे हैं वही करते रहें।", "band_mid": "60 से 80 — सुधार की गुंजाइश। कुछ छोटे बदलाव मदद करेंगे।", "band_low": "60 से नीचे — ध्यान चाहिए। अपने डॉक्टर के साथ ध्यान से देखने योग्य।", "plos_pillar_note": "हर स्तंभ आपके शरीर के एक भाग के लिए वही स्कोर है — ताकि आप ठीक-ठीक देख सकें कि कहाँ ध्यान देना है।"}
 };
-const LANGS = [["en","English"],["hi","हिन्दी"],["es","Español"],["ar","العربية"],["ur","اردو"],
-  ["fr","Français"],["de","Deutsch"],["pt","Português"],["bn","বাংলা"],["ta","தமிழ்"],
-  ["te","తెలుగు"],["mr","मराठी"],["gu","ગુજરાતી"],["pa","ਪੰਜਾਬੀ"],["zh","中文"],
-  ["ja","日本語"],["ko","한국어"],["ru","Русский"],["it","Italiano"],["id","Bahasa"]];
+const LANGS = [["en","English"],["hi","हिन्दी"]];
+const LHI = {"Cardiovascular": "हृदय संबंधी", "Metabolic": "चयापचय", "Nutrition": "पोषण", "Liver": "यकृत", "Kidney": "गुर्दा", "Blood": "रक्त", "Understanding Cholesterol": "कोलेस्ट्रॉल को समझना", "What Is HbA1c?": "HbA1c क्या है?", "Vitamin D, Simply": "विटामिन डी, सरल भाषा में", "How Liver Function Works": "यकृत कैसे काम करता है", "Kidney Health Basics": "गुर्दे के स्वास्थ्य की मूल बातें", "Reading Your CBC": "अपनी CBC पढ़ना", "Good vs. bad, and why the balance matters.": "अच्छा बनाम बुरा, और संतुलन क्यों मायने रखता है।", "Your three-month blood sugar average, explained.": "आपके तीन महीने के रक्त शर्करा औसत की सरल व्याख्या।", "Why it matters and how to raise it.": "यह क्यों मायने रखता है और इसे कैसे बढ़ाएं।", "What ALT, AST and GGT actually tell you.": "ALT, AST और GGT वास्तव में आपको क्या बताते हैं।", "How your body filters waste every day.": "आपका शरीर हर दिन अपशिष्ट कैसे छानता है।", "Platelets, haemoglobin and what they mean.": "प्लेटलेट्स, हीमोग्लोबिन और उनका क्या अर्थ है।", "3 min": "3 मिनट", "4 min": "4 मिनट", "5 min": "5 मिनट", "Cholesterol isn't all bad. HDL (the 'good' kind) clears cholesterol away, while LDL (the 'bad' kind) can build up in your arteries over time. The goal is high HDL, low LDL, and low triglycerides. Diet, regular movement and — when your doctor advises — medication shift the balance in your favour.": "कोलेस्ट्रॉल पूरी तरह बुरा नहीं है। HDL ('अच्छा' प्रकार) कोलेस्ट्रॉल को हटाता है, जबकि LDL ('बुरा' प्रकार) समय के साथ आपकी धमनियों में जमा हो सकता है। लक्ष्य है उच्च HDL, कम LDL और कम ट्राइग्लिसराइड्स। आहार, नियमित गतिविधि और — जब आपका डॉक्टर सलाह दे — दवा संतुलन को आपके पक्ष में करती है।", "HbA1c reflects your average blood sugar over roughly three months. Below 5.7% is healthy, 5.7–6.4% is the pre-diabetic range, and 6.5% or higher suggests diabetes. Because it's an average, it's a steadier, more reliable signal than a single glucose reading.": "HbA1c लगभग तीन महीनों में आपके औसत रक्त शर्करा को दर्शाता है। 5.7% से नीचे स्वस्थ है, 5.7–6.4% प्री-डायबिटिक सीमा है, और 6.5% या अधिक डायबिटीज का संकेत देता है। चूँकि यह एक औसत है, यह एक अकेली ग्लूकोज रीडिंग की तुलना में अधिक स्थिर और भरोसेमंद संकेत है।", "Vitamin D helps your body absorb calcium and supports bones, muscles and immunity. Deficiency is extremely common, especially for people who spend most of the day indoors. Sunlight, fortified foods and a daily D3 supplement usually restore healthy levels over a few months.": "विटामिन डी आपके शरीर को कैल्शियम सोखने में मदद करता है और हड्डियों, मांसपेशियों व रोग-प्रतिरोधक क्षमता का सहारा देता है। इसकी कमी बहुत आम है, खासकर उनके लिए जो दिन का अधिकांश समय घर के अंदर बिताते हैं। धूप, फोर्टिफाइड भोजन और रोज़ाना D3 सप्लीमेंट आमतौर पर कुछ महीनों में स्वस्थ स्तर बहाल कर देते हैं।", "Liver enzymes like ALT, AST and GGT leak into the blood when liver cells are under stress. Values within range usually point to a healthy, well-functioning liver. Doctors watch for large, sustained spikes rather than small wobbles.": "ALT, AST और GGT जैसे यकृत एंजाइम तब रक्त में रिसते हैं जब यकृत कोशिकाएँ तनाव में होती हैं। सीमा के भीतर के मान आमतौर पर एक स्वस्थ, अच्छी तरह काम करते यकृत की ओर इशारा करते हैं। डॉक्टर छोटे उतार-चढ़ाव के बजाय बड़े, लगातार बने उछाल पर ध्यान देते हैं।", "Your kidneys quietly filter waste and balance fluids and salts around the clock. Creatinine and BUN show how well that filtration is working. Steady, in-range values mean your kidneys are comfortably keeping up.": "आपके गुर्दे चुपचाप चौबीसों घंटे अपशिष्ट छानते और तरल व नमक का संतुलन बनाते हैं। क्रिएटिनिन और BUN दिखाते हैं कि यह छानना कितनी अच्छी तरह काम कर रहा है। स्थिर, सीमा के भीतर के मान का अर्थ है कि आपके गुर्दे आराम से अपना काम कर रहे हैं।", "A complete blood count looks at your red cells, white cells and platelets. Small variations between tests are normal; your doctor looks at the pattern over time rather than reacting to a single number.": "एक संपूर्ण रक्त गणना आपकी लाल कोशिकाओं, श्वेत कोशिकाओं और प्लेटलेट्स को देखती है। परीक्षणों के बीच छोटे बदलाव सामान्य हैं; आपका डॉक्टर एक अकेले अंक पर प्रतिक्रिया देने के बजाय समय के साथ के पैटर्न को देखता है।", "What is it?": "यह क्या है?", "Why it matters": "यह क्यों मायने रखता है", "How it functions": "यह कैसे काम करता है", "Healthy range": "स्वस्थ सीमा", "What raises it": "इसे क्या बढ़ाता है", "What lowers it": "इसे क्या घटाता है", "How to improve it": "इसे कैसे सुधारें", "When to speak to a doctor": "डॉक्टर से कब बात करें", "Related conditions": "संबंधित स्थितियाँ", "Fun fact": "रोचक तथ्य", "What a low reading can mean": "कम रीडिंग का क्या अर्थ हो सकता है", "What a high reading can mean": "अधिक रीडिंग का क्या अर्थ हो सकता है", "Heart & cholesterol": "हृदय और कोलेस्ट्रॉल", "Blood sugar": "रक्त शर्करा", "Vitamins & iron": "विटामिन और आयरन", "Blood count": "रक्त गणना", "Thyroid": "थायरॉइड", "Other markers": "अन्य मार्कर", "Looking good overall": "कुल मिलाकर अच्छा लग रहा है", "Mostly healthy, a few to watch": "ज़्यादातर स्वस्थ, कुछ पर नज़र रखें", "A few things worth your attention": "कुछ बातें आपके ध्यान योग्य", "healthy": "स्वस्थ", "worth a look": "देखने योग्य", "markers": "मार्कर", "vs last report": "पिछली रिपोर्ट की तुलना में", "What's worth a look": "क्या देखने योग्य है", "Low": "कम", "High": "अधिक", "Normal": "सामान्य", "more, grouped by body system below.": "और, नीचे शरीर प्रणाली के अनुसार समूहित।", "Everything's in range": "सब कुछ सीमा में है", "No markers need attention in this report.": "इस रिपोर्ट में किसी मार्कर को ध्यान की आवश्यकता नहीं है।", "By body system": "शरीर प्रणाली के अनुसार", "All in range": "सभी सीमा में", "Your action plan": "आपकी कार्य योजना", "is low": "कम है", "is high": "अधिक है", "Keep doing what you're doing": "जो कर रहे हैं वही करते रहें", "Everything's in range — re-test when your doctor suggests.": "सब कुछ सीमा में है — डॉक्टर के सुझाव पर पुनः जाँच कराएं।", "Questions for your doctor": "डॉक्टर के लिए प्रश्न", "What's going well": "क्या अच्छा चल रहा है", "Since your last report": "आपकी पिछली रिपोर्ट के बाद से", "Previous reading": "पिछली रीडिंग", "Plain-language guide": "सरल भाषा गाइड", "Body area": "शरीर का भाग", "Highlighted": "हाइलाइट किया गया", "Your markers here": "यहाँ आपके मार्कर", "Body & systems": "शरीर और प्रणालियाँ", "Educational only — not a diagnosis.": "केवल शैक्षिक — कोई निदान नहीं।", "Reference range varies by lab — check the range printed on your report.": "संदर्भ सीमा लैब के अनुसार बदलती है — अपनी रिपोर्ट पर छपी सीमा देखें।", "This value was read from your report and saved to your timeline. We'll keep tracking it over time so you can watch how it changes.": "यह मान आपकी रिपोर्ट से पढ़ा गया और आपकी समयरेखा में सहेजा गया। हम इसे समय के साथ ट्रैक करते रहेंगे ताकि आप देख सकें कि यह कैसे बदलता है।", "Report": "रिपोर्ट", "score": "स्कोर", "Read": "पढ़ें", "Your report has been saved to your timeline.": "आपकी रिपोर्ट आपकी समयरेखा में सहेज दी गई है।", "Your full health journey — search, filter, and open any report for a plain-language read.": "आपकी पूरी स्वास्थ्य यात्रा — खोजें, फ़िल्टर करें, और किसी भी रिपोर्ट को सरल भाषा में पढ़ने के लिए खोलें।", "Plain-language education from Nutrolis. Always follow your doctor's guidance for your own care.": "Nutrolis से सरल भाषा में शिक्षा। अपनी देखभाल के लिए हमेशा अपने डॉक्टर के मार्गदर्शन का पालन करें।", "Educational, not a diagnosis. Always discuss your results with a healthcare professional.": "शैक्षिक, निदान नहीं। अपने परिणामों पर हमेशा किसी स्वास्थ्य पेशेवर से चर्चा करें।", "Sitting a little below the usual range.": "सामान्य सीमा से थोड़ा नीचे है।", "Sitting a little above the usual range.": "सामान्य सीमा से थोड़ा ऊपर है।", "Ask your doctor whether a small supplement or diet change would help.": "अपने डॉक्टर से पूछें कि क्या कोई छोटा सप्लीमेंट या आहार बदलाव मदद करेगा।", "A few lifestyle tweaks and a recheck usually bring this back in line.": "कुछ जीवनशैली बदलाव और पुनः जाँच आमतौर पर इसे वापस ठीक कर देते हैं।", "Heart": "हृदय", "General": "सामान्य", "LDL Cholesterol - Direct": "एलडीएल कोलेस्ट्रॉल - डायरेक्ट", "HDL Cholesterol - Direct": "एचडीएल कोलेस्ट्रॉल - डायरेक्ट", "Total Cholesterol": "कुल कोलेस्ट्रॉल", "Triglycerides": "ट्राइग्लिसराइड्स", "LDL cholesterol": "एलडीएल कोलेस्ट्रॉल", "25-OH Vitamin D (Total)": "25-OH विटामिन डी (कुल)", "Vitamin B-12": "विटामिन बी-12", "Vitamin D": "विटामिन डी", "Creatinine - Serum": "क्रिएटिनिन - सीरम", "Alanine Transaminase (SGPT)": "एलानिन ट्रांसएमिनेस (SGPT)", "Haemoglobin": "हीमोग्लोबिन", "Mean Corp.Hemo.Conc (MCHC)": "मीन कॉर्प. हीमो. कॉन्. (MCHC)", "Mean Platelet Volume (MPV)": "मीन प्लेटलेट वॉल्यूम (MPV)", "Platelet Count": "प्लेटलेट काउंट", "Red Cell Distribution Width (RDW-CV)": "रेड सेल डिस्ट्रीब्यूशन विड्थ (RDW-CV)", "Sodium": "सोडियम", "Iron": "आयरन", "High Sensitivity C-Reactive Protein (HS-CRP)": "हाई सेंसिटिविटी सी-रिएक्टिव प्रोटीन (HS-CRP)", "Plateletcrit (PCT)": "प्लेटलेटक्रिट (PCT)"};
+const BUNDLED_LC={hi:LHI};
 const I18N={};            // Claude-translated UI tables, cached per language
 const RI18N={};           // translated report content, cached per report+language
 function t(k){ return (I18N[S.lang]&&I18N[S.lang][k]) || (STR[S.lang]&&STR[S.lang][k]) || STR.en[k] || k; }
@@ -439,28 +427,72 @@ function applyDir(){ const rtl=RTL.includes(S.lang); document.documentElement.di
 function langName(code){ const f=LANGS.find(l=>l[0]===code); return f?f[1]:code; }
 async function ensureLang(code){
   if(code==="en"||I18N[code]) return;
+  if(STR[code] && Object.keys(STR[code]).length>=Object.keys(STR.en).length) return;
   try{ const c=localStorage.getItem("nl-i18n-"+code); if(c){ I18N[code]=JSON.parse(c); return; } }catch(e){}
   const sys="You are a professional UI localizer for a warm, friendly consumer health app used across India and Europe. Translate each value into "+langName(code)+" using simple, everyday words that a 10-year-old or a 70-year-old could understand. Keep labels short. Use the natural script of the language. Keep widely-known medical terms natural for native speakers. Return ONLY strict minified JSON with the EXACT same keys.";
   const j=await claudeJSON(sys,"Translate every value to "+langName(code)+". Return JSON with identical keys:\n"+JSON.stringify(STR.en),2200);
   if(j){ I18N[code]=j; try{ localStorage.setItem("nl-i18n-"+code,JSON.stringify(j)); }catch(e){} }
 }
 async function ensureReportI18n(code){
-  if(code==="en") return;
-  const r=S.reports[0]; if(!r) return;
-  const ck=r.id+"|"+code; if(RI18N[ck]) return;
-  const payload={summary:r.summary||"",snapshot:r.snapshot||"",good_news:r.good_news||[],attention:r.attention||[]};
-  const sys="You are a warm medical translator for a consumer health app. Translate into "+langName(code)+" in simple words anyone can understand, keeping the meaning exact and the tone calm. Return ONLY strict minified JSON with the same shape and keys.";
-  const j=await claudeJSON(sys,"Translate to "+langName(code)+", keep JSON shape:\n"+JSON.stringify(payload),1600);
-  if(j) RI18N[ck]=j;
+  if(code==="en"||!S.reports.length) return;
+  const sys="You are a warm medical translator for a consumer health app. Translate every value into "+langName(code)+" in simple words anyone can understand, keeping the meaning exact and the tone calm. Keep arrays the same length and order. Return ONLY strict minified JSON with the same shape and keys.";
+  for(const r of S.reports){
+    const ck=r.id+"|"+code; if(RI18N[ck]) continue;
+    try{ const c=localStorage.getItem("nl-ri-"+ck); if(c){ RI18N[ck]=JSON.parse(c); continue; } }catch(e){}
+    const payload={title:r.title||"",summary:r.summary||"",snapshot:r.snapshot||"",good_news:r.good_news||[],attention:r.attention||[],questions:r.questions||[]};
+    const j=await claudeJSON(sys,"Translate to "+langName(code)+", keep JSON shape and array lengths:\n"+JSON.stringify(payload),2200);
+    if(j){ RI18N[ck]=j; try{ localStorage.setItem("nl-ri-"+ck,JSON.stringify(j)); }catch(e){} }
+  }
 }
 function rTxt(r,field){ const c=RI18N[(r&&r.id)+"|"+S.lang]; return (c&&c[field]!=null)?c[field]:(r?r[field]:undefined); }
+
+/* ===== Universal on-demand content translator =====
+   L(text) returns the cached translation for the current language, or the
+   English text immediately while queuing it for background translation.
+   Translations persist in localStorage, so switching back is instant. */
+const LC={}; let _Lq=new Set(), _Lt=null, _Lbusy=false;
+function loadLC(lang){ if(!lang||lang==="en"||LC[lang])return; const base=BUNDLED_LC[lang]?Object.assign({},BUNDLED_LC[lang]):{}; try{LC[lang]=Object.assign(base,JSON.parse(localStorage.getItem("nl-lc-"+lang)||"{}"));}catch(e){LC[lang]=base;} }
+function saveLC(lang){ try{ localStorage.setItem("nl-lc-"+lang,JSON.stringify(LC[lang]||{})); }catch(e){} }
+function L(text){
+  if(text==null||text===""||S.lang==="en") return text;
+  if(typeof text!=="string") return text;
+  loadLC(S.lang); const c=LC[S.lang]||(LC[S.lang]={});
+  if(c[text]!=null) return c[text];
+  _Lq.add(text); if(_Lt) clearTimeout(_Lt); _Lt=setTimeout(flushL,90);
+  return text;
+}
+function Lbl(x){ return L(x); }
+async function flushL(){
+  const lang=S.lang; if(lang==="en"){ _Lq.clear(); return; }
+  if(_Lbusy){ if(_Lt) clearTimeout(_Lt); _Lt=setTimeout(flushL,220); return; }
+  loadLC(lang); const c=LC[lang]||(LC[lang]={});
+  const items=[..._Lq].filter(x=>c[x]==null); _Lq.clear();
+  if(!items.length) return;
+  _Lbusy=true;
+  const sys="You are a careful medical translator for a warm consumer health app. Translate each English string into "+langName(lang)+" using simple, everyday words anyone can understand, keeping medical meaning exact and the tone calm. Preserve numbers, units and any placeholders. Return ONLY a strict minified JSON array of the SAME length and order as the input.";
+  for(let i=0;i<items.length;i+=60){
+    const chunk=items.slice(i,i+60);
+    try{ const j=await claudeJSON(sys,"Translate to "+langName(lang)+". Return a JSON array, same length and order:\n"+JSON.stringify(chunk),3200);
+      if(Array.isArray(j)) chunk.forEach((src,k)=>{ if(typeof j[k]==="string") c[src]=j[k]; }); }catch(e){}
+  }
+  saveLC(lang); _Lbusy=false;
+  if(S.user){ render(); reopenDrawer(); }
+}
+function reopenDrawer(){ const d=S._drawer; if(!d) return; if(d.t==="m") openMarkerDrawer(d.key); else if(d.t==="o") openOrganDrawer(d.area); else if(d.t==="l") learnDrawer(d.i); }
+
 async function setLanguage(code){
   if(code===S.lang) return;
   S.lang=code; applyDir();
   try{ localStorage.setItem("nutrolis-lang",code); }catch(e){}
   if(S.user&&S.profile) saveProfile({language:code});
-  if(code!=="en"){ toast(t("language")+" · "+langName(code)+" …",4000); await Promise.all([ensureLang(code),ensureReportI18n(code)]); }
-  render();
+  loadLC(code);
+  render(); reopenDrawer();              // INSTANT: direction + anything already cached
+  if(code==="en") return;
+  let _cached=!!I18N[code] || (STR[code] && Object.keys(STR[code]).length>=Object.keys(STR.en).length); try{ _cached=_cached||!!localStorage.getItem("nl-i18n-"+code); }catch(e){}
+  if(!_cached) toast(langName(code)+" · translating…",2600);
+  await ensureLang(code); render(); reopenDrawer();        // UI labels
+  await ensureReportI18n(code); render(); reopenDrawer();  // report content
+  await flushL();                                          // queued drawer/inline content (re-renders on finish)
 }
 
 /* =================================================================
@@ -1071,7 +1103,7 @@ function plosPillars(){
   const byKey=latestByKey(), groups={};
   Object.values(byKey).forEach(x=>{ const m=x.latest; const d=catOf(m.label||m.key); (groups[d]=groups[d]||[]).push(m); });
   const order=["Cardiovascular","Metabolic","Liver","Kidney","Nutrition","Thyroid","Blood","General"];
-  return order.filter(d=>groups[d]&&groups[d].length).map(d=>({domain:d,label:PILLAR_LABELS[d]||d,score:scoreFromMarkers(groups[d]),count:groups[d].length}));
+  return order.filter(d=>groups[d]&&groups[d].length).map(d=>({domain:d,label:L(PILLAR_LABELS[d]||d),score:scoreFromMarkers(groups[d]),count:groups[d].length}));
 }
 function plosRing(score,size){
   size=size||70; const r=size/2-5, c=2*Math.PI*r, off=c*(1-score/100), col=scoreColor(score);
@@ -1168,10 +1200,10 @@ function shell(content){
   const dot=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>`;
   const side=`
     <button class="side-link ${isActive("#/dashboard")?"active":""}" data-nav="#/dashboard">${I.dash}<span>${t("dashboard")}</span></button>
-    <button class="side-link ${isActive("#/reports")||route.startsWith("#/report/")?"active":""}" data-nav="#/reports">${I.reports}<span>My Reports</span></button>
+    <button class="side-link ${isActive("#/reports")||route.startsWith("#/report/")?"active":""}" data-nav="#/reports">${I.reports}<span>${t("reports")}</span></button>
     <button class="side-link ${isActive("#/upload")?"active":""}" data-nav="#/upload">${I.upload}<span>${t("upload")}</span></button>
     <button class="side-link ${isActive("#/settings")?"active":""}" data-nav="#/settings">${I.settings}<span>${t("settings")}</span></button>`;
-  const tabs=[["#/dashboard",t("dashboard"),I.dash],["#/upload",t("upload"),I.upload],["#/reports","My Reports",I.reports],["#/settings",t("settings"),I.settings]]
+  const tabs=[["#/dashboard",t("dashboard"),I.dash],["#/upload",t("upload"),I.upload],["#/reports",t("reports"),I.reports],["#/settings",t("settings"),I.settings]]
     .map(([h,l,ic])=>`<button class="tab ${isActive(h)||(h==="#/reports"&&route.startsWith("#/report/"))?"active":""}" data-nav="${h}">${ic}<span>${esc(l)}</span></button>`).join("");
   const name=esc(S.profile?.full_name||S.user?.email||"You");
   return `<div class="shell">
@@ -1192,7 +1224,13 @@ function shell(content){
       <header class="topbar">
         <span class="brand-logo" style="width:32px;height:32px">${I.logo}</span>
         <span class="wordmark" style="font-size:18px;margin-right:auto">Nutrolis<span> AI</span></span>
-        <button data-act="theme" aria-label="Toggle theme" style="border:1px solid var(--line);background:var(--surface);width:38px;height:38px;border-radius:11px;cursor:pointer;color:var(--ink-2);font-size:16px">${S.theme==="dark"?"☀":"☾"}</button>
+        <button class="acct-btn" id="acctBtn" aria-label="Account" aria-expanded="false">${name.charAt(0).toUpperCase()}</button>
+        <div class="acct-menu" id="acctMenu">
+          <div class="acct-id"><div class="acct-name">${name}</div>${S.user?.email?`<div class="acct-email">${esc(S.user.email)}</div>`:""}</div>
+          <button class="acct-item" data-nav="#/settings">${I.settings}<span>Settings</span></button>
+          <button class="acct-item" data-act="theme">${S.theme==="dark"?"☀":"☾"}<span>Switch to ${S.theme==="dark"?"light":"dark"} mode</span></button>
+          <button class="acct-item danger" data-act="signout"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg><span>${t("sign_out")}</span></button>
+        </div>
       </header>
       <div class="content">${content}</div>
       <nav class="bottom-nav">${tabs}</nav>
@@ -1392,8 +1430,9 @@ const LEARN=[
   {cat:"Blood",color:"var(--amber)",title:"Reading Your CBC",desc:"Platelets, haemoglobin and what they mean.",read:"4 min",body:"A complete blood count looks at your red cells, white cells and platelets. Small variations between tests are normal; your doctor looks at the pattern over time rather than reacting to a single number."}
 ];
 function learnDrawer(i){const l=LEARN[i];
-  openDrawer(drawerHead(l.title,l.cat+" · "+l.read+" read")+`<div class="drawer-body"><div class="edu"><h4>${esc(l.cat)}</h4><p>${esc(l.body)}</p></div>
-  <p class="muted" style="font-size:12px">Plain-language education from Nutrolis. Always follow your doctor's guidance for your own care.</p></div>`);
+  S._drawer={t:"l",i};
+  openDrawer(drawerHead(L(l.title),L(l.cat)+" · "+L(l.read)+" "+L("read"))+`<div class="drawer-body"><div class="edu"><h4>${esc(L(l.cat))}</h4><p>${esc(L(l.body))}</p></div>
+  <p class="muted" style="font-size:12px">${esc(L("Plain-language education from Nutrolis. Always follow your doctor's guidance for your own care."))}</p></div>`);
 }
 function buildJourney(){
   const reps=[...S.reports].filter(r=>r.report_date).sort((a,b)=>safeDate(a.report_date)-safeDate(b.report_date));
@@ -1401,7 +1440,7 @@ function buildJourney(){
   const byYear={};
   reps.forEach(r=>{ const y=safeDate(r.report_date).getFullYear();
     const dot=(r.health_score>=80)?"var(--teal)":(r.health_score>=60)?"var(--amber)":"var(--red)";
-    (byYear[y]=byYear[y]||[]).push({dot,h:(r.title||"Report")+" · score "+(r.health_score||"–"),p:r.snapshot||r.summary||""}); });
+    (byYear[y]=byYear[y]||[]).push({dot,h:(rTxt(r,"title")||L("Report"))+" · "+L("score")+" "+(r.health_score||"–"),p:rTxt(r,"snapshot")||rTxt(r,"summary")||""}); });
   return Object.keys(byYear).sort().map(y=>({yr:y,items:byYear[y]}));
 }
 function downloadSummary(){
@@ -1504,7 +1543,7 @@ function renderDashboard(){
   const cards=headlineMarkers(m.byKey,6).map(mk=>{
     const hist=m.byKey[mk.key].history, tr=trendOf(hist);
     return `<button class="card marker-tile" data-marker="${mk.key}">
-      <div class="spread"><span style="font-weight:700;font-size:15px">${esc(mk.label)}</span>${statusChip(mk,tr)}</div>
+      <div class="spread"><span style="font-weight:700;font-size:15px">${esc(Lbl(mk.label))}</span>${statusChip(mk,tr)}</div>
       <div style="display:flex;align-items:baseline;gap:5px;margin:14px 0 10px"><span style="font-size:32px;font-weight:800;letter-spacing:-.03em">${mk.value}</span><span class="muted" style="font-weight:600;font-size:14px">${esc(mk.unit||"")}</span></div>
       <div class="spread" style="border-top:1px solid var(--line-2);padding-top:10px">${markerTrendRow(hist)}<span style="color:var(--teal-ink);font-weight:700;font-size:13px">${t("learn_more")} ›</span></div>
     </button>`;
@@ -1526,9 +1565,9 @@ function renderDashboard(){
   const col=(title,dot,items,render)=>`<div class="card" style="padding:20px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><span style="width:9px;height:9px;border-radius:50%;background:${dot}"></span><strong style="font-size:15px">${title}</strong></div>${items.length?items.slice(0,4).map(render).join(""):`<p class="muted" style="margin:0;font-size:13.5px">${t("nothing_here")}</p>`}</div>`;
   const trends=`<div class="section-title" id="sec-trends"><span>${t("ti")}</span></div>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
-      ${col(t("improving_chip"),"var(--teal)",buckets.improving,({mk,x})=>{const p=pctChange(x.history);return `<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--teal);font-weight:700;font-size:12.5px">${p!=null?(p<0?"↓":"↑")+" "+Math.abs(p)+"%":"Improving"}</span></div>${bar("var(--teal)",fillOf(mk))}</div>`;})}
-      ${col(t("steady"),"var(--aqua)",buckets.stable,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--muted);font-weight:700;font-size:12.5px">${t("steady")}</span></div>${bar("var(--aqua)",fillOf(mk))}</div>`)}
-      ${col(t("needs_attn"),"var(--amber)",buckets.attention,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(mk.label)}</span><span style="color:var(--amber-ink);font-weight:700;font-size:12.5px">${mk.status==="low"?t("below_range"):t("above_range")}</span></div>${bar("var(--amber)",fillOf(mk))}</div>`)}
+      ${col(t("improving_chip"),"var(--teal)",buckets.improving,({mk,x})=>{const p=pctChange(x.history);return `<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(Lbl(mk.label))}</span><span style="color:var(--teal);font-weight:700;font-size:12.5px">${p!=null?(p<0?"↓":"↑")+" "+Math.abs(p)+"%":"Improving"}</span></div>${bar("var(--teal)",fillOf(mk))}</div>`;})}
+      ${col(t("steady"),"var(--aqua)",buckets.stable,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(Lbl(mk.label))}</span><span style="color:var(--muted);font-weight:700;font-size:12.5px">${t("steady")}</span></div>${bar("var(--aqua)",fillOf(mk))}</div>`)}
+      ${col(t("needs_attn"),"var(--amber)",buckets.attention,({mk})=>`<div style="margin-bottom:14px"><div class="spread"><span style="font-size:13.5px;font-weight:600">${esc(Lbl(mk.label))}</span><span style="color:var(--amber-ink);font-weight:700;font-size:12.5px">${mk.status==="low"?t("below_range"):t("above_range")}</span></div>${bar("var(--amber)",fillOf(mk))}</div>`)}
     </div>`;
 
   // ---- AI insights ----
@@ -1547,10 +1586,10 @@ function renderDashboard(){
     ${LEARN.map((l,i)=>`<button class="card" data-learn="${i}" style="text-align:left;font:inherit;color:inherit;overflow:hidden;padding:0;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
       <div style="height:5px;background:${l.color}"></div>
       <div style="padding:18px 20px">
-        <div class="eyebrow" style="color:${l.color}">${esc(l.cat)}</div>
-        <div style="font-size:17px;font-weight:800;letter-spacing:-.01em;margin:8px 0 6px">${esc(l.title)}</div>
-        <div class="muted" style="font-size:13.5px;line-height:1.5;min-height:38px">${esc(l.desc)}</div>
-        <div class="spread" style="margin-top:14px;font-size:12.5px;font-weight:700"><span class="muted">${esc(l.read)} ${t("read")}</span><span style="color:var(--teal-ink)">Read ›</span></div>
+        <div class="eyebrow" style="color:${l.color}">${esc(L(l.cat))}</div>
+        <div style="font-size:17px;font-weight:800;letter-spacing:-.01em;margin:8px 0 6px">${esc(L(l.title))}</div>
+        <div class="muted" style="font-size:13.5px;line-height:1.5;min-height:38px">${esc(L(l.desc))}</div>
+        <div class="spread" style="margin-top:14px;font-size:12.5px;font-weight:700"><span class="muted">${esc(L(l.read))} ${t("read")}</span><span style="color:var(--teal-ink)">${esc(L("Read"))} ›</span></div>
       </div></button>`).join("")}</div>`;
 
   // ---- health journey ----
@@ -1569,7 +1608,7 @@ function renderDashboard(){
   const recent=`<div class="section-title" id="sec-reports"><span>${t("recent")}</span></div>`+
     S.reports.slice(0,5).map(r=>`<a class="card report-row" data-report="${r.id}">
       <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink)">${reportIcon(r.report_type)}</span>
-      <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(r.title||"Report")}</div><div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.snapshot||"")}</div></div>
+      <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(rTxt(r,"title")||"Report")}</div><div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(rTxt(r,"snapshot")||"")}</div></div>
       <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
     </a>`).join("");
 
@@ -1690,7 +1729,7 @@ function renderReports(){
         <span style="position:absolute;left:-26px;top:18px;width:14px;height:14px;border-radius:50%;background:${scoreColor(r.health_score||80)};border:3px solid var(--bg)"></span>
         <div class="card report-row" data-report="${r.id}" role="button" tabindex="0" style="cursor:pointer">
           <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink)">${reportIcon(r.report_type)}</span>
-          <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(r.title||"Report")}</div><div class="muted" style="font-size:13px">${esc(r.snapshot||"")}</div></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(rTxt(r,"title")||"Report")}</div><div class="muted" style="font-size:13px">${esc(rTxt(r,"snapshot")||"")}</div></div>
           <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}${deltaChip(r)}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
           <button class="rep-del" data-del="${r.id}" aria-label="Delete report" title="Delete report"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
         </div></div>`).join("")}
@@ -1698,12 +1737,12 @@ function renderReports(){
   }else{
     body=list.map(r=>`<div class="card report-row" data-report="${r.id}" role="button" tabindex="0" style="margin-bottom:12px;cursor:pointer">
       <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink)">${reportIcon(r.report_type)}</span>
-      <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(r.title||"Report")}</div><div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.snapshot||"")}</div></div>
+      <div style="flex:1;min-width:0"><div style="font-weight:700">${esc(rTxt(r,"title")||"Report")}</div><div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(rTxt(r,"snapshot")||"")}</div></div>
       <div style="text-align:right;flex:none"><div style="font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}${deltaChip(r)}</div><div class="muted" style="font-size:12px">${fmtDate(r.report_date)}</div></div>
       <button class="rep-del" data-del="${r.id}" aria-label="Delete report" title="Delete report"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
     </div>`).join("");
   }
-  app().innerHTML=shell(`<div class="page-head"><span class="eyebrow">${t("reports")}</span><h1>${t("reports")}</h1><p>Your full health journey — search, filter, and open any report for a plain-language read.</p></div>${search}${segs}${view}${body}`);
+  app().innerHTML=shell(`<div class="page-head"><span class="eyebrow">${t("reports")}</span><h1>${t("reports")}</h1><p>${esc(L("Your full health journey — search, filter, and open any report for a plain-language read."))}</p></div>${search}${segs}${view}${body}`);
   bindShell();
   app().querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{repFilter=b.dataset.filter;renderReports();});
   app().querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{repView=b.dataset.view;renderReports();});
@@ -1744,23 +1783,23 @@ function renderReport(id){
   const score=r.health_score!=null?r.health_score:80;
   const abn=ms.filter(m=>m.status!=="normal").sort((a,b)=>rrSev(b)-rrSev(a));
   const normN=ms.length-abn.length;
-  const qs=(r.questions||[]), good=(r.good_news||[]);
+  const qs=(rTxt(r,"questions")||[]), good=(rTxt(r,"good_news")||[]);
   const rd=reportScoreDelta(r);
   const aiBadge=r.ai_source==="claude"?`<span class="pill pill-teal" style="font-size:11px">✦ AI-enhanced</span>`:`<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:11px">Knowledge engine</span>`;
 
   // ---- HERO : Am I healthy? ----
-  const verdict=score>=80?"Looking good overall":score>=60?"Mostly healthy, a few to watch":"A few things worth your attention";
+  const verdict=L(score>=80?"Looking good overall":score>=60?"Mostly healthy, a few to watch":"A few things worth your attention");
   const hero=`<div class="card rr-hero">
     ${plosRing(score,128)}
     <div class="rr-verdict">
       ${bandPill(score)}
       <div style="font-size:clamp(19px,2.4vw,24px);font-weight:800;letter-spacing:-.02em;margin:9px 0 5px;line-height:1.15">${esc(verdict)}</div>
-      <p style="margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5">${esc((r.snapshot||r.summary||"Your report has been saved to your timeline.").slice(0,170))}</p>
+      <p style="margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5">${esc((rTxt(r,"snapshot")||rTxt(r,"summary")||L("Your report has been saved to your timeline.")).slice(0,200))}</p>
       <div class="rr-chips">
-        <span class="rr-chip"><span class="rr-dot" style="background:var(--teal)"></span>${normN} healthy</span>
-        ${abn.length?`<span class="rr-chip"><span class="rr-dot" style="background:var(--amber)"></span>${abn.length} worth a look</span>`:""}
-        <span class="rr-chip" style="color:var(--muted)">${ms.length} markers</span>
-        ${rd&&rd.delta!==0?`<span class="rr-chip"><span class="delta ${rd.delta>0?"up":"down"}">${rd.delta>0?"&#9650;":"&#9660;"} ${Math.abs(rd.delta)}</span>&nbsp;vs last report</span>`:""}
+        <span class="rr-chip"><span class="rr-dot" style="background:var(--teal)"></span>${normN} ${esc(L("healthy"))}</span>
+        ${abn.length?`<span class="rr-chip"><span class="rr-dot" style="background:var(--amber)"></span>${abn.length} ${esc(L("worth a look"))}</span>`:""}
+        <span class="rr-chip" style="color:var(--muted)">${ms.length} ${esc(L("markers"))}</span>
+        ${rd&&rd.delta!==0?`<span class="rr-chip"><span class="delta ${rd.delta>0?"up":"down"}">${rd.delta>0?"&#9650;":"&#9660;"} ${Math.abs(rd.delta)}</span>&nbsp;${esc(L("vs last report"))}</span>`:""}
       </div>
     </div>
   </div>`;
@@ -1768,23 +1807,23 @@ function renderReport(id){
   // ---- PRIORITY FINDINGS : What's wrong? ----
   const top=abn.slice(0,6), moreN=abn.length-top.length;
   const pri = abn.length ? `
-    <div class="rr-sec-h">${I.alert}What's worth a look</div>
+    <div class="rr-sec-h">${I.alert}${esc(L("What's worth a look"))}</div>
     <div class="rr-pri-grid">
-      ${top.map(m=>{const tone=rrTone(m);const word=m.status==="low"?"Low":"High";
+      ${top.map(m=>{const tone=rrTone(m);const word=L(m.status==="low"?"Low":"High");
         return `<button class="rr-pri ${tone}" data-marker="${m.key}">
           <span class="rr-pri-ic">${I.alert}</span>
           <span style="flex:1;min-width:0">
-            <span class="spread" style="gap:8px"><span style="font-weight:700;font-size:14.5px;line-height:1.25">${esc(m.label)}</span><span class="pill ${tone==="red"?"pill-red":"pill-amber"}" style="font-size:10.5px;flex:none">${word}</span></span>
+            <span class="spread" style="gap:8px"><span style="font-weight:700;font-size:14.5px;line-height:1.25">${esc(Lbl(m.label))}</span><span class="pill ${tone==="red"?"pill-red":"pill-amber"}" style="font-size:10.5px;flex:none">${word}</span></span>
             <span style="display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;margin:4px 0 5px">${m.value} <span class="muted" style="font-size:12px;font-weight:600">${esc(m.unit||"")}</span>${miniTrend(m)}</span>
-            <span class="muted" style="font-size:12.5px;line-height:1.4;display:block">${esc(rrNote(m).slice(0,92))}</span>
+            <span class="muted" style="font-size:12.5px;line-height:1.4;display:block">${esc(L(rrNote(m)).slice(0,110))}</span>
           </span>
           ${RR_ARROW}
         </button>`;}).join("")}
     </div>
-    ${moreN>0?`<p class="muted" style="font-size:12.5px;margin:11px 2px 0">+ ${moreN} more, grouped by body system below.</p>`:""}` : `
+    ${moreN>0?`<p class="muted" style="font-size:12.5px;margin:11px 2px 0">+ ${moreN} ${esc(L("more, grouped by body system below."))}</p>`:""}` : `
     <div class="card" style="padding:22px;display:flex;gap:14px;align-items:center;margin-top:4px">
       <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink);width:46px;height:46px;flex:none">${I.check.replace('width="13" height="13"','width="22" height="22"')}</span>
-      <div><div style="font-weight:800;font-size:16px">Everything's in range</div><div class="muted" style="font-size:13.5px">No markers need attention in this report.</div></div>
+      <div><div style="font-weight:800;font-size:16px">${esc(L("Everything's in range"))}</div><div class="muted" style="font-size:13.5px">${esc(L("No markers need attention in this report."))}</div></div>
     </div>`;
 
   // ---- BODY SYSTEMS : organ dashboard (progressive disclosure) ----
@@ -1797,23 +1836,23 @@ function renderReport(id){
   }).sort((p,q)=>({red:0,amber:1,green:2}[p.tone]-{red:0,amber:1,green:2}[q.tone]));
 
   const systems=`
-    <div class="rr-sec-h">${I.spark}By body system</div>
+    <div class="rr-sec-h">${I.spark}${esc(L("By body system"))}</div>
     <div class="rr-sys-grid">
     ${sysList.map((g,i)=>{
       const col=g.tone==="green"?"var(--teal)":g.tone==="red"?"var(--red)":"var(--amber)";
       const icCol=g.tone==="green"?"var(--teal-ink)":g.tone==="red"?"var(--red)":"var(--amber-ink)";
       const bg=g.tone==="green"?"var(--teal-bg)":g.tone==="red"?"var(--red-bg)":"var(--amber-bg)";
-      const sub=g.a.length?`${g.a.length} worth a look`:"All in range";
+      const sub=g.a.length?`${g.a.length} ${L("worth a look")}`:L("All in range");
       const rows=g.mk.slice().sort((a,b)=>rrSev(b)-rrSev(a)).map(m=>{
         const st=m.status==="normal"?"green":rrTone(m);
         const d=st==="green"?"var(--teal)":st==="red"?"var(--red)":"var(--amber)";
-        const chip=m.status==="normal"?`<span class="pill pill-teal" style="font-size:10px;flex:none">Normal</span>`:`<span class="pill ${st==="red"?"pill-red":"pill-amber"}" style="font-size:10px;flex:none">${m.status==="low"?"Low":"High"}</span>`;
-        return `<button class="rr-mrow" data-marker="${m.key}"><span class="rr-dot" style="background:${d}"></span><span class="rr-mrow-name">${esc(m.label)}</span><span class="rr-mrow-val">${m.value} ${esc(m.unit||"")}</span>${chip}</button>`;
+        const chip=m.status==="normal"?`<span class="pill pill-teal" style="font-size:10px;flex:none">${esc(L("Normal"))}</span>`:`<span class="pill ${st==="red"?"pill-red":"pill-amber"}" style="font-size:10px;flex:none">${esc(L(m.status==="low"?"Low":"High"))}</span>`;
+        return `<button class="rr-mrow" data-marker="${m.key}"><span class="rr-dot" style="background:${d}"></span><span class="rr-mrow-name">${esc(Lbl(m.label))}</span><span class="rr-mrow-val">${m.value} ${esc(m.unit||"")}</span>${chip}</button>`;
       }).join("");
       return `<div class="rr-sys">
         <button class="rr-sys-h" data-sys-h>
           <span class="rr-sys-ic" style="background:${bg};color:${icCol}">${g.meta.ic}</span>
-          <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:15px">${esc(g.meta.label)}</span><span class="muted" style="font-size:12.5px">${g.mk.length} markers &middot; ${sub}</span></span>
+          <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:15px">${esc(L(g.meta.label))}</span><span class="muted" style="font-size:12.5px">${g.mk.length} ${esc(L("markers"))} &middot; ${esc(sub)}</span></span>
           <span class="rr-dot" style="background:${col}"></span>${RR_CHEV}
         </button>
         <div class="rr-sys-b">${rows}</div>
@@ -1824,26 +1863,26 @@ function renderReport(id){
   // ---- ACTION PLAN : What should I do? ----
   const acts=abn.slice(0,3);
   const action=`
-    <div class="rr-sec-h">${I.trend}Your action plan</div>
+    <div class="rr-sec-h">${I.trend}${esc(L("Your action plan"))}</div>
     <div class="card" style="padding:6px 20px">
-      ${acts.length?acts.map((m,i)=>`<div class="rr-act"><span class="rr-act-n">${i+1}</span><div><div style="font-weight:700;font-size:14.5px">${esc(m.label)} ${m.status==="low"?"is low":"is high"}</div><div class="muted" style="font-size:13px;line-height:1.45;margin-top:2px">${esc(rrAction(m))}</div></div></div>`).join(""):`<div class="rr-act"><span class="rr-act-n" style="background:var(--teal-bg);color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="14" height="14"')}</span><div><div style="font-weight:700;font-size:14.5px">Keep doing what you're doing</div><div class="muted" style="font-size:13px">Everything's in range — re-test when your doctor suggests.</div></div></div>`}
+      ${acts.length?acts.map((m,i)=>`<div class="rr-act"><span class="rr-act-n">${i+1}</span><div><div style="font-weight:700;font-size:14.5px">${esc(Lbl(m.label))} ${esc(L(m.status==="low"?"is low":"is high"))}</div><div class="muted" style="font-size:13px;line-height:1.45;margin-top:2px">${esc(L(rrAction(m)))}</div></div></div>`).join(""):`<div class="rr-act"><span class="rr-act-n" style="background:var(--teal-bg);color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="14" height="14"')}</span><div><div style="font-weight:700;font-size:14.5px">${esc(L("Keep doing what you're doing"))}</div><div class="muted" style="font-size:13px">${esc(L("Everything's in range — re-test when your doctor suggests."))}</div></div></div>`}
     </div>`;
 
   // ---- accordions (collapsed) ----
-  const questions=qs.length?`<div class="rr-acc"><button class="rr-acc-h" data-acc>${I.reports.replace('width="20" height="20"','width="17" height="17"')}Questions for your doctor <span class="muted" style="font-weight:600;font-size:13px">(${qs.length})</span>${RR_CHEV}</button><div class="rr-acc-b"><div style="padding:2px 16px 14px">${qs.map(q=>`<div class="finding"><span style="color:var(--teal);flex:none;font-weight:800">Q</span><span style="color:var(--ink-2);font-size:14px">${esc(q)}</span></div>`).join("")}</div></div></div>`:"";
-  const goodAcc=good.length?`<div class="rr-acc"><button class="rr-acc-h" data-acc style="color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="17" height="17"').replace('stroke="currentColor"','stroke="var(--teal)"')}What's going well <span class="muted" style="font-weight:600;font-size:13px">(${good.length})</span>${RR_CHEV}</button><div class="rr-acc-b"><div style="padding:2px 16px 14px">${good.map(g=>`<div class="finding"><span style="color:var(--teal);flex:none;margin-top:2px">${I.check.replace('width="13" height="13"','width="15" height="15"')}</span><span style="color:var(--ink-2);font-size:14px">${esc(g)}</span></div>`).join("")}</div></div></div>`:"";
+  const questions=qs.length?`<div class="rr-acc"><button class="rr-acc-h" data-acc>${I.reports.replace('width="20" height="20"','width="17" height="17"')}${esc(L("Questions for your doctor"))} <span class="muted" style="font-weight:600;font-size:13px">(${qs.length})</span>${RR_CHEV}</button><div class="rr-acc-b"><div style="padding:2px 16px 14px">${qs.map(q=>`<div class="finding"><span style="color:var(--teal);flex:none;font-weight:800">Q</span><span style="color:var(--ink-2);font-size:14px">${esc(q)}</span></div>`).join("")}</div></div></div>`:"";
+  const goodAcc=good.length?`<div class="rr-acc"><button class="rr-acc-h" data-acc style="color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="17" height="17"').replace('stroke="currentColor"','stroke="var(--teal)"')}${esc(L("What's going well"))} <span class="muted" style="font-weight:600;font-size:13px">(${good.length})</span>${RR_CHEV}</button><div class="rr-acc-b"><div style="padding:2px 16px 14px">${good.map(g=>`<div class="finding"><span style="color:var(--teal);flex:none;margin-top:2px">${I.check.replace('width="13" height="13"','width="15" height="15"')}</span><span style="color:var(--ink-2);font-size:14px">${esc(g)}</span></div>`).join("")}</div></div></div>`:"";
 
   app().innerHTML=shell(`
     <button class="btn btn-ghost" data-nav="#/reports" style="margin-bottom:16px;padding:9px 14px">${I.back}Back</button>
     <div class="rr-wrap">
-      <div class="spread" style="margin-bottom:14px"><span class="eyebrow">${esc(r.title||"Report")} &middot; ${fmtDate(r.report_date)}</span>${aiBadge}</div>
+      <div class="spread" style="margin-bottom:14px"><span class="eyebrow">${esc(rTxt(r,"title")||"Report")} &middot; ${fmtDate(r.report_date)}</span>${aiBadge}</div>
       ${hero}
       ${pri}
       ${systems}
       ${action}
       ${questions}
       ${goodAcc}
-      <p class="muted" style="font-size:12px;text-align:center;margin:26px 0 0">Educational, not a diagnosis. Always discuss your results with a healthcare professional.</p>
+      <p class="muted" style="font-size:12px;text-align:center;margin:26px 0 0">${esc(L("Educational, not a diagnosis. Always discuss your results with a healthcare professional."))}</p>
     </div>
   `);
   bindShell();
@@ -1855,11 +1894,11 @@ function renderReportTrends(ms){
   // compare each marker to its own history
   return ms.map(mk=>{
     const hist=S.markers.filter(x=>x.key===mk.key).sort((a,b)=>new Date(a.report_date)-new Date(b.report_date));
-    if(hist.length<2) return `<div class="finding"><span style="font-size:14.5px;color:var(--ink-2)"><strong>${esc(mk.label)}</strong> — first reading at ${mk.value} ${esc(mk.unit)}. We'll track changes from here.</span></div>`;
+    if(hist.length<2) return `<div class="finding"><span style="font-size:14.5px;color:var(--ink-2)"><strong>${esc(Lbl(mk.label))}</strong> — first reading at ${mk.value} ${esc(mk.unit)}. We'll track changes from here.</span></div>`;
     const tr=trendOf(hist); const prev=hist[hist.length-2];
     const word=tr==="improving"?"improving":tr==="attention"?"worth watching":"holding steady";
     const col=tr==="improving"?"var(--teal-ink)":tr==="attention"?"var(--amber-ink)":"var(--muted)";
-    return `<div class="finding"><span style="font-size:14.5px;color:var(--ink-2)"><strong>${esc(mk.label)}</strong> — ${prev.value} → ${mk.value} ${esc(mk.unit)}, <span style="color:${col};font-weight:700">${word}</span> ${sparkline(hist)}</span></div>`;
+    return `<div class="finding"><span style="font-size:14.5px;color:var(--ink-2)"><strong>${esc(Lbl(mk.label))}</strong> — ${prev.value} → ${mk.value} ${esc(mk.unit)}, <span style="color:${col};font-weight:700">${word}</span> ${sparkline(hist)}</span></div>`;
   }).join("");
 }
 function sparkline(hist){
@@ -1882,23 +1921,23 @@ function openDrawer(html){
   document.addEventListener("keydown",escClose);
 }
 function escClose(e){ if(e.key==="Escape")closeDrawer(); }
-function closeDrawer(){ const w=$("#drawer-wrap"); if(w){ w.remove(); document.body.style.overflow=""; document.removeEventListener("keydown",escClose); } }
+function closeDrawer(){ S._drawer=null; const w=$("#drawer-wrap"); if(w){ w.remove(); document.body.style.overflow=""; document.removeEventListener("keydown",escClose); } }
 
 function eduBlock(e,extra){
-  const sec=(title,content)=>content?`<div class="edu"><h4>${title}</h4>${content}</div>`:"";
-  const list=(arr)=>arr&&arr.length?`<ul>${arr.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
+  const sec=(title,content)=>content?`<div class="edu"><h4>${esc(L(title))}</h4>${content}</div>`:"";
+  const list=(arr)=>arr&&arr.length?`<ul>${arr.map(x=>`<li>${esc(L(x))}</li>`).join("")}</ul>`:"";
   return `
-    ${sec("What is it?",`<p>${esc(e.what)}</p>`)}
-    ${sec("Why it matters",`<p>${esc(e.why)}</p>`)}
-    ${sec("How it functions",`<p>${esc(e.func)}</p>`)}
+    ${sec("What is it?",`<p>${esc(L(e.what))}</p>`)}
+    ${sec("Why it matters",`<p>${esc(L(e.why))}</p>`)}
+    ${sec("How it functions",`<p>${esc(L(e.func))}</p>`)}
     ${extra||""}
-    ${sec("Healthy range",`<p>${esc(e.range)}</p>`)}
-    ${sec("What raises it",`<p>${esc(e.high)}</p>`)}
-    ${sec("What lowers it",`<p>${esc(e.low)}</p>`)}
+    ${sec("Healthy range",`<p>${esc(L(e.range))}</p>`)}
+    ${sec("What raises it",`<p>${esc(L(e.high))}</p>`)}
+    ${sec("What lowers it",`<p>${esc(L(e.low))}</p>`)}
     ${sec("How to improve it",list(e.improve))}
-    ${sec("When to speak to a doctor",`<p>${esc(e.doctor)}</p>`)}
+    ${sec("When to speak to a doctor",`<p>${esc(L(e.doctor))}</p>`)}
     ${sec("Related conditions",list(e.related))}
-    ${sec("Fun fact",`<p style="font-style:italic">${esc(e.fun)}</p>`)}
+    ${sec("Fun fact",`<p style="font-style:italic">${esc(L(e.fun))}</p>`)}
   `;
 }
 function drawerHead(title,sub){
@@ -1973,7 +2012,7 @@ const MINFO=[
 ];
 function markerInfo(label){ const s=(label||"").toLowerCase(); for(const e of MINFO){ if(e.kw.some(k=>s.includes(k))) return e; } return null; }
 function eduBlockBasic(e,status){
-  const sec=(tt,c)=>c?`<div class="edu"><h4>${tt}</h4><p>${esc(c)}</p></div>`:"";
+  const sec=(tt,c)=>c?`<div class="edu"><h4>${esc(L(tt))}</h4><p>${esc(L(c))}</p></div>`:"";
   let parts=sec("What is it?",e.what)+sec("Why it matters",e.why);
   if(status==="low"&&e.low) parts+=sec("What a low reading can mean",e.low);
   else if(status==="high"&&e.high) parts+=sec("What a high reading can mean",e.high);
@@ -2001,6 +2040,7 @@ function confirmDialog(title,msg,okLabel,onOk){
 }
 
 function openMarkerDrawer(key){
+  S._drawer={t:"m",key};
   const k=KB[key];
   const latest=[...S.markers].filter(m=>m.key===key).pop();
   if(!latest && !k) return;
@@ -2018,25 +2058,26 @@ function openMarkerDrawer(key){
     valueBlock=`<div class="edu"><h4>${t("your_reading")}</h4>
       <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:34px;font-weight:800;letter-spacing:-.03em">${latest.value}</span><span class="muted" style="font-weight:600">${esc(unit)}</span>
       <span class="pill ${status==="normal"?"pill-teal":"pill-amber"}" style="margin-left:auto">${status==="normal"?t("in_range"):status==="low"?t("slightly_low"):t("slightly_high")}</span></div>
-      ${hasRange?`<div class="range"><div class="band" style="left:30%;width:40%"></div><div class="dot" style="left:${pos}%;background:${col}"></div></div><p class="muted" style="font-size:12.5px;margin:0">${t("usual_range")} ${lo}–${hi} ${esc(unit)}</p>`:`<p class="muted" style="font-size:12.5px;margin:6px 0 0">Reference range varies by lab — check the range printed on your report.</p>`}</div>`;
+      ${hasRange?`<div class="range"><div class="band" style="left:30%;width:40%"></div><div class="dot" style="left:${pos}%;background:${col}"></div></div><p class="muted" style="font-size:12.5px;margin:0">${t("usual_range")} ${lo}–${hi} ${esc(unit)}</p>`:`<p class="muted" style="font-size:12.5px;margin:6px 0 0">${esc(L("Reference range varies by lab — check the range printed on your report."))}</p>`}</div>`;
   }
   const area=(k&&k.area)||(latest&&latest.body_area)||"blood";
   const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">${t("body_area")}: ${esc((ORGANS[area]||{label:area}).label)}</p></div>`;
   let encyclopedia;
   if(k){ encyclopedia=eduBlock(k.edu); }
-  else { const mi=markerInfo(label); encyclopedia = mi?eduBlockBasic(mi,status):`<div class="edu"><p style="margin:0;color:var(--ink-2)">This value was read from your report and saved to your timeline. We'll keep tracking it over time so you can watch how it changes.</p></div>`; }
+  else { const mi=markerInfo(label); encyclopedia = mi?eduBlockBasic(mi,status):`<div class="edu"><p style="margin:0;color:var(--ink-2)">${esc(L("This value was read from your report and saved to your timeline. We'll keep tracking it over time so you can watch how it changes."))}</p></div>`; }
   const tr=markerTrend(latest);
-  const trendBlock = tr?`<div class="edu"><h4>Since your last report</h4><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">${trendChip(tr)}<span class="muted" style="font-size:13px">Previous reading: ${tr.prev} ${esc(unit)}</span></div></div>`:"";
-  openDrawer(drawerHead(label,k?t("from_encyclopedia"):(markerInfo(label)?"Plain-language guide":t("your_result")))+
+  const trendBlock = tr?`<div class="edu"><h4>${esc(L("Since your last report"))}</h4><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">${trendChip(tr)}<span class="muted" style="font-size:13px">${esc(L("Previous reading"))}: ${tr.prev} ${esc(unit)}</span></div></div>`:"";
+  openDrawer(drawerHead(Lbl(label),k?t("from_encyclopedia"):(markerInfo(label)?L("Plain-language guide"):t("your_result")))+
     `<div class="drawer-body">${valueBlock}${trendBlock}${fig}${encyclopedia}
      <p class="muted" style="font-size:12px;margin-top:8px">${t("not_diagnosis")}</p></div>`);
 }
 function openOrganDrawer(area){
+  S._drawer={t:"o",area};
   const o=ORGANS[area]||ORGANS.blood;
-  const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">Highlighted: ${esc(o.label)}</p></div>`;
+  const fig=`<div class="edu" style="text-align:center;background:var(--surface-2);border-radius:18px;padding:16px">${bodyFigure([area])}<p class="muted" style="font-size:12.5px;margin:6px 0 0">${esc(L("Highlighted"))}: ${esc(Lbl(o.label))}</p></div>`;
   const related=S.markers.filter(m=>m.body_area===area);
-  const relBlock=related.length?`<div class="edu"><h4>Your markers here</h4><div class="wrap">${[...new Map(related.map(m=>[m.key,m])).values()].map(m=>`<button class="pill pill-teal" style="cursor:pointer;border:none" data-jump="${m.key}">${esc((KB[m.key]&&KB[m.key].label)||m.label||m.key)}</button>`).join("")}</div></div>`:"";
-  openDrawer(drawerHead(o.label,"Body & systems")+`<div class="drawer-body">${fig}${relBlock}${eduBlock(o.edu)}<p class="muted" style="font-size:12px;margin-top:8px">Educational only — not a diagnosis.</p></div>`);
+  const relBlock=related.length?`<div class="edu"><h4>${esc(L("Your markers here"))}</h4><div class="wrap">${[...new Map(related.map(m=>[m.key,m])).values()].map(m=>`<button class="pill pill-teal" style="cursor:pointer;border:none" data-jump="${m.key}">${esc(Lbl((KB[m.key]&&KB[m.key].label)||m.label||m.key))}</button>`).join("")}</div></div>`:"";
+  openDrawer(drawerHead(Lbl(o.label),L("Body & systems"))+`<div class="drawer-body">${fig}${relBlock}${eduBlock(o.edu)}<p class="muted" style="font-size:12px;margin-top:8px">${esc(L("Educational only — not a diagnosis."))}</p></div>`);
   $("#drawer-wrap").querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.jump));
 }
 
@@ -2053,6 +2094,15 @@ function renderSettings(){
   const _has=(val,opt)=>(val||"").toLowerCase().split(",").map(x=>x.trim()).includes(opt.toLowerCase());
   const chips=(id,opts,val)=>`<div class="optwrap">${opts.map(o=>`<button type="button" class="optchip ${_has(val,o)?"on":""}" data-chip="${id}" data-val="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
   app().innerHTML=shell(`<div class="page-head"><span class="eyebrow">${t("settings")}</span><h1>${t("settings")}</h1></div>
+    <div class="card rsection"><h3>Account</h3>
+      <div class="spread" style="gap:14px">
+        <div style="min-width:0">
+          <div style="font-weight:700">${esc(p.full_name||"Your account")}</div>
+          <div class="muted" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(S.user?.email||"")}</div>
+        </div>
+        <button class="btn btn-ghost" id="s-signout" style="flex:none">${t("sign_out")}</button>
+      </div>
+    </div>
     <div class="card rsection"><h3>Profile</h3>
       <p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Tap to select — no typing needed. This helps us tailor your insights and reminders.</p>
       <label class="field"><span>${t("name")}</span><input class="input" id="s-name" value="${esc(p.full_name||"")}"></label>
@@ -2080,6 +2130,7 @@ function renderSettings(){
       <button class="btn btn-danger" id="s-delete" disabled style="opacity:.5">Delete everything</button></div>
     <p class="muted" style="font-size:12.5px;text-align:center;margin:18px 0 0">Nutrolis AI · educational companion, never a replacement for your doctor.</p>`);
   bindShell();
+  const _so=$("#s-signout"); if(_so) _so.onclick=doSignOut;
   const chipVals=(id)=>[...app().querySelectorAll(`[data-chip="${id}"].on`)].map(b=>b.dataset.val).join(", ");
   app().querySelectorAll(".optchip").forEach(b=>b.onclick=()=>{ const g=b.dataset.chip, v=b.dataset.val;
     if(v==="None"){ app().querySelectorAll(`[data-chip="${g}"]`).forEach(x=>{ if(x!==b) x.classList.remove("on"); }); }
@@ -2102,6 +2153,9 @@ function bindShell(){
   app().querySelectorAll("[data-nav]").forEach(b=>b.onclick=(e)=>{e.preventDefault();go(b.dataset.nav);});
   app().querySelectorAll('[data-act="theme"]').forEach(b=>b.onclick=()=>{toggleTheme();render();});
   app().querySelectorAll('[data-act="signout"]').forEach(b=>b.onclick=doSignOut);
+  const ab=app().querySelector("#acctBtn"), am=app().querySelector("#acctMenu");
+  if(ab&&am){ ab.onclick=(e)=>{ e.stopPropagation(); const o=am.classList.toggle("open"); ab.setAttribute("aria-expanded",o?"true":"false"); }; }
+  if(!window._acctOutside){ window._acctOutside=true; document.addEventListener("click",(e)=>{ const m=document.getElementById("acctMenu"); if(m&&m.classList.contains("open")&&!e.target.closest("#acctMenu")&&!e.target.closest("#acctBtn")) m.classList.remove("open"); }); }
   // Explore dropdown toggle (no re-render — pure DOM)
   const tog=app().querySelector("[data-explore]");
   if(tog){ tog.onclick=()=>{ exploreOpen=!exploreOpen; const sm=app().querySelector(".submenu"); if(sm)sm.style.display=exploreOpen?"":"none"; tog.classList.toggle("open",exploreOpen); }; }
@@ -2139,16 +2193,31 @@ function render(){
   }
 }
 
+function detectBrowserLang(){
+  try{ if(localStorage.getItem("nutrolis-lang")) return null;
+    const codes=LANGS.map(l=>l[0]);
+    for(const l of (navigator.languages||[navigator.language||"en"])){ const c=(l||"").toLowerCase().split("-")[0]; if(codes.includes(c)) return c; }
+  }catch(e){}
+  return null;
+}
+let _prewarmed=false;
+function prewarmLangs(){
+  if(_prewarmed) return; _prewarmed=true;
+  const others=LANGS.map(l=>l[0]).filter(c=>c!=="en"&&!I18N[c]);
+  (function next(){ const c=others.shift(); if(!c) return; ensureLang(c).catch(()=>{}).finally(()=>setTimeout(next,500)); })();
+}
 async function boot(){
   const{data:{session}}=await sb.auth.getSession();
-  if(!session){ S.user=null; applyTheme(); renderLogin(); return; }
+  if(!session){ S.user=null; const bl=detectBrowserLang(); if(bl){ S.lang=bl; } applyTheme(); applyDir(); renderLogin(); setTimeout(prewarmLangs,1500); return; }
   S.user=session.user;
   await loadProfile();
+  const bl=detectBrowserLang(); if(bl && (!S.profile||!S.profile.language)){ S.lang=bl; }
   applyTheme(); applyDir();
   await loadData();
   if(S.lang!=="en"){ try{ await ensureLang(S.lang); await ensureReportI18n(S.lang); }catch(e){} }
   if(!location.hash||location.hash==="#/login") location.hash="#/dashboard";
   render();
+  setTimeout(prewarmLangs,1800);   // warm the rest in the background → instant switching
 }
 
 window.addEventListener("hashchange",()=>{ if(S.user) render(); });

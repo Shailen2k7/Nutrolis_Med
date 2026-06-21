@@ -125,6 +125,20 @@
   @media (prefers-reduced-motion:reduce){
     .io-input,.io-output,.io-bullets li{animation:none!important;opacity:1!important}
   }
+
+  .nav-burger{display:none;flex:none;width:44px;height:44px;border:1px solid var(--line);background:var(--surface);border-radius:12px;cursor:pointer;align-items:center;justify-content:center;color:var(--ink);transition:background .2s,border-color .2s,color .2s}
+  .nav-burger.on{background:var(--teal-bg);border-color:var(--teal);color:var(--teal-ink)}
+  .nav-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:2px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 30px 60px -24px var(--shadow);padding:10px 18px 20px;opacity:0;transform:translateY(-10px);transition:opacity .22s ease,transform .26s cubic-bezier(.22,1,.36,1);pointer-events:none}
+  .nav-menu.open{opacity:1;transform:none;pointer-events:auto}
+  .nav-menu a{padding:14px 8px;font-size:16px;font-weight:600;color:var(--ink-2);text-decoration:none;border-radius:11px;transition:background .15s,color .15s}
+  .nav-menu a:hover{background:var(--surface-3);color:var(--ink)}
+  .nav-menu-signin{border-top:1px solid var(--line-2);margin-top:6px}
+  .nav-menu-cta{margin-top:12px;font:inherit;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:15px;border-radius:13px;cursor:pointer;text-align:center;box-shadow:0 12px 26px -12px var(--glow)}
+  @media (max-width:880px){
+    .nav-cta-bar{display:none!important}
+    .nav-burger{display:flex}
+    .nav-menu{display:flex}
+  }
   </style>
 </head>
 <body>
@@ -146,13 +160,23 @@
         <a href="#features" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Features</a>
         <a href="#faq" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">FAQ</a>
       </div>
-      <button data-act="theme" aria-label="Toggle light and dark" style="display:inline-flex;align-items:center;flex:none;width:54px;height:30px;border-radius:999px;border:1px solid var(--line);background:var(--surface-3);position:relative;cursor:pointer;padding:0;">
+      <button data-act="theme" class="nav-theme" aria-label="Toggle light and dark" style="display:inline-flex;align-items:center;flex:none;width:54px;height:30px;border-radius:999px;border:1px solid var(--line);background:var(--surface-3);position:relative;cursor:pointer;padding:0;">
         <span style="position:absolute;left:7px;width:6px;height:6px;border-radius:50%;background:var(--amber);opacity:.7;"></span>
         <span style="position:absolute;right:7px;width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.7;"></span>
         <span style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--aqua));transition:left .38s cubic-bezier(.34,1.56,.5,1);box-shadow:0 2px 6px -1px var(--shadow);" id="knob"></span>
       </button>
       <a href="app.html" class="nav-signin" style="font-size:15px;font-weight:600;color:var(--ink-2);text-decoration:none;" style-hover="color:var(--teal)">Sign in</a>
-      <button data-act="enter" style="font:inherit;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:11px 20px;border-radius:12px;cursor:pointer;box-shadow:0 8px 20px -8px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-2px)">Get started</button>
+      <button data-act="enter" class="nav-cta-bar" style="font:inherit;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:11px 20px;border-radius:12px;cursor:pointer;box-shadow:0 8px 20px -8px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-2px)">Get started</button>
+      <button data-act="menu" class="nav-burger" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+    <div class="nav-menu" id="navMenu">
+      <a href="#how" data-act="closemenu">How it works</a>
+      <a href="#plos" data-act="closemenu">PLOS Score</a>
+      <a href="#languages" data-act="closemenu">Languages</a>
+      <a href="#features" data-act="closemenu">Features</a>
+      <a href="#faq" data-act="closemenu">FAQ</a>
+      <a href="app.html" class="nav-menu-signin" data-act="closemenu">Sign in</a>
+      <button class="nav-menu-cta" data-act="enter">Get started</button>
     </div>
   </nav>
 
@@ -901,13 +925,18 @@
   setTheme(saved);
 
   // global click actions
+  function closeNavMenu(){ var m=document.getElementById('navMenu'); if(m) m.classList.remove('open'); var bb=document.querySelector('.nav-burger'); if(bb){ bb.classList.remove('on'); bb.setAttribute('aria-expanded','false'); } }
   document.addEventListener('click',function(e){
+    var m=document.getElementById('navMenu');
+    if(m && m.classList.contains('open') && !e.target.closest('.nav-menu') && !e.target.closest('.nav-burger')){ closeNavMenu(); }
     var el=e.target.closest('[data-act]'); if(!el) return;
     var a=el.getAttribute('data-act');
     if(a==='theme'){ setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark'); }
     else if(a==='enter'){ e.preventDefault(); location.href='app.html'; }
     else if(a==='rundemo'){ runDemo(); }
     else if(a==='reset'){ resetDemo(); }
+    else if(a==='menu'){ var open=m.classList.toggle('open'); el.classList.toggle('on',open); el.setAttribute('aria-expanded',open?'true':'false'); }
+    else if(a==='closemenu'){ closeNavMenu(); }
   });
 
   // style-hover -> real hover
