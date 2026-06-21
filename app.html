@@ -219,6 +219,43 @@ label.field>span{display:block;font-size:13px;font-weight:700;color:var(--ink-2)
 .center{display:grid;place-items:center;min-height:100vh;padding:24px}
 .spread{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .wrap{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---- report redesign (rr-) ---- */
+.rr-wrap{max-width:760px;margin:0 auto}
+.rr-hero{display:flex;gap:24px;align-items:center;padding:24px;flex-wrap:wrap}
+.rr-verdict{flex:1;min-width:220px}
+.rr-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.rr-chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--ink-2);padding:7px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line-2)}
+.rr-dot{width:10px;height:10px;border-radius:50%;flex:none}
+.rr-sec-h{font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:32px 0 13px;display:flex;align-items:center;gap:8px}
+.rr-sec-h svg{color:var(--teal)}
+.rr-pri-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.rr-pri{display:flex;gap:13px;align-items:flex-start;text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:16px;padding:15px;cursor:pointer;transition:transform .2s,box-shadow .25s}
+.rr-pri:hover{transform:translateY(-2px);box-shadow:0 20px 44px -30px var(--shadow)}
+.rr-pri.red{border-left-color:var(--red)}
+.rr-pri-ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;background:var(--amber-bg);color:var(--amber-ink)}
+.rr-pri.red .rr-pri-ic{background:var(--red-bg);color:var(--red)}
+.rr-go{color:var(--muted);flex:none;align-self:center}
+.rr-sys-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(252px,1fr));gap:12px}
+.rr-sys{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;align-self:start}
+.rr-sys-h{display:flex;align-items:center;gap:12px;width:100%;border:none;background:none;font:inherit;color:inherit;padding:15px;cursor:pointer;text-align:left}
+.rr-sys-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}
+.rr-sys-b{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.rr-sys.open .rr-sys-b{max-height:1600px}
+.rr-sys.open .rr-chev{transform:rotate(180deg)}
+.rr-mrow{display:flex;align-items:center;gap:10px;width:100%;border:none;background:none;font:inherit;color:inherit;padding:11px 15px;border-top:1px solid var(--line-2);cursor:pointer;text-align:left;transition:background .15s}
+.rr-mrow:hover{background:var(--surface-2)}
+.rr-mrow-name{flex:1;min-width:0;font-weight:600;font-size:13.5px;line-height:1.3}
+.rr-mrow-val{font-size:12.5px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.rr-chev{margin-left:auto;flex:none;color:var(--muted);transition:transform .3s}
+.rr-acc{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin-top:12px;overflow:hidden}
+.rr-acc-h{display:flex;align-items:center;gap:9px;width:100%;border:none;background:none;font:inherit;font-weight:700;font-size:14.5px;color:inherit;padding:16px;cursor:pointer;text-align:left}
+.rr-acc-b{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.rr-acc.open .rr-acc-b{max-height:1800px}
+.rr-acc.open .rr-chev{transform:rotate(180deg)}
+.rr-act{display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line-2)}
+.rr-act:first-child{border-top:none}
+.rr-act-n{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:12.5px;flex:none}
 </style>
 </head>
 <body>
@@ -1037,7 +1074,7 @@ function catOf(s){ s=(s||"").toLowerCase();
   if(/liver|\balt\b|\bast\b|sgpt|sgot|ggt|bilirubin|albumin/.test(s))return"Liver";
   if(/kidney|creatinine|urea|\bbun\b|egfr|electrolyte|sodium|chloride|potassium/.test(s))return"Kidney";
   if(/thyroid|tsh|\bt3\b|\bt4\b/.test(s))return"Thyroid";
-  if(/platelet|haemoglobin|hemoglobin|\brbc\b|\bwbc\b|blood count|rdw|mpv/.test(s))return"Blood";
+  if(/platelet|haemoglobin|hemoglobin|\brbc\b|\bwbc\b|blood count|rdw|mpv|mchc|\bmch\b|mcv|\bhct\b|haematocrit|hematocrit|\bpcv\b|plateletcrit|\bpct\b|hemo\.conc|neutrophil|lymphocyte|monocyte|eosinophil|basophil/.test(s))return"Blood";
   return"General";
 }
 function insightCards(){
@@ -1519,43 +1556,142 @@ function renderReports(){
 }
 
 /* ---------------- REPORT DETAIL ---------------- */
+/* ---- report redesign helpers ---- */
+const RR_SYS={
+  Cardiovascular:{label:"Heart & cholesterol",area:"heart",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9Z"/></svg>'},
+  Metabolic:{label:"Blood sugar",area:"blood",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a9 9 0 1 1 16 0"/><path d="M12 14a4 4 0 0 1 0-8"/><path d="M12 14l3.2-3.2"/></svg>'},
+  Nutrition:{label:"Vitamins & iron",area:"bone",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3C7 3 4 6 4 10c0 6 5 11 5 11s9-3 11-9c1.6-4.6-2-9-9-9Z"/><path d="M8 17c2.5-4 5.5-6.5 9-8"/></svg>'},
+  Blood:{label:"Blood count",area:"blood",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 10.5a6 6 0 0 1-12 0C6 9.5 12 3 12 3Z"/></svg>'},
+  Liver:{label:"Liver",area:"liver",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8c5-3 13-2 16 1.5 1 4-2.5 8.5-8 8.5-4.5 0-8-2.5-8-6.5 0-1.2 0-2.4 0-3.5Z"/><path d="M11 12c1.5 1 3 1 4.5 0"/></svg>'},
+  Kidney:{label:"Kidney",area:"kidney",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4C6 4 4.5 7 4.5 11S6.5 18 9 18c1.8 0 2.6-1.6 2.6-3.4 0-2 .9-3 .9-4.8C12.5 6.6 11.6 4 9 4Z"/><path d="M15.5 4c2.5 0 4 3 4 7s-1.5 7-4 7"/></svg>'},
+  Thyroid:{label:"Thyroid",area:"thyroid",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7c-1.5-2-3-3-5-3S3 6 3.5 9.5 7 16 9 14s2-3 3-3 1 1 3 3 5-1 5.5-4.5S20 4 18 4s-3.5 1-5 3Z"/></svg>'},
+  General:{label:"Other markers",area:"blood",ic:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>'}
+};
+const RR_ORDER=["Cardiovascular","Metabolic","Nutrition","Blood","Liver","Kidney","Thyroid","General"];
+function rrSev(m){
+  if(m.status==="normal") return 0;
+  if(m.ref_low==null||m.ref_high==null) return 0.35;
+  const span=(m.ref_high-m.ref_low)||1;
+  const d=m.status==="low"?(m.ref_low-m.value):(m.value-m.ref_high);
+  return Math.max(0,d/span);
+}
+function rrTone(m){ return rrSev(m)>0.6?"red":"amber"; }
+function rrNote(m){ const k=KB[m.key]; if(k&&k.edu&&k.edu.what) return k.edu.what; return m.status==="low"?"Sitting a little below the usual range.":"Sitting a little above the usual range."; }
+function rrAction(m){ const k=KB[m.key]; if(k&&k.edu&&k.edu.improve&&k.edu.improve.length) return k.edu.improve[0]; return m.status==="low"?"Ask your doctor whether a small supplement or diet change would help.":"A few lifestyle tweaks and a recheck usually bring this back in line."; }
+const RR_CHEV='<svg class="rr-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+const RR_ARROW='<svg class="rr-go" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+
 function renderReport(id){
   const r=S.reports.find(x=>x.id===id);
   if(!r){ go("#/reports"); return; }
   const ms=S.markers.filter(x=>x.report_id===id);
-  const good=(r.good_news||[]), att=(r.attention||[]), qs=(r.questions||[]);
-  const markerChips=ms.length?`<div class="rsection"><h3>${I.spark}${t("key_findings")}</h3>
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-    ${ms.map(mk=>`<button class="marker-chip" data-marker="${mk.key}">
-      <span class="tile-ico" style="width:38px;height:38px;background:${mk.status==="normal"?"var(--teal-bg)":"var(--amber-bg)"}">${mk.status==="normal"?I.check.replace('width="13" height="13"','width="18" height="18"').replace('stroke="currentColor"','stroke="var(--teal-ink)"'):I.alert.replace('width="15" height="15"','width="18" height="18"').replace('stroke="currentColor"','stroke="var(--amber-ink)"')}</span>
-      <span style="flex:1"><span style="display:block;font-weight:700;font-size:14.5px">${esc(mk.label)}</span><span class="muted" style="font-size:12.5px">${mk.value} ${esc(mk.unit)}</span></span>
-      <span class="pill ${mk.status==="normal"?"pill-teal":"pill-amber"}" style="font-size:11px">${mk.status==="normal"?"Normal":mk.status==="low"?"Low":"High"}</span>
-    </button>`).join("")}</div>
-    <p class="muted" style="font-size:13px;margin:12px 0 0">Tap any marker to open its full health encyclopedia.</p></div>`:"";
-
+  const score=r.health_score!=null?r.health_score:80;
+  const abn=ms.filter(m=>m.status!=="normal").sort((a,b)=>rrSev(b)-rrSev(a));
+  const normN=ms.length-abn.length;
+  const qs=(r.questions||[]), good=(r.good_news||[]);
   const aiBadge=r.ai_source==="claude"?`<span class="pill pill-teal" style="font-size:11px">✦ AI-enhanced</span>`:`<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:11px">Knowledge engine</span>`;
+
+  // ---- HERO : Am I healthy? ----
+  const verdict=score>=80?"Looking good overall":score>=60?"Mostly healthy, a few to watch":"A few things worth your attention";
+  const hero=`<div class="card rr-hero">
+    ${plosRing(score,128)}
+    <div class="rr-verdict">
+      ${bandPill(score)}
+      <div style="font-size:clamp(19px,2.4vw,24px);font-weight:800;letter-spacing:-.02em;margin:9px 0 5px;line-height:1.15">${esc(verdict)}</div>
+      <p style="margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5">${esc((r.snapshot||r.summary||"Your report has been saved to your timeline.").slice(0,170))}</p>
+      <div class="rr-chips">
+        <span class="rr-chip"><span class="rr-dot" style="background:var(--teal)"></span>${normN} healthy</span>
+        ${abn.length?`<span class="rr-chip"><span class="rr-dot" style="background:var(--amber)"></span>${abn.length} worth a look</span>`:""}
+        <span class="rr-chip" style="color:var(--muted)">${ms.length} markers</span>
+      </div>
+    </div>
+  </div>`;
+
+  // ---- PRIORITY FINDINGS : What's wrong? ----
+  const top=abn.slice(0,6), moreN=abn.length-top.length;
+  const pri = abn.length ? `
+    <div class="rr-sec-h">${I.alert}What's worth a look</div>
+    <div class="rr-pri-grid">
+      ${top.map(m=>{const tone=rrTone(m);const word=m.status==="low"?"Low":"High";
+        return `<button class="rr-pri ${tone}" data-marker="${m.key}">
+          <span class="rr-pri-ic">${I.alert}</span>
+          <span style="flex:1;min-width:0">
+            <span class="spread" style="gap:8px"><span style="font-weight:700;font-size:14.5px;line-height:1.25">${esc(m.label)}</span><span class="pill ${tone==="red"?"pill-red":"pill-amber"}" style="font-size:10.5px;flex:none">${word}</span></span>
+            <span style="display:block;font-size:19px;font-weight:800;letter-spacing:-.02em;margin:4px 0 5px">${m.value} <span class="muted" style="font-size:12px;font-weight:600">${esc(m.unit||"")}</span></span>
+            <span class="muted" style="font-size:12.5px;line-height:1.4;display:block">${esc(rrNote(m).slice(0,92))}</span>
+          </span>
+          ${RR_ARROW}
+        </button>`;}).join("")}
+    </div>
+    ${moreN>0?`<p class="muted" style="font-size:12.5px;margin:11px 2px 0">+ ${moreN} more, grouped by body system below.</p>`:""}` : `
+    <div class="card" style="padding:22px;display:flex;gap:14px;align-items:center;margin-top:4px">
+      <span class="tile-ico" style="background:var(--teal-bg);color:var(--teal-ink);width:46px;height:46px;flex:none">${I.check.replace('width="13" height="13"','width="22" height="22"')}</span>
+      <div><div style="font-weight:800;font-size:16px">Everything's in range</div><div class="muted" style="font-size:13.5px">No markers need attention in this report.</div></div>
+    </div>`;
+
+  // ---- BODY SYSTEMS : organ dashboard (progressive disclosure) ----
+  const groups={};
+  ms.forEach(m=>{ const sys=catOf(m.label||m.key); (groups[sys]=groups[sys]||[]).push(m); });
+  const sysList=RR_ORDER.filter(x=>groups[x]&&groups[x].length).map(x=>{
+    const mk=groups[x], a=mk.filter(y=>y.status!=="normal");
+    const tone=a.some(y=>rrTone(y)==="red")?"red":a.length?"amber":"green";
+    return {meta:RR_SYS[x]||{label:x,area:"blood",ic:I.spark},mk,a,tone};
+  }).sort((p,q)=>({red:0,amber:1,green:2}[p.tone]-{red:0,amber:1,green:2}[q.tone]));
+
+  const systems=`
+    <div class="rr-sec-h">${I.spark}By body system</div>
+    <div class="rr-sys-grid">
+    ${sysList.map((g,i)=>{
+      const col=g.tone==="green"?"var(--teal)":g.tone==="red"?"var(--red)":"var(--amber)";
+      const icCol=g.tone==="green"?"var(--teal-ink)":g.tone==="red"?"var(--red)":"var(--amber-ink)";
+      const bg=g.tone==="green"?"var(--teal-bg)":g.tone==="red"?"var(--red-bg)":"var(--amber-bg)";
+      const sub=g.a.length?`${g.a.length} worth a look`:"All in range";
+      const rows=g.mk.slice().sort((a,b)=>rrSev(b)-rrSev(a)).map(m=>{
+        const st=m.status==="normal"?"green":rrTone(m);
+        const d=st==="green"?"var(--teal)":st==="red"?"var(--red)":"var(--amber)";
+        const chip=m.status==="normal"?`<span class="pill pill-teal" style="font-size:10px;flex:none">Normal</span>`:`<span class="pill ${st==="red"?"pill-red":"pill-amber"}" style="font-size:10px;flex:none">${m.status==="low"?"Low":"High"}</span>`;
+        return `<button class="rr-mrow" data-marker="${m.key}"><span class="rr-dot" style="background:${d}"></span><span class="rr-mrow-name">${esc(m.label)}</span><span class="rr-mrow-val">${m.value} ${esc(m.unit||"")}</span>${chip}</button>`;
+      }).join("");
+      return `<div class="rr-sys">
+        <button class="rr-sys-h" data-sys-h>
+          <span class="rr-sys-ic" style="background:${bg};color:${icCol}">${g.meta.ic}</span>
+          <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:15px">${esc(g.meta.label)}</span><span class="muted" style="font-size:12.5px">${g.mk.length} markers &middot; ${sub}</span></span>
+          <span class="rr-dot" style="background:${col}"></span>${RR_CHEV}
+        </button>
+        <div class="rr-sys-b">${rows}</div>
+      </div>`;
+    }).join("")}
+    </div>`;
+
+  // ---- ACTION PLAN : What should I do? ----
+  const acts=abn.slice(0,3);
+  const action=`
+    <div class="rr-sec-h">${I.trend}Your action plan</div>
+    <div class="card" style="padding:6px 20px">
+      ${acts.length?acts.map((m,i)=>`<div class="rr-act"><span class="rr-act-n">${i+1}</span><div><div style="font-weight:700;font-size:14.5px">${esc(m.label)} ${m.status==="low"?"is low":"is high"}</div><div class="muted" style="font-size:13px;line-height:1.45;margin-top:2px">${esc(rrAction(m))}</div></div></div>`).join(""):`<div class="rr-act"><span class="rr-act-n" style="background:var(--teal-bg);color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="14" height="14"')}</span><div><div style="font-weight:700;font-size:14.5px">Keep doing what you're doing</div><div class="muted" style="font-size:13px">Everything's in range — re-test when your doctor suggests.</div></div></div>`}
+    </div>`;
+
+  // ---- accordions (collapsed) ----
+  const questions=qs.length?`<div class="rr-acc"><button class="rr-acc-h" data-acc>${I.reports.replace('width="20" height="20"','width="17" height="17"')}Questions for your doctor <span class="muted" style="font-weight:600;font-size:13px">(${qs.length})</span>${RR_CHEV}</button><div class="rr-acc-b"><div style="padding:2px 16px 14px">${qs.map(q=>`<div class="finding"><span style="color:var(--teal);flex:none;font-weight:800">Q</span><span style="color:var(--ink-2);font-size:14px">${esc(q)}</span></div>`).join("")}</div></div></div>`:"";
+  const goodAcc=good.length?`<div class="rr-acc"><button class="rr-acc-h" data-acc style="color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="17" height="17"').replace('stroke="currentColor"','stroke="var(--teal)"')}What's going well <span class="muted" style="font-weight:600;font-size:13px">(${good.length})</span>${RR_CHEV}</button><div class="rr-acc-b"><div style="padding:2px 16px 14px">${good.map(g=>`<div class="finding"><span style="color:var(--teal);flex:none;margin-top:2px">${I.check.replace('width="13" height="13"','width="15" height="15"')}</span><span style="color:var(--ink-2);font-size:14px">${esc(g)}</span></div>`).join("")}</div></div></div>`:"";
+
   app().innerHTML=shell(`
-    <button class="btn btn-ghost" data-nav="#/reports" style="margin-bottom:18px;padding:9px 14px">${I.back}Back</button>
-    <div class="page-head" style="margin-bottom:18px">
-      <div class="spread"><span class="eyebrow">${esc(r.title||"Report")} · ${fmtDate(r.report_date)}</span>${aiBadge}</div>
-      <h1>${t("what_means")}</h1>
+    <button class="btn btn-ghost" data-nav="#/reports" style="margin-bottom:16px;padding:9px 14px">${I.back}Back</button>
+    <div class="rr-wrap">
+      <div class="spread" style="margin-bottom:14px"><span class="eyebrow">${esc(r.title||"Report")} &middot; ${fmtDate(r.report_date)}</span>${aiBadge}</div>
+      ${hero}
+      ${pri}
+      ${systems}
+      ${action}
+      ${questions}
+      ${goodAcc}
+      <p class="muted" style="font-size:12px;text-align:center;margin:26px 0 0">Educational, not a diagnosis. Always discuss your results with a healthcare professional.</p>
     </div>
-    <div class="rsection" style="background:linear-gradient(135deg,var(--surface),var(--surface-2))">
-      <p class="serif" style="font-size:clamp(18px,2.4vw,23px);line-height:1.5;margin:0;color:var(--ink)">${esc(r.summary||"")}</p>
-    </div>
-    <div class="rsection"><h3>${I.spark}${t("snapshot")}</h3><p style="margin:0;color:var(--ink-2);font-size:15.5px">${esc(r.snapshot||"")}</p>
-      <div style="display:flex;align-items:center;gap:14px;margin-top:16px"><div style="font-size:30px;font-weight:800;color:${scoreColor(r.health_score||80)}">${r.health_score||"–"}</div><div class="muted" style="font-size:13px">Report health score<br>out of 100</div></div></div>
-    ${markerChips}
-    ${good.length?`<div class="rsection"><h3 style="color:var(--teal-ink)">${I.check.replace('width="13" height="13"','width="16" height="16"').replace('stroke="currentColor"','stroke="var(--teal)"')}${t("good_news")}</h3>${good.map(g=>`<div class="finding"><span style="color:var(--teal);flex:none;margin-top:2px">${I.check.replace('width="13" height="13"','width="15" height="15"')}</span><span style="color:var(--ink-2);font-size:14.5px">${esc(g)}</span></div>`).join("")}</div>`:""}
-    ${att.length?`<div class="rsection"><h3 style="color:var(--amber-ink)">${I.alert}${t("areas_attention")}</h3>${att.map(a=>`<div class="finding"><span style="color:var(--amber-ink);flex:none;margin-top:2px">${I.alert}</span><span style="color:var(--ink-2);font-size:14.5px">${esc(a)}</span></div>`).join("")}</div>`:""}
-    ${ms.length?`<div class="rsection"><h3>${I.trend}${t("trends")}</h3>${renderReportTrends(ms)}</div>`:""}
-    <div class="rsection"><h3>${I.reports.replace('width="20" height="20"','width="16" height="16"')}${t("questions")}</h3>${qs.map(q=>`<div class="finding"><span style="color:var(--teal);flex:none;font-weight:800">Q</span><span style="color:var(--ink-2);font-size:14.5px">${esc(q)}</span></div>`).join("")}</div>
-    <div class="rsection" style="text-align:center"><h3 style="justify-content:center">Learn more</h3><p class="muted" style="margin:0 0 14px">Open the interactive body view to explore the organs and systems this report touches.</p><div class="wrap" style="justify-content:center">${[...new Set(ms.map(m=>m.body_area))].slice(0,5).map(a=>`<button class="btn btn-ghost" data-organ="${a}" style="padding:9px 16px">${esc((ORGANS[a]||{label:a}).label)}</button>`).join("")||`<button class="btn btn-ghost" data-organ="blood">Explore body view</button>`}</div></div>
-    <p class="muted" style="font-size:12.5px;text-align:center;margin:6px 0 0">This is educational, not a diagnosis. Always discuss your results with a healthcare professional.</p>
   `);
   bindShell();
   app().querySelectorAll("[data-marker]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.marker));
-  app().querySelectorAll("[data-organ]").forEach(b=>b.onclick=()=>openOrganDrawer(b.dataset.organ));
+  app().querySelectorAll("[data-sys-h]").forEach(b=>b.onclick=()=>b.closest(".rr-sys").classList.toggle("open"));
+  app().querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>b.closest(".rr-acc").classList.toggle("open"));
 }
 function renderReportTrends(ms){
   // compare each marker to its own history
