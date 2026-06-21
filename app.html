@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d8c7c">
+<!-- ===== PWA (Nutrolis AI) ===== -->
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nutrolis">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Nutrolis AI · Understand your health</title>
 <meta name="description" content="Upload any medical report. Nutrolis turns clinical jargon into one calm, plain-language explanation — in your language.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2225,6 +2234,48 @@ sb.auth.onAuthStateChange((event)=>{ if(event==="SIGNED_OUT"){ S.user=null; rend
 
 /* go! */
 boot();
+</script>
+<!-- ===== PWA: service worker registration + install prompt ===== -->
+<script>
+(function () {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/service-worker.js").catch(function (e) {
+        console.warn("[Nutrolis] SW registration failed:", e);
+      });
+    });
+  }
+  var deferred = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferred = e; showInstallPill();
+  });
+  window.addEventListener("appinstalled", function () { deferred = null; removeInstallPill(); });
+  function showInstallPill() {
+    if (document.getElementById("nl-install-pill")) return;
+    if (window.matchMedia("(display-mode: standalone)").matches) return;
+    var pill = document.createElement("button");
+    pill.id = "nl-install-pill"; pill.type = "button";
+    pill.textContent = "\u2913  Install Nutrolis";
+    pill.setAttribute("aria-label", "Install the Nutrolis app");
+    pill.style.cssText =
+      "position:fixed;left:50%;transform:translateX(-50%);" +
+      "top:calc(env(safe-area-inset-top,0px) + 10px);z-index:99999;" +
+      "font:600 14px/1 'Hanken Grotesk',system-ui,sans-serif;color:#fff;" +
+      "background:linear-gradient(135deg,#0d8c7c,#16b59f);border:none;" +
+      "padding:11px 18px;border-radius:999px;cursor:pointer;" +
+      "box-shadow:0 8px 24px rgba(13,80,72,.32);";
+    pill.onclick = function () {
+      if (!deferred) return;
+      deferred.prompt();
+      deferred.userChoice.finally(function () { deferred = null; removeInstallPill(); });
+    };
+    document.body.appendChild(pill);
+    setTimeout(removeInstallPill, 12000);
+  }
+  function removeInstallPill() {
+    var p = document.getElementById("nl-install-pill"); if (p) p.remove();
+  }
+})();
 </script>
 </body>
 </html>
