@@ -1226,8 +1226,8 @@ function catOf(s){ s=(s||"").toLowerCase();
 function insightCards(){
   const r=S.reports[0]; if(!r) return [];
   const out=[];
-  (rTxt(r,"good_news")||[]).slice(0,2).forEach(text=>out.push({cat:catOf(text),tone:"teal",text}));
-  (rTxt(r,"attention")||[]).slice(0,2).forEach(text=>out.push({cat:catOf(text),tone:"amber",text}));
+  (r.good_news||[]).slice(0,2).forEach(en=>out.push({cat:catOf(en),tone:"teal",text:L(en)}));
+  (r.attention||[]).slice(0,2).forEach(en=>out.push({cat:catOf(en),tone:"amber",text:L(en)}));
   return out.slice(0,4);
 }
 
@@ -2345,7 +2345,9 @@ async function applyLangAssets(){                        // strings + script fon
     ensureAppLang(S.lang).then(()=>{ if(S.user){ render(); reopenDrawer(); } });
   }
 }
+const NUTROLIS_BUILD="i18n-ondemand-2026-07-01c";
 async function boot(){
+  console.log("%cNutrolis build: "+NUTROLIS_BUILD,"color:#0d8c7c;font-weight:700;font-size:13px");
   await initI18nEngine();                                // load fonts + report cache + manifest (20 languages)
   const{data:{session}}=await sb.auth.getSession();
   if(!session){ S.user=null; const bl=detectBrowserLang(); if(bl){ S.lang=bl; } applyTheme(); applyDir(); await applyLangAssets(); renderLogin(); setTimeout(prewarmLangs,1500); return; }
