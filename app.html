@@ -24,6 +24,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <!-- Tesseract (OCR fallback for images / scanned reports) -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js"></script>
+<!-- Branded PDF export (render styled HTML → canvas → PDF) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 /* ====================== DESIGN SYSTEM ====================== */
 *{box-sizing:border-box}
@@ -45,7 +48,7 @@ html,body{margin:0;padding:0}
   --shadow:rgba(0,0,0,.5);--glow:rgba(43,189,166,.26);--nav-bg:rgba(8,17,15,.82);
 }
 body{
-  font-family:'Hanken Grotesk',system-ui,-apple-system,sans-serif;
+  font-family:var(--i18n-font,'Hanken Grotesk',system-ui,-apple-system,sans-serif);
   background:radial-gradient(1200px 700px at 82% -8%,var(--teal-bg),transparent 60%),
              radial-gradient(900px 600px at 2% 2%,var(--bg-2),transparent 55%),var(--bg);
   color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
@@ -426,67 +429,78 @@ const STR = {
       plos_pillar_note:"Each pillar is the same score for one part of your body — so you can see exactly where to focus."},
   hi:{"dashboard": "डैशबोर्ड", "upload": "अपलोड", "reports": "मेरी रिपोर्ट", "settings": "सेटिंग्स", "health_score": "स्वास्थ्य स्कोर", "total_reports": "रिपोर्ट", "active_markers": "सक्रिय मार्कर", "attention": "ध्यान देने योग्य", "recent": "हाल की रिपोर्ट", "no_reports": "अभी कोई रिपोर्ट नहीं", "upload_first": "शुरू करने के लिए अपनी पहली रिपोर्ट अपलोड करें।", "sign_in": "साइन इन", "sign_up": "खाता बनाएं", "email": "ईमेल", "password": "पासवर्ड", "name": "पूरा नाम", "good_news": "अच्छी खबर", "areas_attention": "ध्यान देने योग्य क्षेत्र", "questions": "डॉक्टर के लिए प्रश्न", "what_means": "आपकी रिपोर्ट का अर्थ", "snapshot": "स्वास्थ्य झलक", "key_findings": "मुख्य निष्कर्ष", "trends": "आपके रुझान", "greet_morning": "सुप्रभात", "greet_afternoon": "शुभ दोपहर", "greet_evening": "शुभ संध्या", "hm": "स्वास्थ्य मार्कर", "all_markers": "सभी मार्कर", "ti": "रुझान और सुधार", "aihi": "एआई स्वास्थ्य अंतर्दृष्टि", "lc": "लर्निंग सेंटर", "hj": "स्वास्थ्य यात्रा", "ac": "एक्शन सेंटर", "ohs": "समग्र स्वास्थ्य स्कोर", "tracked": "मार्कर ट्रैक किए गए", "improving": "सुधर रहे", "need_attn": "ध्यान चाहिए", "todays_summary": "आज का सारांश", "learn_more": "और जानें", "upload_report": "रिपोर्ट अपलोड करें", "upload_new": "नई रिपोर्ट अपलोड करें", "compare": "रिपोर्ट की तुलना करें", "download": "सारांश डाउनलोड करें", "share": "डॉक्टर के साथ साझा करें", "healthy": "स्वस्थ", "needs_attn": "ध्यान चाहिए", "improving_chip": "सुधर रहे", "explore": "एक्सप्लोर करें", "mk_markers": "मार्कर", "mk_trends": "रुझान", "mk_insights": "एआई इनसाइट्स", "mk_learning": "लर्निंग", "mk_journey": "यात्रा", "in_range": "सामान्य सीमा में", "slightly_low": "थोड़ा कम", "slightly_high": "थोड़ा अधिक", "below_range": "सीमा से नीचे", "above_range": "सीमा से ऊपर", "steady": "स्थिर", "first_report": "पहली रिपोर्ट", "this_report": "इस रिपोर्ट", "get_plan": "मेरी व्यक्तिगत योजना पाएं", "manage_share": "अपना स्वास्थ्य डेटा प्रबंधित करें और साझा करें।", "read": "पढ़ें", "first_reading": "पहली रीडिंग", "usual_range": "सामान्य सीमा", "personalized_brief": "व्यक्तिगत स्वास्थ्य ब्रीफ", "your_result": "आपका परिणाम", "from_encyclopedia": "विश्वकोश से", "eat_more": "अधिक खाएं", "ease_off": "कम करें", "language": "भाषा", "nothing_here": "अभी यहाँ कुछ नहीं है।", "sign_out": "साइन आउट", "body_area": "शरीर का भाग", "not_diagnosis": "केवल शैक्षिक — कोई निदान नहीं। अगले कदमों के लिए आपका डॉक्टर सबसे अच्छा मार्गदर्शक है।", "good": "अच्छा", "fair": "ठीक-ठाक", "worth_look": "देखने योग्य", "your_reading": "आपकी नवीनतम रीडिंग", "dd_what": "यह क्या है?", "dd_how": "यह आपके शरीर में कैसे काम करता है", "dd_why": "आपका ऐसा क्यों हो सकता है", "dd_fix": "इसे कैसे सुधारें", "dd_foods": "भोजन — क्या जोड़ें और क्या कम करें", "dd_time": "इसमें आमतौर पर कितना समय लगता है", "dd_doctor": "डॉक्टर से कब बात करें", "dd_prep": "Nutrolis AI आपकी व्यक्तिगत योजना लिख रहा है…", "dd_fail": "अभी एआई से संपर्क नहीं हो सका। कृपया थोड़ी देर में पुनः प्रयास करें।", "plos_score": "PLOS स्कोर", "plos_full": "प्रिवेंटिव लाइफस्टाइल ऑपरेटिंग सिस्टम", "plos_ontrack": "सही राह पर", "plos_improve": "सुधार की गुंजाइश", "plos_attn": "ध्यान चाहिए", "how_calc": "आपका स्कोर कैसे काम करता है", "plos_pillars": "PLOS स्तंभ", "mk_pillars": "स्तंभ", "plos_what": "PLOS स्कोर क्या है?", "plos_method": "PLOS — आपका प्रिवेंटिव लाइफस्टाइल ऑपरेटिंग सिस्टम — पूरी लैब रिपोर्ट को 0 से 100 तक के एक सरल अंक में बदल देता है। हम हर परिणाम को उसकी स्वस्थ सीमा से मिलाते हैं: जितना सब कुछ सीमा के भीतर होगा, आपका स्कोर उतना ही ऊँचा होगा। यह एक नज़र में अपने पूरे स्वास्थ्य को देखने और समय के साथ उसमें सुधार देखने का आसान तरीका है।", "plos_bands": "बैंड का क्या अर्थ है", "band_high": "80 से 100 — सही राह पर। जो कर रहे हैं वही करते रहें।", "band_mid": "60 से 80 — सुधार की गुंजाइश। कुछ छोटे बदलाव मदद करेंगे।", "band_low": "60 से नीचे — ध्यान चाहिए। अपने डॉक्टर के साथ ध्यान से देखने योग्य।", "plos_pillar_note": "हर स्तंभ आपके शरीर के एक भाग के लिए वही स्कोर है — ताकि आप ठीक-ठीक देख सकें कि कहाँ ध्यान देना है।"}
 };
-const LANGS = [["en","English"],["hi","हिन्दी"]];
-const LHI = {"Cardiovascular": "हृदय संबंधी", "Metabolic": "चयापचय", "Nutrition": "पोषण", "Liver": "यकृत", "Kidney": "गुर्दा", "Blood": "रक्त", "Understanding Cholesterol": "कोलेस्ट्रॉल को समझना", "What Is HbA1c?": "HbA1c क्या है?", "Vitamin D, Simply": "विटामिन डी, सरल भाषा में", "How Liver Function Works": "यकृत कैसे काम करता है", "Kidney Health Basics": "गुर्दे के स्वास्थ्य की मूल बातें", "Reading Your CBC": "अपनी CBC पढ़ना", "Good vs. bad, and why the balance matters.": "अच्छा बनाम बुरा, और संतुलन क्यों मायने रखता है।", "Your three-month blood sugar average, explained.": "आपके तीन महीने के रक्त शर्करा औसत की सरल व्याख्या।", "Why it matters and how to raise it.": "यह क्यों मायने रखता है और इसे कैसे बढ़ाएं।", "What ALT, AST and GGT actually tell you.": "ALT, AST और GGT वास्तव में आपको क्या बताते हैं।", "How your body filters waste every day.": "आपका शरीर हर दिन अपशिष्ट कैसे छानता है।", "Platelets, haemoglobin and what they mean.": "प्लेटलेट्स, हीमोग्लोबिन और उनका क्या अर्थ है।", "3 min": "3 मिनट", "4 min": "4 मिनट", "5 min": "5 मिनट", "Cholesterol isn't all bad. HDL (the 'good' kind) clears cholesterol away, while LDL (the 'bad' kind) can build up in your arteries over time. The goal is high HDL, low LDL, and low triglycerides. Diet, regular movement and — when your doctor advises — medication shift the balance in your favour.": "कोलेस्ट्रॉल पूरी तरह बुरा नहीं है। HDL ('अच्छा' प्रकार) कोलेस्ट्रॉल को हटाता है, जबकि LDL ('बुरा' प्रकार) समय के साथ आपकी धमनियों में जमा हो सकता है। लक्ष्य है उच्च HDL, कम LDL और कम ट्राइग्लिसराइड्स। आहार, नियमित गतिविधि और — जब आपका डॉक्टर सलाह दे — दवा संतुलन को आपके पक्ष में करती है।", "HbA1c reflects your average blood sugar over roughly three months. Below 5.7% is healthy, 5.7–6.4% is the pre-diabetic range, and 6.5% or higher suggests diabetes. Because it's an average, it's a steadier, more reliable signal than a single glucose reading.": "HbA1c लगभग तीन महीनों में आपके औसत रक्त शर्करा को दर्शाता है। 5.7% से नीचे स्वस्थ है, 5.7–6.4% प्री-डायबिटिक सीमा है, और 6.5% या अधिक डायबिटीज का संकेत देता है। चूँकि यह एक औसत है, यह एक अकेली ग्लूकोज रीडिंग की तुलना में अधिक स्थिर और भरोसेमंद संकेत है।", "Vitamin D helps your body absorb calcium and supports bones, muscles and immunity. Deficiency is extremely common, especially for people who spend most of the day indoors. Sunlight, fortified foods and a daily D3 supplement usually restore healthy levels over a few months.": "विटामिन डी आपके शरीर को कैल्शियम सोखने में मदद करता है और हड्डियों, मांसपेशियों व रोग-प्रतिरोधक क्षमता का सहारा देता है। इसकी कमी बहुत आम है, खासकर उनके लिए जो दिन का अधिकांश समय घर के अंदर बिताते हैं। धूप, फोर्टिफाइड भोजन और रोज़ाना D3 सप्लीमेंट आमतौर पर कुछ महीनों में स्वस्थ स्तर बहाल कर देते हैं।", "Liver enzymes like ALT, AST and GGT leak into the blood when liver cells are under stress. Values within range usually point to a healthy, well-functioning liver. Doctors watch for large, sustained spikes rather than small wobbles.": "ALT, AST और GGT जैसे यकृत एंजाइम तब रक्त में रिसते हैं जब यकृत कोशिकाएँ तनाव में होती हैं। सीमा के भीतर के मान आमतौर पर एक स्वस्थ, अच्छी तरह काम करते यकृत की ओर इशारा करते हैं। डॉक्टर छोटे उतार-चढ़ाव के बजाय बड़े, लगातार बने उछाल पर ध्यान देते हैं।", "Your kidneys quietly filter waste and balance fluids and salts around the clock. Creatinine and BUN show how well that filtration is working. Steady, in-range values mean your kidneys are comfortably keeping up.": "आपके गुर्दे चुपचाप चौबीसों घंटे अपशिष्ट छानते और तरल व नमक का संतुलन बनाते हैं। क्रिएटिनिन और BUN दिखाते हैं कि यह छानना कितनी अच्छी तरह काम कर रहा है। स्थिर, सीमा के भीतर के मान का अर्थ है कि आपके गुर्दे आराम से अपना काम कर रहे हैं।", "A complete blood count looks at your red cells, white cells and platelets. Small variations between tests are normal; your doctor looks at the pattern over time rather than reacting to a single number.": "एक संपूर्ण रक्त गणना आपकी लाल कोशिकाओं, श्वेत कोशिकाओं और प्लेटलेट्स को देखती है। परीक्षणों के बीच छोटे बदलाव सामान्य हैं; आपका डॉक्टर एक अकेले अंक पर प्रतिक्रिया देने के बजाय समय के साथ के पैटर्न को देखता है।", "What is it?": "यह क्या है?", "Why it matters": "यह क्यों मायने रखता है", "How it functions": "यह कैसे काम करता है", "Healthy range": "स्वस्थ सीमा", "What raises it": "इसे क्या बढ़ाता है", "What lowers it": "इसे क्या घटाता है", "How to improve it": "इसे कैसे सुधारें", "When to speak to a doctor": "डॉक्टर से कब बात करें", "Related conditions": "संबंधित स्थितियाँ", "Fun fact": "रोचक तथ्य", "What a low reading can mean": "कम रीडिंग का क्या अर्थ हो सकता है", "What a high reading can mean": "अधिक रीडिंग का क्या अर्थ हो सकता है", "Heart & cholesterol": "हृदय और कोलेस्ट्रॉल", "Blood sugar": "रक्त शर्करा", "Vitamins & iron": "विटामिन और आयरन", "Blood count": "रक्त गणना", "Thyroid": "थायरॉइड", "Other markers": "अन्य मार्कर", "Looking good overall": "कुल मिलाकर अच्छा लग रहा है", "Mostly healthy, a few to watch": "ज़्यादातर स्वस्थ, कुछ पर नज़र रखें", "A few things worth your attention": "कुछ बातें आपके ध्यान योग्य", "healthy": "स्वस्थ", "worth a look": "देखने योग्य", "markers": "मार्कर", "vs last report": "पिछली रिपोर्ट की तुलना में", "What's worth a look": "क्या देखने योग्य है", "Low": "कम", "High": "अधिक", "Normal": "सामान्य", "more, grouped by body system below.": "और, नीचे शरीर प्रणाली के अनुसार समूहित।", "Everything's in range": "सब कुछ सीमा में है", "No markers need attention in this report.": "इस रिपोर्ट में किसी मार्कर को ध्यान की आवश्यकता नहीं है।", "By body system": "शरीर प्रणाली के अनुसार", "All in range": "सभी सीमा में", "Your action plan": "आपकी कार्य योजना", "is low": "कम है", "is high": "अधिक है", "Keep doing what you're doing": "जो कर रहे हैं वही करते रहें", "Everything's in range — re-test when your doctor suggests.": "सब कुछ सीमा में है — डॉक्टर के सुझाव पर पुनः जाँच कराएं।", "Questions for your doctor": "डॉक्टर के लिए प्रश्न", "What's going well": "क्या अच्छा चल रहा है", "Since your last report": "आपकी पिछली रिपोर्ट के बाद से", "Previous reading": "पिछली रीडिंग", "Plain-language guide": "सरल भाषा गाइड", "Body area": "शरीर का भाग", "Highlighted": "हाइलाइट किया गया", "Your markers here": "यहाँ आपके मार्कर", "Body & systems": "शरीर और प्रणालियाँ", "Educational only — not a diagnosis.": "केवल शैक्षिक — कोई निदान नहीं।", "Reference range varies by lab — check the range printed on your report.": "संदर्भ सीमा लैब के अनुसार बदलती है — अपनी रिपोर्ट पर छपी सीमा देखें।", "This value was read from your report and saved to your timeline. We'll keep tracking it over time so you can watch how it changes.": "यह मान आपकी रिपोर्ट से पढ़ा गया और आपकी समयरेखा में सहेजा गया। हम इसे समय के साथ ट्रैक करते रहेंगे ताकि आप देख सकें कि यह कैसे बदलता है।", "Report": "रिपोर्ट", "score": "स्कोर", "Read": "पढ़ें", "Your report has been saved to your timeline.": "आपकी रिपोर्ट आपकी समयरेखा में सहेज दी गई है।", "Your full health journey — search, filter, and open any report for a plain-language read.": "आपकी पूरी स्वास्थ्य यात्रा — खोजें, फ़िल्टर करें, और किसी भी रिपोर्ट को सरल भाषा में पढ़ने के लिए खोलें।", "Plain-language education from Nutrolis. Always follow your doctor's guidance for your own care.": "Nutrolis से सरल भाषा में शिक्षा। अपनी देखभाल के लिए हमेशा अपने डॉक्टर के मार्गदर्शन का पालन करें।", "Educational, not a diagnosis. Always discuss your results with a healthcare professional.": "शैक्षिक, निदान नहीं। अपने परिणामों पर हमेशा किसी स्वास्थ्य पेशेवर से चर्चा करें।", "Sitting a little below the usual range.": "सामान्य सीमा से थोड़ा नीचे है।", "Sitting a little above the usual range.": "सामान्य सीमा से थोड़ा ऊपर है।", "Ask your doctor whether a small supplement or diet change would help.": "अपने डॉक्टर से पूछें कि क्या कोई छोटा सप्लीमेंट या आहार बदलाव मदद करेगा।", "A few lifestyle tweaks and a recheck usually bring this back in line.": "कुछ जीवनशैली बदलाव और पुनः जाँच आमतौर पर इसे वापस ठीक कर देते हैं।", "Heart": "हृदय", "General": "सामान्य", "LDL Cholesterol - Direct": "एलडीएल कोलेस्ट्रॉल - डायरेक्ट", "HDL Cholesterol - Direct": "एचडीएल कोलेस्ट्रॉल - डायरेक्ट", "Total Cholesterol": "कुल कोलेस्ट्रॉल", "Triglycerides": "ट्राइग्लिसराइड्स", "LDL cholesterol": "एलडीएल कोलेस्ट्रॉल", "25-OH Vitamin D (Total)": "25-OH विटामिन डी (कुल)", "Vitamin B-12": "विटामिन बी-12", "Vitamin D": "विटामिन डी", "Creatinine - Serum": "क्रिएटिनिन - सीरम", "Alanine Transaminase (SGPT)": "एलानिन ट्रांसएमिनेस (SGPT)", "Haemoglobin": "हीमोग्लोबिन", "Mean Corp.Hemo.Conc (MCHC)": "मीन कॉर्प. हीमो. कॉन्. (MCHC)", "Mean Platelet Volume (MPV)": "मीन प्लेटलेट वॉल्यूम (MPV)", "Platelet Count": "प्लेटलेट काउंट", "Red Cell Distribution Width (RDW-CV)": "रेड सेल डिस्ट्रीब्यूशन विड्थ (RDW-CV)", "Sodium": "सोडियम", "Iron": "आयरन", "High Sensitivity C-Reactive Protein (HS-CRP)": "हाई सेंसिटिविटी सी-रिएक्टिव प्रोटीन (HS-CRP)", "Plateletcrit (PCT)": "प्लेटलेटक्रिट (PCT)"};
+let LANGS = [["en","English"],["hi","हिन्दी"]];  // replaced from /i18n/locales/manifest.json at boot
+const LHI = {"Cardiovascular": "हृदय संबंधी", "Metabolic": "चयापचय", "Nutrition": "पोषण", "Liver": "यकृत", "Kidney": "गुर्दा", "Blood": "रक्त", "Understanding Cholesterol": "कोलेस्ट्रॉल को समझना", "What Is HbA1c?": "HbA1c क्या है?", "Vitamin D, Simply": "विटामिन डी, सरल भाषा में", "How Liver Function Works": "यकृत कैसे काम करता है", "Kidney Health Basics": "गुर्दे के स्वास्थ्य की मूल बातें", "Reading Your CBC": "अपनी CBC पढ़ना", "Good vs. bad, and why the balance matters.": "अच्छा बनाम बुरा, और संतुलन क्यों मायने रखता है।", "Your three-month blood sugar average, explained.": "आपके तीन महीने के रक्त शर्करा औसत की सरल व्याख्या।", "Why it matters and how to raise it.": "यह क्यों मायने रखता है और इसे कैसे बढ़ाएं।", "What ALT, AST and GGT actually tell you.": "ALT, AST और GGT वास्तव में आपको क्या बताते हैं।", "How your body filters waste every day.": "आपका शरीर हर दिन अपशिष्ट कैसे छानता है।", "Platelets, haemoglobin and what they mean.": "प्लेटलेट्स, हीमोग्लोबिन और उनका क्या अर्थ है।", "3 min": "3 मिनट", "4 min": "4 मिनट", "5 min": "5 मिनट", "Cholesterol isn't all bad. HDL (the 'good' kind) clears cholesterol away, while LDL (the 'bad' kind) can build up in your arteries over time. The goal is high HDL, low LDL, and low triglycerides. Diet, regular movement and — when your doctor advises — medication shift the balance in your favour.": "कोलेस्ट्रॉल पूरी तरह बुरा नहीं है। HDL ('अच्छा' प्रकार) कोलेस्ट्रॉल को हटाता है, जबकि LDL ('बुरा' प्रकार) समय के साथ आपकी धमनियों में जमा हो सकता है। लक्ष्य है उच्च HDL, कम LDL और कम ट्राइग्लिसराइड्स। आहार, नियमित गतिविधि और — जब आपका डॉक्टर सलाह दे — दवा संतुलन को आपके पक्ष में करती है।", "HbA1c reflects your average blood sugar over roughly three months. Below 5.7% is healthy, 5.7–6.4% is the pre-diabetic range, and 6.5% or higher suggests diabetes. Because it's an average, it's a steadier, more reliable signal than a single glucose reading.": "HbA1c लगभग तीन महीनों में आपके औसत रक्त शर्करा को दर्शाता है। 5.7% से नीचे स्वस्थ है, 5.7–6.4% प्री-डायबिटिक सीमा है, और 6.5% या अधिक डायबिटीज का संकेत देता है। चूँकि यह एक औसत है, यह एक अकेली ग्लूकोज रीडिंग की तुलना में अधिक स्थिर और भरोसेमंद संकेत है।", "Vitamin D helps your body absorb calcium and supports bones, muscles and immunity. Deficiency is extremely common, especially for people who spend most of the day indoors. Sunlight, fortified foods and a daily D3 supplement usually restore healthy levels over a few months.": "विटामिन डी आपके शरीर को कैल्शियम सोखने में मदद करता है और हड्डियों, मांसपेशियों व रोग-प्रतिरोधक क्षमता का सहारा देता है। इसकी कमी बहुत आम है, खासकर उनके लिए जो दिन का अधिकांश समय घर के अंदर बिताते हैं। धूप, फोर्टिफाइड भोजन और रोज़ाना D3 सप्लीमेंट आमतौर पर कुछ महीनों में स्वस्थ स्तर बहाल कर देते हैं।", "Liver enzymes like ALT, AST and GGT leak into the blood when liver cells are under stress. Values within range usually point to a healthy, well-functioning liver. Doctors watch for large, sustained spikes rather than small wobbles.": "ALT, AST और GGT जैसे यकृत एंजाइम तब रक्त में रिसते हैं जब यकृत कोशिकाएँ तनाव में होती हैं। सीमा के भीतर के मान आमतौर पर एक स्वस्थ, अच्छी तरह काम करते यकृत की ओर इशारा करते हैं। डॉक्टर छोटे उतार-चढ़ाव के बजाय बड़े, लगातार बने उछाल पर ध्यान देते हैं।", "Your kidneys quietly filter waste and balance fluids and salts around the clock. Creatinine and BUN show how well that filtration is working. Steady, in-range values mean your kidneys are comfortably keeping up.": "आपके गुर्दे चुपचाप चौबीसों घंटे अपशिष्ट छानते और तरल व नमक का संतुलन बनाते हैं। क्रिएटिनिन और BUN दिखाते हैं कि यह छानना कितनी अच्छी तरह काम कर रहा है। स्थिर, सीमा के भीतर के मान का अर्थ है कि आपके गुर्दे आराम से अपना काम कर रहे हैं।", "A complete blood count looks at your red cells, white cells and platelets. Small variations between tests are normal; your doctor looks at the pattern over time rather than reacting to a single number.": "एक संपूर्ण रक्त गणना आपकी लाल कोशिकाओं, श्वेत कोशिकाओं और प्लेटलेट्स को देखती है। परीक्षणों के बीच छोटे बदलाव सामान्य हैं; आपका डॉक्टर एक अकेले अंक पर प्रतिक्रिया देने के बजाय समय के साथ के पैटर्न को देखता है।", "What is it?": "यह क्या है?", "Why it matters": "यह क्यों मायने रखता है", "How it functions": "यह कैसे काम करता है", "Healthy range": "स्वस्थ सीमा", "What raises it": "इसे क्या बढ़ाता है", "What lowers it": "इसे क्या घटाता है", "How to improve it": "इसे कैसे सुधारें", "When to speak to a doctor": "डॉक्टर से कब बात करें", "Related conditions": "संबंधित स्थितियाँ", "Fun fact": "रोचक तथ्य", "What a low reading can mean": "कम रीडिंग का क्या अर्थ हो सकता है", "What a high reading can mean": "अधिक रीडिंग का क्या अर्थ हो सकता है", "Heart & cholesterol": "हृदय और कोलेस्ट्रॉल", "Blood sugar": "रक्त शर्करा", "Vitamins & iron": "विटामिन और आयरन", "Blood count": "रक्त गणना", "Thyroid": "थायरॉइड", "Other markers": "अन्य मार्कर", "Looking good overall": "कुल मिलाकर अच्छा लग रहा है", "Mostly healthy, a few to watch": "ज़्यादातर स्वस्थ, कुछ पर नज़र रखें", "A few things worth your attention": "कुछ बातें आपके ध्यान योग्य", "healthy": "स्वस्थ", "worth a look": "देखने योग्य", "markers": "मार्कर", "vs last report": "पिछली रिपोर्ट की तुलना में", "What's worth a look": "क्या देखने योग्य है", "Low": "कम", "High": "अधिक", "Normal": "सामान्य", "more, grouped by body system below.": "और, नीचे शरीर प्रणाली के अनुसार समूहित।", "Everything's in range": "सब कुछ सीमा में है", "No markers need attention in this report.": "इस रिपोर्ट में किसी मार्कर को ध्यान की आवश्यकता नहीं है।", "By body system": "शरीर प्रणाली के अनुसार", "All in range": "सभी सीमा में", "Your action plan": "आपकी कार्य योजना", "is low": "कम है", "is high": "अधिक है", "Keep doing what you're doing": "जो कर रहे हैं वही करते रहें", "Everything's in range — re-test when your doctor suggests.": "सब कुछ सीमा में है — डॉक्टर के सुझाव पर पुनः जाँच कराएं।", "Questions for your doctor": "डॉक्टर के लिए प्रश्न", "What's going well": "क्या अच्छा चल रहा है", "Since your last report": "आपकी पिछली रिपोर्ट के बाद से", "Previous reading": "पिछली रीडिंग", "Plain-language guide": "सरल भाषा गाइड", "Body area": "शरीर का भाग", "Highlighted": "हाइलाइट किया गया", "Your markers here": "यहाँ आपके मार्कर", "Body & systems": "शरीर और प्रणालियाँ", "Educational only — not a diagnosis.": "केवल शैक्षिक — कोई निदान नहीं।", "Reference range varies by lab — check the range printed on your report.": "संदर्भ सीमा लैब के अनुसार बदलती है — अपनी रिपोर्ट पर छपी सीमा देखें।", "This value was read from your report and saved to your timeline. We'll keep tracking it over time so you can watch how it changes.": "यह मान आपकी रिपोर्ट से पढ़ा गया और आपकी समयरेखा में सहेजा गया। हम इसे समय के साथ ट्रैक करते रहेंगे ताकि आप देख सकें कि यह कैसे बदलता है।", "Report": "रिपोर्ट", "score": "स्कोर", "Read": "पढ़ें", "Your report has been saved to your timeline.": "आपकी रिपोर्ट आपकी समयरेखा में सहेज दी गई है।", "Your full health journey — search, filter, and open any report for a plain-language read.": "आपकी पूरी स्वास्थ्य यात्रा — खोजें, फ़िल्टर करें, और किसी भी रिपोर्ट को सरल भाषा में पढ़ने के लिए खोलें।", "Plain-language education from Nutrolis. Always follow your doctor's guidance for your own care.": "Nutrolis से सरल भाषा में शिक्षा। अपनी देखभाल के लिए हमेशा अपने डॉक्टर के मार्गदर्शन का पालन करें।", "Educational, not a diagnosis. Always discuss your results with a healthcare professional.": "शैक्षिक, निदान नहीं। अपने परिणामों पर हमेशा किसी स्वास्थ्य पेशेवर से चर्चा करें।", "Sitting a little below the usual range.": "सामान्य सीमा से थोड़ा नीचे है।", "Sitting a little above the usual range.": "सामान्य सीमा से थोड़ा ऊपर है।", "Ask your doctor whether a small supplement or diet change would help.": "अपने डॉक्टर से पूछें कि क्या कोई छोटा सप्लीमेंट या आहार बदलाव मदद करेगा।", "A few lifestyle tweaks and a recheck usually bring this back in line.": "कुछ जीवनशैली बदलाव और पुनः जाँच आमतौर पर इसे वापस ठीक कर देते हैं।", "Heart": "हृदय", "General": "सामान्य", "LDL Cholesterol - Direct": "एलडीएल कोलेस्ट्रॉल - डायरेक्ट", "HDL Cholesterol - Direct": "एचडीएल कोलेस्ट्रॉल - डायरेक्ट", "Total Cholesterol": "कुल कोलेस्ट्रॉल", "Triglycerides": "ट्राइग्लिसराइड्स", "LDL cholesterol": "एलडीएल कोलेस्ट्रॉल", "25-OH Vitamin D (Total)": "25-OH विटामिन डी (कुल)", "Vitamin B-12": "विटामिन बी-12", "Vitamin D": "विटामिन डी", "Creatinine - Serum": "क्रिएटिनिन - सीरम", "Alanine Transaminase (SGPT)": "एलानिन ट्रांसएमिनेस (SGPT)", "Haemoglobin": "हीमोग्लोबिन", "Mean Corp.Hemo.Conc (MCHC)": "मीन कॉर्प. हीमो. कॉन्. (MCHC)", "Mean Platelet Volume (MPV)": "मीन प्लेटलेट वॉल्यूम (MPV)", "Platelet Count": "प्लेटलेट काउंट", "Red Cell Distribution Width (RDW-CV)": "रेड सेल डिस्ट्रीब्यूशन विड्थ (RDW-CV)", "Sodium": "सोडियम", "Iron": "आयरन", "High Sensitivity C-Reactive Protein (HS-CRP)": "हाई सेंसिटिविटी सी-रिएक्टिव प्रोटीन (HS-CRP)", "Plateletcrit (PCT)": "प्लेटलेटक्रिट (PCT)", "AI-enhanced":"एआई-संवर्धित", "Knowledge engine":"नॉलेज इंजन", "Download PDF":"PDF डाउनलोड करें", "Prepared for":"के लिए तैयार", "On track":"सही राह पर", "Room to improve":"सुधार की गुंजाइश", "Needs attention":"ध्यान चाहिए", "Areas worth a look":"देखने योग्य क्षेत्र", "Preparing your PDF…":"आपका PDF तैयार हो रहा है…", "No report to export.":"निर्यात के लिए कोई रिपोर्ट नहीं।", "Couldn't build the PDF. Please try again.":"PDF नहीं बन सका। कृपया पुनः प्रयास करें।", "Back":"पीछे", "Continue":"जारी रखें", "Review & finish":"समीक्षा करें और पूरा करें", "Create my dashboard":"मेरा डैशबोर्ड बनाएं", "Report deleted.":"रिपोर्ट हटा दी गई।", "Report explained and saved.":"रिपोर्ट समझाई और सहेजी गई।", "Profile saved.":"प्रोफ़ाइल सहेजी गई।", "Your data is downloading.":"आपका डेटा डाउनलोड हो रहा है।", "All health data deleted.":"सारा स्वास्थ्य डेटा हटा दिया गया।", "Please add your name to continue.":"जारी रखने के लिए कृपया अपना नाम जोड़ें।", "Paste a little more text first.":"पहले थोड़ा और टेक्स्ट पेस्ट करें।", "Share link copied":"शेयर लिंक कॉपी किया गया", "Delete this report?":"इस रिपोर्ट को हटाएं?", "This permanently removes the report and its markers from your timeline. This can't be undone.":"यह रिपोर्ट और उसके मार्कर आपकी समयरेखा से स्थायी रूप से हटा देता है। इसे पूर्ववत नहीं किया जा सकता।", "Delete":"हटाएं", "Deleting…":"हटाया जा रहा है…", "improving":"सुधर रहा है", "worth watching":"नज़र रखने योग्य", "holding steady":"स्थिर बना हुआ", "Comparison view is coming soon":"तुलना दृश्य जल्द आ रहा है", "Add another report to compare over time":"समय के साथ तुलना के लिए एक और रिपोर्ट जोड़ें", "Your name":"आपका नाम", "Age":"उम्र", "Gender":"लिंग", "Allergies":"एलर्जी", "Current medications":"वर्तमान दवाएं", "Lifestyle":"जीवनशैली", "Health notes":"स्वास्थ्य टिप्पणियाँ", "Health history":"स्वास्थ्य इतिहास", "Copy this link: ":"यह लिंक कॉपी करें: "};
 const BUNDLED_LC={hi:LHI};
-const I18N={};            // Claude-translated UI tables, cached per language
-const RI18N={};           // translated report content, cached per report+language
-function t(k){ return (I18N[S.lang]&&I18N[S.lang][k]) || (STR[S.lang]&&STR[S.lang][k]) || STR.en[k] || k; }
-function applyDir(){ const rtl=RTL.includes(S.lang); document.documentElement.dir=rtl?"rtl":"ltr"; document.documentElement.lang=S.lang; }
-function langName(code){ const f=LANGS.find(l=>l[0]===code); return f?f[1]:code; }
-async function ensureLang(code){
-  if(code==="en"||I18N[code]) return;
-  if(STR[code] && Object.keys(STR[code]).length>=Object.keys(STR.en).length) return;
-  try{ const c=localStorage.getItem("nl-i18n-"+code); if(c){ I18N[code]=JSON.parse(c); return; } }catch(e){}
-  const sys="You are a professional UI localizer for a warm, friendly consumer health app used across India and Europe. Translate each value into "+langName(code)+" using simple, everyday words that a 10-year-old or a 70-year-old could understand. Keep labels short. Use the natural script of the language. Keep widely-known medical terms natural for native speakers. Return ONLY strict minified JSON with the EXACT same keys.";
-  const j=await claudeJSON(sys,"Translate every value to "+langName(code)+". Return JSON with identical keys:\n"+JSON.stringify(STR.en),2200);
-  if(j){ I18N[code]=j; try{ localStorage.setItem("nl-i18n-"+code,JSON.stringify(j)); }catch(e){} }
-}
-async function ensureReportI18n(code){
-  if(code==="en"||!S.reports.length) return;
-  const sys="You are a warm medical translator for a consumer health app. Translate every value into "+langName(code)+" in simple words anyone can understand, keeping the meaning exact and the tone calm. Keep arrays the same length and order. Return ONLY strict minified JSON with the same shape and keys.";
-  for(const r of S.reports){
-    const ck=r.id+"|"+code; if(RI18N[ck]) continue;
-    try{ const c=localStorage.getItem("nl-ri-"+ck); if(c){ RI18N[ck]=JSON.parse(c); continue; } }catch(e){}
-    const payload={title:r.title||"",summary:r.summary||"",snapshot:r.snapshot||"",good_news:r.good_news||[],attention:r.attention||[],questions:r.questions||[]};
-    const j=await claudeJSON(sys,"Translate to "+langName(code)+", keep JSON shape and array lengths:\n"+JSON.stringify(payload),2200);
-    if(j){ RI18N[ck]=j; try{ localStorage.setItem("nl-ri-"+ck,JSON.stringify(j)); }catch(e){} }
-  }
-}
-function rTxt(r,field){ const c=RI18N[(r&&r.id)+"|"+S.lang]; return (c&&c[field]!=null)?c[field]:(r?r[field]:undefined); }
-
-/* ===== Universal on-demand content translator =====
-   L(text) returns the cached translation for the current language, or the
-   English text immediately while queuing it for background translation.
-   Translations persist in localStorage, so switching back is instant. */
-const LC={}; let _Lq=new Set(), _Lt=null, _Lbusy=false;
-function loadLC(lang){ if(!lang||lang==="en"||LC[lang])return; const base=BUNDLED_LC[lang]?Object.assign({},BUNDLED_LC[lang]):{}; try{LC[lang]=Object.assign(base,JSON.parse(localStorage.getItem("nl-lc-"+lang)||"{}"));}catch(e){LC[lang]=base;} }
-function saveLC(lang){ try{ localStorage.setItem("nl-lc-"+lang,JSON.stringify(LC[lang]||{})); }catch(e){} }
-function L(text){
-  if(text==null||text===""||S.lang==="en") return text;
-  if(typeof text!=="string") return text;
-  loadLC(S.lang); const c=LC[S.lang]||(LC[S.lang]={});
-  if(c[text]!=null) return c[text];
-  _Lq.add(text); if(_Lt) clearTimeout(_Lt); _Lt=setTimeout(flushL,90);
-  return text;
-}
+const APP={};             // APP[lang] = flat static locale dict from /i18n/locales/<lang>/app.json
+let   NL_FONTS=null, NL_REPORT=null, NL_MAN=null;  // loaded once via dynamic import at boot
+function langMeta(code){ return (NL_MAN&&NL_MAN.languages&&NL_MAN.languages.find(l=>l.code===code)) || {code,dir:RTL.includes(code)?"rtl":"ltr",font:"latin"}; }
+function fontFor(code){ return langMeta(code).font||"latin"; }
+function t(k){ return (APP[S.lang]&&APP[S.lang][k]) || (STR[S.lang]&&STR[S.lang][k]) || STR.en[k] || k; }
+function L(text){ if(text==null||text===""||typeof text!=="string"||S.lang==="en") return text; return (APP[S.lang]&&APP[S.lang][text]) || (BUNDLED_LC[S.lang]&&BUNDLED_LC[S.lang][text]) || text; }
 function Lbl(x){ return L(x); }
-async function flushL(){
-  const lang=S.lang; if(lang==="en"){ _Lq.clear(); return; }
-  if(_Lbusy){ if(_Lt) clearTimeout(_Lt); _Lt=setTimeout(flushL,220); return; }
-  loadLC(lang); const c=LC[lang]||(LC[lang]={});
-  const items=[..._Lq].filter(x=>c[x]==null); _Lq.clear();
-  if(!items.length) return;
-  _Lbusy=true;
-  const sys="You are a careful medical translator for a warm consumer health app. Translate each English string into "+langName(lang)+" using simple, everyday words anyone can understand, keeping medical meaning exact and the tone calm. Preserve numbers, units and any placeholders. Return ONLY a strict minified JSON array of the SAME length and order as the input.";
-  for(let i=0;i<items.length;i+=60){
-    const chunk=items.slice(i,i+60);
-    try{ const j=await claudeJSON(sys,"Translate to "+langName(lang)+". Return a JSON array, same length and order:\n"+JSON.stringify(chunk),3200);
-      if(Array.isArray(j)) chunk.forEach((src,k)=>{ if(typeof j[k]==="string") c[src]=j[k]; }); }catch(e){}
+function applyDir(){ const rtl=langMeta(S.lang).dir==="rtl"; document.documentElement.dir=rtl?"rtl":"ltr"; document.documentElement.lang=S.lang; }
+function langName(code){ const f=LANGS.find(l=>l[0]===code); return f?f[1]:(langMeta(code).native||code); }
+
+/* ---- Language resolution ----
+   English + Hindi ship as reviewed static tables (STR / LHI) → instant.
+   Every other language is translated ONCE by Claude (UI labels + known content
+   strings) and cached in localStorage, so the second visit and every switch
+   afterwards is instant. Anything that ever fails falls back to English. */
+const _appIsFile={};
+function _staticLang(code){ return code==="en" || (STR[code]&&Object.keys(STR[code]).length>=Object.keys(STR.en).length) || _appIsFile[code]===true; }
+function _hasCachedApp(code){ try{ return !!localStorage.getItem("nl-app-"+code); }catch(e){ return false; } }
+function _saveApp(code){ try{ localStorage.setItem("nl-app-"+code, JSON.stringify(APP[code])); }catch(e){} }
+async function _mtTable(obj,code){
+  const entries=Object.entries(obj), out={};
+  const sys="You are a professional localizer for a warm, friendly consumer health app used worldwide. Translate each VALUE into "+langName(code)+" using simple, everyday words a 10- or 70-year-old could understand. Keep medical meaning exact and the tone calm. Keep widely-known medical terms natural for native speakers. Keep every key identical. Return ONLY strict minified JSON with the same keys.";
+  for(let i=0;i<entries.length;i+=60){
+    const chunk=Object.fromEntries(entries.slice(i,i+60));
+    try{ const j=await claudeJSON(sys,"Translate every value to "+langName(code)+", keep keys identical:\n"+JSON.stringify(chunk),3000); if(j&&typeof j==="object") Object.assign(out,j); }catch(e){}
   }
-  saveLC(lang); _Lbusy=false;
-  if(S.user){ render(); reopenDrawer(); }
+  return Object.keys(out).length?out:null;
 }
+async function ensureAppLang(code){
+  if(!code||code==="en"||_staticLang(code)) return;
+  if(APP[code]&&APP[code].__done) return;
+  if(!APP[code]){ try{ const c=localStorage.getItem("nl-app-"+code); if(c) APP[code]=JSON.parse(c); }catch(e){} }
+  if(APP[code]&&APP[code].__done) return;
+  // 1. shipped static locale file, if the market has been fully reviewed
+  if(!APP[code]){ try{ const j=await fetch("/i18n/locales/"+code+"/app.json").then(r=>r.ok?r.json():null); if(j){ j.__done=1; APP[code]=j; _appIsFile[code]=true; _saveApp(code); return; } }catch(e){} }
+  APP[code]=APP[code]||{};
+  // 2. translate the known string set once: UI labels (STR.en) + content (LHI keys)
+  const src=Object.assign({},STR.en); Object.keys(LHI).forEach(s=>{ if(src[s]==null) src[s]=s; });
+  const tbl=await _mtTable(src,code);
+  if(tbl){ Object.assign(APP[code],tbl); APP[code].__done=1; _saveApp(code); }
+}
+/* Report CONTENT: one English master, translated on demand by Claude and cached
+   per report (memory → localStorage → Supabase). See reports/reportI18n.js. */
+function masterOf(r){ return (r&&r.master_json) || (r?{title:r.title,snapshot:r.snapshot,summary:r.summary,good_news:r.good_news||[],attention:r.attention||[],questions:r.questions||[]}:{}); }
+function rTxt(r,field){
+  if(!r) return undefined;
+  if(S.lang==="en"||!NL_REPORT) return r[field];
+  const c=NL_REPORT.peek(r.id,S.lang,masterOf(r));
+  if(c&&c[field]!=null) return c[field];
+  NL_REPORT.translateInBackground(r.id,S.lang,masterOf(r), S.user&&S.user.id);
+  return r[field];
+}
+/* One-time load of the i18n engine (fonts + report cache + language manifest). */
+let _i18nReady=null;
+function initI18nEngine(){
+  if(_i18nReady) return _i18nReady;
+  _i18nReady=(async()=>{
+    try{
+      const [fonts,rep]=await Promise.all([ import("/i18n/fonts.js"), import("/reports/reportI18n.js") ]);
+      NL_FONTS=fonts; NL_REPORT=rep;
+      try{ NL_MAN=await fetch("/i18n/locales/manifest.json").then(r=>r.ok?r.json():null); }catch(e){}
+      if(NL_MAN&&NL_MAN.languages) LANGS=NL_MAN.languages.map(l=>[l.code,l.native]);
+      rep.initReportI18n({ sb, proxyUrl:CLAUDE_PROXY, anonKey:SUPABASE_ANON, langName:(c)=>langName(c) });
+      window.addEventListener("nl:reporttranslated",()=>{ if(S.user){ render(); reopenDrawer(); } });
+    }catch(e){ console.warn("[Nutrolis] i18n engine load failed:",e); }
+  })();
+  return _i18nReady;
+}
+
 function reopenDrawer(){ const d=S._drawer; if(!d) return; if(d.t==="m") openMarkerDrawer(d.key); else if(d.t==="o") openOrganDrawer(d.area); else if(d.t==="l") learnDrawer(d.i); }
 
 async function setLanguage(code){
@@ -494,14 +508,12 @@ async function setLanguage(code){
   S.lang=code; applyDir();
   try{ localStorage.setItem("nutrolis-lang",code); }catch(e){}
   if(S.user&&S.profile) saveProfile({language:code});
-  loadLC(code);
-  render(); reopenDrawer();              // INSTANT: direction + anything already cached
-  if(code==="en") return;
-  let _cached=!!I18N[code] || (STR[code] && Object.keys(STR[code]).length>=Object.keys(STR.en).length); try{ _cached=_cached||!!localStorage.getItem("nl-i18n-"+code); }catch(e){}
-  if(!_cached) toast(langName(code)+" · translating…",2600);
-  await ensureLang(code); render(); reopenDrawer();        // UI labels
-  await ensureReportI18n(code); render(); reopenDrawer();  // report content
-  await flushL();                                          // queued drawer/inline content (re-renders on finish)
+  if(!APP[code]){ try{ const c=localStorage.getItem("nl-app-"+code); if(c) APP[code]=JSON.parse(c); }catch(e){} }
+  if(NL_FONTS){ try{ NL_FONTS.loadFontForToken(fontFor(code)); }catch(e){} }   // non-blocking
+  const instant=_staticLang(code) || (APP[code]&&APP[code].__done);
+  if(!instant) toast(langName(code)+" · …",1600);
+  render(); reopenDrawer();                                    // instant for en/hi/cached
+  if(!instant){ ensureAppLang(code).then(()=>{ if(S.lang===code){ render(); reopenDrawer(); } }); }
 }
 
 /* =================================================================
@@ -840,10 +852,11 @@ function normaliseClaudeMarker(m){
 /* AI layer: extract EVERY lab value + write the plain-language overview. Falls back silently. */
 async function enhanceWithClaude(text,type,profile){
   try{
-    const langName=LANGS.find(l=>l[0]===S.lang)?.[1]||"English";
     const keys=Object.keys(KB).join(", ");
     const areas=Object.keys(ORGANS).join(", ");
-    const sys="You are Nutrolis — a calm, warm medical explainer AND a precise lab-report parser. Never diagnose or prescribe; always defer to a doctor. Explain like the reader is ten, reassuring not alarming, using 'worth a gentle look' rather than alarm. Write all human-readable text in "+langName+". Respond ONLY with strict minified JSON — no markdown, no commentary.";
+    // Always generate ONE English master. Other languages are produced by the
+    // translation cache on demand (reports/reportI18n.js) — never regenerated.
+    const sys="You are Nutrolis — a calm, warm medical explainer AND a precise lab-report parser. Never diagnose or prescribe; always defer to a doctor. Explain like the reader is ten, reassuring not alarming, using 'worth a gentle look' rather than alarm. Write all human-readable text in English. Respond ONLY with strict minified JSON — no markdown, no commentary.";
     const prompt=`Extract EVERY test parameter that has a numeric result from the report text below. A real panel may contain dozens — capture all of them. For each parameter return: name (as printed), value (number), unit, ref_low (lower end of its reference range, or null), ref_high (upper end, or null), status ('low' | 'normal' | 'high' compared to its own reference range), key (closest match from this fixed list, else null: ${keys}), area (one of: ${areas}).
 Then write a calm, plain-language overview a child could follow.
 Report type: ${type.label}. User: age ${profile?.age||"?"}, notes: ${profile?.health_history||"none"}.
@@ -953,13 +966,23 @@ async function loadData(){
   S.reports=reps||[]; S.markers=mks||[];
 }
 async function saveReport(analysis,type,markers,text,date){
-  const{data:rep,error}=await sb.from("reports").insert({
+  const base={
     user_id:S.user.id,title:type.label,report_type:type.key,report_date:date,
     extracted_text:text.slice(0,8000),summary:analysis.summary,snapshot:analysis.snapshot,
     health_score:analysis.score,good_news:analysis.good_news,attention:analysis.attention,
     questions:analysis.questions,ai_source:analysis.ai_source
-  }).select().single();
+  };
+  // Canonical English master + hash for the translation cache (migration 002).
+  const master={title:type.label,snapshot:analysis.snapshot,summary:analysis.summary,
+    good_news:analysis.good_news||[],attention:analysis.attention||[],questions:analysis.questions||[]};
+  const withMaster={...base, master_json:master, content_hash:(NL_REPORT?NL_REPORT.hashMaster(master):null)};
+  let{data:rep,error}=await sb.from("reports").insert(withMaster).select().single();
+  if(error){ // schema may not have master_json/content_hash yet → fall back gracefully
+    ({data:rep,error}=await sb.from("reports").insert(base).select().single());
+  }
   if(error){ console.error(error); throw error; }
+  // Warm the user's language in the background so the first open is instant.
+  if(rep&&NL_REPORT&&S.lang!=="en"){ try{ NL_REPORT.translateInBackground(rep.id,S.lang,master,S.user.id); }catch(e){} }
   if(markers.length){
     await sb.from("markers").insert(markers.map(m=>({
       user_id:S.user.id,report_id:rep.id,key:m.key,label:m.label,value:m.value,unit:m.unit,
@@ -1224,7 +1247,7 @@ function shell(content){
       <div style="margin-top:auto;padding:10px">
         <div class="card" style="padding:12px 14px;display:flex;align-items:center;gap:10px">
           <span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;color:#fff;font-weight:800;flex:none">${name.charAt(0).toUpperCase()}</span>
-          <div style="min-width:0;flex:1"><div style="font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div><button data-act="signout" style="border:none;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:0">Sign out</button></div>
+          <div style="min-width:0;flex:1"><div style="font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div><button data-act="signout" style="border:none;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:0">${esc(t("sign_out"))}</button></div>
           <button data-act="theme" aria-label="Toggle theme" style="border:none;background:var(--surface-3);width:32px;height:32px;border-radius:9px;cursor:pointer;display:grid;place-items:center;color:var(--ink-2)">${S.theme==="dark"?"☀":"☾"}</button>
         </div>
       </div>
@@ -1346,15 +1369,15 @@ const OB_VIEWS=[
   // 0 — about you
   ()=>({eyebrow:"About you",title:"Tell us a little<br>about you",
     sub:"This helps tailor explanations to you. Everything's optional except your name.",
-    body:`<label class="field"><span>Your name</span><input class="input" id="ob-name" value="${esc(OB.full_name)}" placeholder="e.g. Shailen"></label>
+    body:`<label class="field"><span>${esc(L("Your name"))}</span><input class="input" id="ob-name" value="${esc(OB.full_name)}" placeholder="e.g. Shailen"></label>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <label class="field" style="flex:1;min-width:130px"><span>Age</span><select class="input" id="ob-age"><option value="">—</option>${rangeOpts(13,100,OB.age)}</select></label>
-        <div class="field" style="flex:2;min-width:210px"><span style="display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:6px">Gender</span>${obChips("gender",["Female","Male","Other","Prefer not to say"],false)}</div>
+        <label class="field" style="flex:1;min-width:130px"><span>${esc(L("Age"))}</span><select class="input" id="ob-age"><option value="">—</option>${rangeOpts(13,100,OB.age)}</select></label>
+        <div class="field" style="flex:2;min-width:210px"><span style="display:block;font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:6px">${esc(L("Gender"))}</span>${obChips("gender",["Female","Male","Other","Prefer not to say"],false)}</div>
       </div>`,
-    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">${esc(L("Back"))}</button><button class="btn btn-primary" id="ob-next" style="flex:1">${esc(L("Continue"))}</button>`,
     bind:()=>{ bindObBack(); bindObChips();
       $("#ob-next").onclick=()=>{ OB.full_name=$("#ob-name").value.trim(); OB.age=$("#ob-age").value;
-        if(!OB.full_name){ toast("Please add your name to continue."); $("#ob-name").focus(); return; } obNext(); }; }}),
+        if(!OB.full_name){ toast(L("Please add your name to continue.")); $("#ob-name").focus(); return; } obNext(); }; }}),
   // 2 — body basics
   ()=>({eyebrow:"Body basics",title:"Your height<br>& weight",
     sub:"Used to put your results in context — like which ranges are healthy for you. Optional.",
@@ -1362,27 +1385,27 @@ const OB_VIEWS=[
         <label class="field" style="flex:1;min-width:150px"><span>Height (cm)</span><select class="input" id="ob-height"><option value="">—</option>${rangeOpts(120,220,OB.height)}</select></label>
         <label class="field" style="flex:1;min-width:150px"><span>Weight (kg)</span><select class="input" id="ob-weight"><option value="">—</option>${rangeOpts(30,200,OB.weight)}</select></label>
       </div>`,
-    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">${esc(L("Back"))}</button><button class="btn btn-primary" id="ob-next" style="flex:1">${esc(L("Continue"))}</button>`,
     bind:()=>{ bindObBack(); $("#ob-next").onclick=()=>{ OB.height=$("#ob-height").value; OB.weight=$("#ob-weight").value; obNext(); }; }}),
   // 3 — conditions
   ()=>({eyebrow:"Your health",title:"Any ongoing<br>health conditions?",
     sub:"Pick any that apply — it helps us flag what matters most for you. \u201CNone\u201D is perfectly fine.",
     body:obChips("health_history",HEALTH_OPTS),
-    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">${esc(L("Back"))}</button><button class="btn btn-primary" id="ob-next" style="flex:1">${esc(L("Continue"))}</button>`,
     bind:()=>{ bindObBack(); bindObChips(); $("#ob-next").onclick=obNext; }}),
   // 4 — allergies & meds
   ()=>({eyebrow:"Care details",title:"Allergies &<br>medications",
     sub:"Optional, but useful for safer and more relevant guidance over time.",
-    body:`<div class="optgroup" style="margin-top:0"><span class="optlbl">Allergies</span>${obChips("allergies",ALLERGY_OPTS)}</div>
-      <div class="optgroup"><span class="optlbl">Current medications</span>${obChips("medications",MED_OPTS)}</div>`,
-    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Continue</button>`,
+    body:`<div class="optgroup" style="margin-top:0"><span class="optlbl">${esc(L("Allergies"))}</span>${obChips("allergies",ALLERGY_OPTS)}</div>
+      <div class="optgroup"><span class="optlbl">${esc(L("Current medications"))}</span>${obChips("medications",MED_OPTS)}</div>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">${esc(L("Back"))}</button><button class="btn btn-primary" id="ob-next" style="flex:1">${esc(L("Continue"))}</button>`,
     bind:()=>{ bindObBack(); bindObChips(); $("#ob-next").onclick=obNext; }}),
   // 5 — lifestyle & goal
   ()=>({eyebrow:"Lifestyle",title:"Your lifestyle<br>& main goal",
     sub:"Last bit — this shapes the suggestions and nudges you'll get as you add reports.",
-    body:`<div class="optgroup" style="margin-top:0"><span class="optlbl">Lifestyle</span>${obChips("lifestyle",LIFE_OPTS)}</div>
+    body:`<div class="optgroup" style="margin-top:0"><span class="optlbl">${esc(L("Lifestyle"))}</span>${obChips("lifestyle",LIFE_OPTS)}</div>
       <div class="optgroup"><span class="optlbl">What brings you to Nutrolis?</span>${obChips("health_goal",GOAL_OPTS,false)}</div>`,
-    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-next" style="flex:1">Review &amp; finish</button>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">${esc(L("Back"))}</button><button class="btn btn-primary" id="ob-next" style="flex:1">${esc(L("Review & finish"))}</button>`,
     bind:()=>{ bindObBack(); bindObChips(); $("#ob-next").onclick=obNext; }}),
   // 6 — finish
   ()=>{ const first=OB.full_name?(", "+esc(OB.full_name.split(" ")[0])):""; const nat=(LANGS.find(l=>l[0]===OB.language)||["","English"])[1];
@@ -1392,10 +1415,10 @@ const OB_VIEWS=[
     body:`<div class="ob-badge"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L20 6.5"/></svg></div>
       <div class="card" style="padding:16px 20px;display:flex;flex-direction:column;gap:11px">
         ${OB.full_name?`<div class="spread"><span class="muted">Name</span><b>${esc(OB.full_name)}</b></div>`:""}
-        ${condN?`<div class="spread"><span class="muted">Health notes</span><b>${condN} added</b></div>`:""}
+        ${condN?`<div class="spread"><span class="muted">${esc(L("Health notes"))}</span><b>${condN} added</b></div>`:""}
         ${OB.health_goal?`<div class="spread"><span class="muted">Your goal</span><b>${esc(OB.health_goal)}</b></div>`:""}
       </div>`,
-    nav:`<button class="btn btn-ghost" id="ob-back">Back</button><button class="btn btn-primary" id="ob-finish" style="flex:1">Create my dashboard</button>`,
+    nav:`<button class="btn btn-ghost" id="ob-back">${esc(L("Back"))}</button><button class="btn btn-primary" id="ob-finish" style="flex:1">${esc(L("Create my dashboard"))}</button>`,
     bind:()=>{ bindObBack(); $("#ob-finish").onclick=obFinish; }}; }
 ];
 function obRender(){
@@ -1415,7 +1438,7 @@ async function obFinish(){
     height:parseInt(OB.height)||null, weight:parseInt(OB.weight)||null,
     health_history:OB.health_history||"", allergies:OB.allergies||"", medications:OB.medications||"",
     lifestyle:OB.lifestyle||"", health_goal:OB.health_goal||"", language:OB.language||"en", onboarded:true });
-  if(S.lang!=="en"){ try{ await Promise.all([ensureLang(S.lang),ensureReportI18n(S.lang)]); }catch(e){} }
+  await applyLangAssets();
   OB=null; go("#/dashboard");
 }
 function renderOnboarding(){
@@ -1452,21 +1475,103 @@ function buildJourney(){
     (byYear[y]=byYear[y]||[]).push({dot,h:(rTxt(r,"title")||L("Report"))+" · "+L("score")+" "+(r.health_score||"–"),p:rTxt(r,"snapshot")||rTxt(r,"summary")||""}); });
   return Object.keys(byYear).sort().map(y=>({yr:y,items:byYear[y]}));
 }
-function downloadSummary(){
-  const p=S.profile||{}, m=dashboardModel();
-  let out="NUTROLIS — HEALTH SUMMARY\n"+(p.full_name||"")+"\nGenerated "+new Date().toLocaleDateString()+"\n\nOverall health score: "+m.overall+"/100\n\nMARKERS\n";
-  Object.values(m.byKey).forEach(x=>{const mk=x.latest;out+="- "+mk.label+": "+mk.value+" "+(mk.unit||"")+"  ["+mk.status+"]\n";});
-  out+="\nEducational summary — not a medical diagnosis. Discuss any concerns with your doctor.\n";
-  const blob=new Blob([out],{type:"text/plain"}); const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="nutrolis-health-summary.txt"; a.click(); toast("Summary downloaded");
+function downloadSummary(){ return downloadReportPDF((S.reports[0]||{}).id); }
+
+/* ---- Branded, localized PDF export (styled HTML → canvas → A4 PDF) ---- */
+const NL_LOGO_SVG='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12.5h4l1.8-4 3.2 9 2.4-6 1.6 3h5.4"/></svg>';
+function pdfRing(score,size){ const r=(size/2)-7, c=2*Math.PI*r, off=c*(1-Math.max(0,Math.min(100,score))/100);
+  const col=score>=80?"#0d8c7c":score>=60?"#c98a2e":"#cc6450";
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#e9efec" stroke-width="7"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${size/2} ${size/2})"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Hanken Grotesk,system-ui,sans-serif" font-size="${size*0.3}" font-weight="800" fill="#0e1c1a">${score}</text></svg>`; }
+function pdfRangeBar(m){
+  const lo=m.ref_low, hi=m.ref_high, v=+m.value; let pct;
+  if(lo!=null&&hi!=null&&hi>lo){ pct=10+80*((v-lo)/(hi-lo)); } else { pct=m.status==="high"?92:m.status==="low"?8:50; }
+  pct=Math.max(4,Math.min(96,pct));
+  const col=m.status==="normal"?"#0d8c7c":"#c98a2e";
+  return '<div style="position:relative;height:8px;border-radius:999px;margin-top:9px;background:linear-gradient(90deg,#f6e5c9,#dcefe9 16%,#dcefe9 84%,#f6e5c9);">'
+    +'<div style="position:absolute;top:50%;left:'+pct+'%;width:13px;height:13px;border-radius:50%;background:'+col+';border:2px solid #fff;transform:translate(-50%,-50%);box-shadow:0 1px 3px rgba(0,0,0,.25);"></div></div>';
+}
+
+async function downloadReportPDF(id){
+  const r=(S.reports||[]).find(x=>x.id===id)||S.reports[0];
+  if(!r){ toast(L("No report to export.")); return; }
+  if(!(window.jspdf&&window.html2canvas)){ toast("PDF tools are still loading — please try again in a moment."); return; }
+  toast(L("Preparing your PDF…"),2200);
+  const p=S.profile||{}, ms=(S.markers||[]).filter(m=>m.report_id===r.id);
+  const score=r.health_score!=null?r.health_score:80;
+  const good=(rTxt(r,"good_news")||[]), attn=(rTxt(r,"attention")||[]), qs=(rTxt(r,"questions")||[]);
+  const summary=rTxt(r,"summary")||rTxt(r,"snapshot")||"";
+  const title=rTxt(r,"title")||L("Report");
+  const groups={}; ms.forEach(m=>{ const d=catOf(m.label||m.key); (groups[d]=groups[d]||[]).push(m); });
+  const order=["Cardiovascular","Metabolic","Liver","Kidney","Nutrition","Thyroid","Blood","General"];
+  const pillars=order.filter(d=>groups[d]&&groups[d].length).map(d=>({label:L(PILLAR_LABELS[d]||d),score:scoreFromMarkers(groups[d])}));
+  const band=score>=80?L("On track"):score>=60?L("Room to improve"):L("Needs attention");
+  const stColor=(s)=> s==="low"||s==="high"?"#9a6a1e":"#0a6f63";
+  const stBg=(s)=> s==="low"||s==="high"?"#faf1e0":"#e6f4f1";
+  const stLabel=(s)=> s==="low"?L("Low"):s==="high"?L("High"):L("Normal");
+  const gen=safeDate(new Date()).toLocaleDateString(S.lang,{day:"numeric",month:"long",year:"numeric"});
+  const rdate=fmtDate(r.report_date);
+  const secHead=(label,color)=>`<div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:${color};margin-bottom:9px">${esc(label)}</div>`;
+  const findings=(items,color,mark)=> items.map(x=>`<div style="display:flex;gap:9px;align-items:flex-start;padding:5px 0"><span style="color:${color};font-weight:800;flex:none;line-height:1.5">${mark}</span><span style="font-size:13px;line-height:1.5;color:#33453f">${esc(x)}</span></div>`).join("");
+  const markerCard=(m)=>`<div style="border:1px solid #eef3f1;border-radius:13px;padding:13px 15px;background:#fff;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><span style="font-size:13.5px;font-weight:700;color:#0e1c1a;">${esc(L(m.label)||m.label)}</span><span style="font-size:10.5px;font-weight:800;color:${stColor(m.status)};background:${stBg(m.status)};padding:3px 10px;border-radius:999px;white-space:nowrap;">${esc(stLabel(m.status))}</span></div>
+      <div style="font-size:17px;font-weight:800;color:#0e1c1a;margin-top:2px;">${esc(String(m.value))} <span style="font-size:12px;font-weight:600;color:#647571;">${esc(m.unit||"")}</span></div>
+      ${pdfRangeBar(m)}
+      <div style="display:flex;justify-content:space-between;font-size:9.5px;color:#9aa6a1;margin-top:4px;"><span>${m.ref_low!=null?esc(String(m.ref_low)):""}</span><span>${m.ref_high!=null?("≤ "+esc(String(m.ref_high))):""}</span></div>
+    </div>`;
+  // "block" = a unit that must not be split across pages
+  const block=(html,mt)=>`<div style="margin-top:${mt||22}px;padding-bottom:2px;">${html}</div>`;
+
+  const node=document.createElement("div");
+  node.style.cssText="position:fixed;left:-99999px;top:0;width:760px;background:#fff;color:#0e1c1a;font-family:var(--i18n-font,'Hanken Grotesk',system-ui,sans-serif);";
+  node.innerHTML=`<div style="padding:38px 40px 30px;">
+    <div style="display:flex;align-items:center;gap:12px;border-bottom:2px solid #e6f4f1;padding-bottom:18px;">
+      <span style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#0d8c7c,#16b59f);display:inline-grid;place-items:center;flex:none;">${NL_LOGO_SVG}</span>
+      <div style="font-weight:800;font-size:20px;letter-spacing:-.02em;">Nutrolis<span style="color:#0d8c7c;"> AI</span></div>
+      <div style="margin-left:auto;text-align:right;"><div style="font-size:15px;font-weight:700;">${esc(title)}</div><div style="font-size:12px;color:#647571;">${esc(rdate)}</div></div>
+    </div>
+    ${block(`<div style="display:flex;gap:24px;align-items:center;">
+      <div style="flex:none;text-align:center;">${pdfRing(score,124)}<div style="margin-top:6px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:${score>=80?'#0a6f63':score>=60?'#9a6a1e':'#b04a37'}">${esc(band)}</div></div>
+      <div style="flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#647571;">${esc(t("ohs"))}</div>
+        <div style="font-size:14px;line-height:1.55;color:#33453f;margin-top:6px;">${esc(summary)}</div>
+        <div style="margin-top:12px;font-size:12.5px;color:#647571;">${p.full_name?`${esc(L("Prepared for"))}: <b style="color:#0e1c1a">${esc(p.full_name)}</b> · `:""}${esc(gen)}</div>
+      </div></div>`)}
+    ${pillars.length?block(`${secHead(t("plos_pillars"),"#647571")}<div style="display:flex;flex-wrap:wrap;gap:10px;">${pillars.map(pl=>`<div style="flex:1 1 110px;min-width:110px;border:1px solid #eef3f1;border-radius:14px;padding:12px 8px;text-align:center;background:#fbfdfc;">${pdfRing(pl.score,62)}<div style="font-size:12.5px;font-weight:700;margin-top:5px;color:#0e1c1a">${esc(pl.label)}</div></div>`).join("")}</div>`):""}
+    ${(good.length||attn.length)?block(`<div style="display:flex;gap:28px;">${good.length?`<div style="flex:1">${secHead(L("What's going well"),"#0a6f63")}${findings(good,"#0a6f63","✓")}</div>`:""}${attn.length?`<div style="flex:1">${secHead(L("Areas worth a look"),"#9a6a1e")}${findings(attn,"#9a6a1e","•")}</div>`:""}</div>`):""}
+    ${qs.length?block(`${secHead(L("Questions for your doctor"),"#0a6f63")}${findings(qs,"#0a6f63","?")}`):""}
+    ${ms.length?block(`${secHead(t("hm"),"#647571")}<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">${ms.map(markerCard).join("")}</div>`):""}
+    <div style="margin-top:26px;border-top:1px solid #eef3f1;padding-top:14px;font-size:11px;color:#8a9691;line-height:1.5;">${esc(L("Educational, not a diagnosis. Always discuss your results with a healthcare professional."))} · nutrolis.com</div>
+  </div>`;
+  document.body.appendChild(node);
+  try{
+    const canvas=await html2canvas(node,{scale:2,backgroundColor:"#ffffff",useCORS:true,logging:false});
+    const { jsPDF }=window.jspdf;
+    const pdf=new jsPDF("p","mm","a4"); const pw=210, ph=297;
+    const pxPerMm=canvas.width/pw, pagePx=Math.floor(ph*pxPerMm);
+    const ctx=canvas.getContext("2d");
+    const rowWhite=(y)=>{ try{ const d=ctx.getImageData(0,y,canvas.width,1).data; for(let i=0;i<d.length;i+=8){ if(d[i]<248||d[i+1]<248||d[i+2]<248) return false; } return true; }catch(e){ return true; } };
+    // cut each page at the nearest all-white row above the ideal boundary → never split a card/row
+    const safeCut=(start)=>{ const ideal=Math.min(start+pagePx,canvas.height); if(ideal>=canvas.height) return canvas.height;
+      const floor=start+Math.floor(pagePx*0.5); for(let y=ideal;y>floor;y-=2){ if(rowWhite(y)) return y; } return ideal; };
+    let y=0, first=true;
+    while(y<canvas.height){
+      const end=safeCut(y); const h=end-y;
+      const slice=document.createElement("canvas"); slice.width=canvas.width; slice.height=h;
+      slice.getContext("2d").drawImage(canvas,0,y,canvas.width,h,0,0,canvas.width,h);
+      if(!first) pdf.addPage(); first=false;
+      pdf.addImage(slice.toDataURL("image/jpeg",0.95),"JPEG",0,0,pw,h/pxPerMm);
+      y=end;
+    }
+    pdf.save("Nutrolis-"+(r.report_date||"report")+".pdf");
+  }catch(e){ console.error(e); toast(L("Couldn't build the PDF. Please try again.")); }
+  finally{ node.remove(); }
 }
 function dashAction(a){
   if(a==="upload") return go("#/upload");
-  if(a==="compare") return toast(S.reports.length>=2?"Comparison view is coming soon":"Add another report to compare over time");
+  if(a==="compare") return toast(S.reports.length>=2?L("Comparison view is coming soon"):L("Add another report to compare over time"));
   if(a==="download") return downloadSummary();
   if(a==="share"){ const link="https://"+location.host+"/#/dashboard";
-    if(navigator.clipboard) navigator.clipboard.writeText(link).then(()=>toast("Share link copied")).catch(()=>toast("Copy this link: "+link));
-    else toast("Copy this link: "+link); }
+    if(navigator.clipboard) navigator.clipboard.writeText(link).then(()=>toast(L("Share link copied"))).catch(()=>toast(L("Copy this link: ")+link));
+    else toast(L("Copy this link: ")+link); }
 }
 function renderDashboard(){
   const m=dashboardModel();
@@ -1585,7 +1690,7 @@ function renderDashboard(){
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
     ${ins.map(c=>`<div class="card" style="padding:20px;display:flex;gap:14px">
       <span class="ins-dot" style="background:${c.tone==="teal"?"var(--teal-bg)":"var(--amber-bg)"}"><span style="width:9px;height:9px;border-radius:50%;background:${c.tone==="teal"?"var(--teal)":"var(--amber)"}"></span></span>
-      <div><div class="eyebrow" style="color:${c.tone==="teal"?"var(--teal-ink)":"var(--amber-ink)"}">${esc(c.cat)}</div>
+      <div><div class="eyebrow" style="color:${c.tone==="teal"?"var(--teal-ink)":"var(--amber-ink)"}">${esc(L(c.cat))}</div>
       <p style="margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-2)">${esc(c.text)}</p></div>
     </div>`).join("")}</div>`:"";
 
@@ -1637,7 +1742,7 @@ function renderDashboard(){
   app().querySelectorAll("[data-marker]").forEach(b=>b.onclick=()=>openMarkerDrawer(b.dataset.marker));
   app().querySelectorAll("[data-plos-info]").forEach(b=>b.onclick=plosInfoDrawer);
   app().querySelectorAll("[data-report]").forEach(b=>b.onclick=()=>go("#/report/"+b.dataset.report));
-  app().querySelectorAll("[data-del]").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); confirmDialog("Delete this report?","This permanently removes the report and its markers from your timeline. This can't be undone.","Delete",async()=>{ await deleteReport(b.dataset.del); toast("Report deleted."); renderReports(); }); });
+  app().querySelectorAll("[data-del]").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); confirmDialog(L("Delete this report?"),L("This permanently removes the report and its markers from your timeline. This can't be undone."),L("Delete"),async()=>{ await deleteReport(b.dataset.del); toast(L("Report deleted.")); renderReports(); }); });
   app().querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>learnDrawer(+b.dataset.learn));
   app().querySelectorAll("[data-dash]").forEach(b=>b.onclick=()=>dashAction(b.dataset.dash));
   wireLang();
@@ -1683,7 +1788,7 @@ function renderUpload(){
   ["dragover","dragenter"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("drag");}));
   ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("drag");}));
   drop.addEventListener("drop",e=>{ const f=e.dataTransfer.files[0]; if(f) startProcessing(f); });
-  $("#paste-go").onclick=()=>{ const v=$("#paste").value.trim(); if(v.length<10){toast("Paste a little more text first.");return;} startProcessing(v); };
+  $("#paste-go").onclick=()=>{ const v=$("#paste").value.trim(); if(v.length<10){toast(L("Paste a little more text first."));return;} startProcessing(v); };
   $("#sample-go").onclick=()=>startProcessing(SAMPLE_REPORT);
 }
 async function startProcessing(input){
@@ -1701,7 +1806,7 @@ async function startProcessing(input){
   };
   try{
     const rep=await runPipeline(input,setStep);
-    toast("Report explained and saved.");
+    toast(L("Report explained and saved."));
     setTimeout(()=>go("#/report/"+rep.id),500);
   }catch(e){
     console.error(e);
@@ -1794,7 +1899,7 @@ function renderReport(id){
   const normN=ms.length-abn.length;
   const qs=(rTxt(r,"questions")||[]), good=(rTxt(r,"good_news")||[]);
   const rd=reportScoreDelta(r);
-  const aiBadge=r.ai_source==="claude"?`<span class="pill pill-teal" style="font-size:11px">✦ AI-enhanced</span>`:`<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:11px">Knowledge engine</span>`;
+  const aiBadge=r.ai_source==="claude"?`<span class="pill pill-teal" style="font-size:11px">✦ ${esc(L("AI-enhanced"))}</span>`:`<span class="pill" style="background:var(--surface-3);color:var(--muted);font-size:11px">${esc(L("Knowledge engine"))}</span>`;
 
   // ---- HERO : Am I healthy? ----
   const verdict=L(score>=80?"Looking good overall":score>=60?"Mostly healthy, a few to watch":"A few things worth your attention");
@@ -1884,7 +1989,7 @@ function renderReport(id){
   app().innerHTML=shell(`
     <button class="btn btn-ghost" data-nav="#/reports" style="margin-bottom:16px;padding:9px 14px">${I.back}Back</button>
     <div class="rr-wrap">
-      <div class="spread" style="margin-bottom:14px"><span class="eyebrow">${esc(rTxt(r,"title")||"Report")} &middot; ${fmtDate(r.report_date)}</span>${aiBadge}</div>
+      <div class="spread" style="margin-bottom:14px"><span class="eyebrow">${esc(rTxt(r,"title")||L("Report"))} &middot; ${fmtDate(r.report_date)}</span><span style="display:flex;gap:8px;align-items:center;flex:none">${aiBadge}<button class="btn btn-ghost" style="padding:7px 12px;font-size:13px" onclick="downloadReportPDF('${r.id}')">${esc(L("Download PDF"))}</button></span></div>
       ${hero}
       ${pri}
       ${systems}
@@ -1905,7 +2010,7 @@ function renderReportTrends(ms){
     const hist=S.markers.filter(x=>x.key===mk.key).sort((a,b)=>new Date(a.report_date)-new Date(b.report_date));
     if(hist.length<2) return `<div class="finding"><span style="font-size:14.5px;color:var(--ink-2)"><strong>${esc(Lbl(mk.label))}</strong> — first reading at ${mk.value} ${esc(mk.unit)}. We'll track changes from here.</span></div>`;
     const tr=trendOf(hist); const prev=hist[hist.length-2];
-    const word=tr==="improving"?"improving":tr==="attention"?"worth watching":"holding steady";
+    const word=tr==="improving"?L("improving"):tr==="attention"?L("worth watching"):L("holding steady");
     const col=tr==="improving"?"var(--teal-ink)":tr==="attention"?"var(--amber-ink)":"var(--muted)";
     return `<div class="finding"><span style="font-size:14.5px;color:var(--ink-2)"><strong>${esc(Lbl(mk.label))}</strong> — ${prev.value} → ${mk.value} ${esc(mk.unit)}, <span style="color:${col};font-weight:700">${word}</span> ${sparkline(hist)}</span></div>`;
   }).join("");
@@ -2116,13 +2221,13 @@ function renderSettings(){
       <p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Tap to select — no typing needed. This helps us tailor your insights and reminders.</p>
       <label class="field"><span>${t("name")}</span><input class="input" id="s-name" value="${esc(p.full_name||"")}"></label>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <label class="field" style="flex:1;min-width:120px"><span>Age</span><select class="input" id="s-age">${ageOpts}</select></label>
-        <label class="field" style="flex:1;min-width:120px"><span>Gender</span><select class="input" id="s-gender"><option value="">—</option>${genderOpts}</select></label>
+        <label class="field" style="flex:1;min-width:120px"><span>${esc(L("Age"))}</span><select class="input" id="s-age">${ageOpts}</select></label>
+        <label class="field" style="flex:1;min-width:120px"><span>${esc(L("Gender"))}</span><select class="input" id="s-gender"><option value="">—</option>${genderOpts}</select></label>
       </div>
-      <div class="optgroup"><span class="optlbl">Health history</span>${chips("s-hist",HEALTH_OPTS,p.health_history)}</div>
-      <div class="optgroup"><span class="optlbl">Allergies</span>${chips("s-all",ALLERGY_OPTS,p.allergies)}</div>
-      <div class="optgroup"><span class="optlbl">Current medications</span>${chips("s-med",MED_OPTS,p.medications)}</div>
-      <div class="optgroup"><span class="optlbl">Lifestyle</span>${chips("s-life",LIFE_OPTS,p.lifestyle)}</div>
+      <div class="optgroup"><span class="optlbl">${esc(L("Health history"))}</span>${chips("s-hist",HEALTH_OPTS,p.health_history)}</div>
+      <div class="optgroup"><span class="optlbl">${esc(L("Allergies"))}</span>${chips("s-all",ALLERGY_OPTS,p.allergies)}</div>
+      <div class="optgroup"><span class="optlbl">${esc(L("Current medications"))}</span>${chips("s-med",MED_OPTS,p.medications)}</div>
+      <div class="optgroup"><span class="optlbl">${esc(L("Lifestyle"))}</span>${chips("s-life",LIFE_OPTS,p.lifestyle)}</div>
       <button class="btn btn-primary" id="s-save" style="margin-top:12px">Save profile</button>
     </div>
     <div class="card rsection"><h3>Language</h3><p class="muted" style="margin:0 0 10px;font-size:14px">The interface adapts instantly to your language, and Arabic and Urdu switch to right-to-left automatically. New report explanations are written in your language when the Claude layer is connected.</p>
@@ -2145,14 +2250,14 @@ function renderSettings(){
     if(v==="None"){ app().querySelectorAll(`[data-chip="${g}"]`).forEach(x=>{ if(x!==b) x.classList.remove("on"); }); }
     else { const none=[...app().querySelectorAll(`[data-chip="${g}"]`)].find(x=>x.dataset.val==="None"); if(none) none.classList.remove("on"); }
     b.classList.toggle("on"); });
-  $("#s-save").onclick=async()=>{ await saveProfile({full_name:$("#s-name").value.trim(),age:parseInt($("#s-age").value)||null,gender:$("#s-gender").value||null,health_history:chipVals("s-hist"),allergies:chipVals("s-all"),medications:chipVals("s-med"),lifestyle:chipVals("s-life")}); toast("Profile saved."); };
+  $("#s-save").onclick=async()=>{ await saveProfile({full_name:$("#s-name").value.trim(),age:parseInt($("#s-age").value)||null,gender:$("#s-gender").value||null,health_history:chipVals("s-hist"),allergies:chipVals("s-all"),medications:chipVals("s-med"),lifestyle:chipVals("s-life")}); toast(L("Profile saved.")); };
   $("#s-lang").onchange=(e)=>setLanguage(e.target.value);
   $("#s-theme").onclick=()=>{ toggleTheme(); renderSettings(); };
   $("#s-notif").onclick=async()=>{ const v=!(S.profile.notifications!==false); await saveProfile({notifications:v}); renderSettings(); };
-  $("#s-export").onclick=()=>{ const blob=new Blob([JSON.stringify({profile:S.profile,reports:S.reports,markers:S.markers},null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="nutrolis-health-data.json"; a.click(); toast("Your data is downloading."); };
+  $("#s-export").onclick=()=>{ const blob=new Blob([JSON.stringify({profile:S.profile,reports:S.reports,markers:S.markers},null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="nutrolis-health-data.json"; a.click(); toast(L("Your data is downloading.")); };
   const del=$("#s-del"), delBtn=$("#s-delete");
   del.oninput=()=>{ const ok=del.value.trim()==="DELETE"; delBtn.disabled=!ok; delBtn.style.opacity=ok?"1":".5"; };
-  delBtn.onclick=async()=>{ if(del.value.trim()!=="DELETE")return; delBtn.disabled=true; delBtn.textContent="Deleting…"; await deleteAllData(); toast("All health data deleted."); go("#/dashboard"); };
+  delBtn.onclick=async()=>{ if(del.value.trim()!=="DELETE")return; delBtn.disabled=true; delBtn.textContent=L("Deleting…"); await deleteAllData(); toast(L("All health data deleted.")); go("#/dashboard"); };
 }
 
 /* =================================================================
@@ -2212,18 +2317,29 @@ function detectBrowserLang(){
 let _prewarmed=false;
 function prewarmLangs(){
   if(_prewarmed) return; _prewarmed=true;
-  const others=LANGS.map(l=>l[0]).filter(c=>c!=="en"&&!I18N[c]);
-  (function next(){ const c=others.shift(); if(!c) return; ensureLang(c).catch(()=>{}).finally(()=>setTimeout(next,500)); })();
+  // only warm languages already translated + cached (cheap) — new languages
+  // translate on first selection, so boot never fires many API calls.
+  const others=LANGS.map(l=>l[0]).filter(c=>c!=="en"&&!_staticLang(c)&&!(APP[c]&&APP[c].__done)&&_hasCachedApp(c));
+  (function next(){ const c=others.shift(); if(!c) return; ensureAppLang(c).catch(()=>{}).finally(()=>setTimeout(next,400)); })();
+}
+async function applyLangAssets(){                        // strings + script font for S.lang
+  if(S.lang!=="en" && !APP[S.lang]){ try{ const c=localStorage.getItem("nl-app-"+S.lang); if(c) APP[S.lang]=JSON.parse(c); }catch(e){} }
+  if(NL_FONTS){ try{ await NL_FONTS.loadFontForToken(fontFor(S.lang)); }catch(e){} }
+  // non-static language not yet cached → translate in the background, re-render when ready
+  if(S.lang!=="en" && !_staticLang(S.lang) && !(APP[S.lang]&&APP[S.lang].__done)){
+    ensureAppLang(S.lang).then(()=>{ if(S.user){ render(); reopenDrawer(); } });
+  }
 }
 async function boot(){
+  await initI18nEngine();                                // load fonts + report cache + manifest (20 languages)
   const{data:{session}}=await sb.auth.getSession();
-  if(!session){ S.user=null; const bl=detectBrowserLang(); if(bl){ S.lang=bl; } applyTheme(); applyDir(); renderLogin(); setTimeout(prewarmLangs,1500); return; }
+  if(!session){ S.user=null; const bl=detectBrowserLang(); if(bl){ S.lang=bl; } applyTheme(); applyDir(); await applyLangAssets(); renderLogin(); setTimeout(prewarmLangs,1500); return; }
   S.user=session.user;
   await loadProfile();
   const bl=detectBrowserLang(); if(bl && (!S.profile||!S.profile.language)){ S.lang=bl; }
   applyTheme(); applyDir();
   await loadData();
-  if(S.lang!=="en"){ try{ await ensureLang(S.lang); await ensureReportI18n(S.lang); }catch(e){} }
+  await applyLangAssets();
   if(!location.hash||location.hash==="#/login") location.hash="#/dashboard";
   render();
   setTimeout(prewarmLangs,1800);   // warm the rest in the background → instant switching

@@ -12,7 +12,7 @@
  *  Bump CACHE_VERSION on every shell change to ship updates cleanly.
  * ============================================================ */
 
-const CACHE_VERSION = "nutrolis-v1";
+const CACHE_VERSION = "nutrolis-v2";
 const SHELL_CACHE   = CACHE_VERSION + "-shell";
 const RUNTIME_CACHE = CACHE_VERSION + "-runtime";
 

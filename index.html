@@ -22,7 +22,7 @@
 
   *{box-sizing:border-box}
   body{
-    margin:0;font-family:'Hanken Grotesk','Noto Sans Devanagari',system-ui,-apple-system,sans-serif;
+    margin:0;font-family:var(--i18n-font,'Hanken Grotesk','Noto Sans Devanagari',system-ui,-apple-system,sans-serif);
     --bg:#f1f6f4;--bg-2:#e7f0ec;--surface:#ffffff;--surface-2:#f6faf8;--surface-3:#eaf2ef;
     --ink:#0e1c1a;--ink-2:#33453f;--muted:#647571;--line:rgba(14,28,26,.09);--line-2:rgba(14,28,26,.055);
     --teal:#0d8c7c;--teal-2:#0a6e62;--teal-ink:#0a5b51;--aqua:#16b59f;--aqua-2:#34cdb6;
@@ -163,29 +163,29 @@
         <span style="font-weight:800;font-size:20px;letter-spacing:-.02em;">Nutrolis<span style="color:var(--teal);"> AI</span></span>
       </div>
       <div class="nav-links" style="display:flex;align-items:center;gap:30px;font-size:15px;font-weight:600;color:var(--ink-2);">
-        <a href="#how" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">How it works</a>
-        <a href="#plos" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">PLOS Score</a>
-        <a href="#languages" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Languages</a>
-        <a href="#features" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Features</a>
-        <a href="#faq" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">FAQ</a>
+        <a data-i18n="home.nav.how" href="#how" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">How it works</a>
+        <a data-i18n="home.nav.plos" href="#plos" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">PLOS Score</a>
+        <a data-i18n="home.nav.languages" href="#languages" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Languages</a>
+        <a data-i18n="home.nav.features" href="#features" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">Features</a>
+        <a data-i18n="home.nav.faq" href="#faq" style="color:inherit;text-decoration:none;" style-hover="color:var(--teal)">FAQ</a>
       </div>
       <button data-act="theme" class="nav-theme" aria-label="Toggle light and dark" style="display:inline-flex;align-items:center;flex:none;width:54px;height:30px;border-radius:999px;border:1px solid var(--line);background:var(--surface-3);position:relative;cursor:pointer;padding:0;">
         <span style="position:absolute;left:7px;width:6px;height:6px;border-radius:50%;background:var(--amber);opacity:.7;"></span>
         <span style="position:absolute;right:7px;width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.7;"></span>
         <span style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--aqua));transition:left .38s cubic-bezier(.34,1.56,.5,1);box-shadow:0 2px 6px -1px var(--shadow);" id="knob"></span>
       </button>
-      <a href="app.html" class="nav-signin" style="font-size:15px;font-weight:600;color:var(--ink-2);text-decoration:none;" style-hover="color:var(--teal)">Sign in</a>
-      <button data-act="enter" class="nav-cta-bar" style="font:inherit;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:11px 20px;border-radius:12px;cursor:pointer;box-shadow:0 8px 20px -8px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-2px)">Get started</button>
+      <a data-i18n="home.nav.signin" href="app.html" class="nav-signin" style="font-size:15px;font-weight:600;color:var(--ink-2);text-decoration:none;" style-hover="color:var(--teal)">Sign in</a>
+      <button data-i18n="home.nav.get_started" data-act="enter" class="nav-cta-bar" style="font:inherit;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:11px 20px;border-radius:12px;cursor:pointer;box-shadow:0 8px 20px -8px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-2px)">Get started</button>
       <button data-act="menu" class="nav-burger" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
     </div>
     <div class="nav-menu" id="navMenu">
-      <a href="#how" data-act="closemenu">How it works</a>
-      <a href="#plos" data-act="closemenu">PLOS Score</a>
-      <a href="#languages" data-act="closemenu">Languages</a>
-      <a href="#features" data-act="closemenu">Features</a>
-      <a href="#faq" data-act="closemenu">FAQ</a>
-      <a href="app.html" class="nav-menu-signin" data-act="closemenu">Sign in</a>
-      <button class="nav-menu-cta" data-act="enter">Get started</button>
+      <a data-i18n="home.nav.how" href="#how" data-act="closemenu">How it works</a>
+      <a data-i18n="home.nav.plos" href="#plos" data-act="closemenu">PLOS Score</a>
+      <a data-i18n="home.nav.languages" href="#languages" data-act="closemenu">Languages</a>
+      <a data-i18n="home.nav.features" href="#features" data-act="closemenu">Features</a>
+      <a data-i18n="home.nav.faq" href="#faq" data-act="closemenu">FAQ</a>
+      <a data-i18n="home.nav.signin" href="app.html" class="nav-menu-signin" data-act="closemenu">Sign in</a>
+      <button data-i18n="home.nav.get_started" class="nav-menu-cta" data-act="enter">Get started</button>
     </div>
   </nav>
 
@@ -195,18 +195,18 @@
     <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,60px);align-items:center;width:100%;position:relative;">
       <!-- copy -->
       <div style="flex:1 1 380px;min-width:300px;">
-        <h1 style="font-size:clamp(38px,5vw,62px);line-height:1.04;letter-spacing:-.035em;font-weight:800;margin:0;animation:nl-rise .8s .06s both;">
+        <h1 data-i18n-html="home.hero.title" style="font-size:clamp(38px,5vw,62px);line-height:1.04;letter-spacing:-.035em;font-weight:800;margin:0;animation:nl-rise .8s .06s both;">
           Understand your medical reports<span style="color:var(--teal);"> in minutes.</span>
         </h1>
-        <p style="font-size:clamp(16px,1.5vw,19px);color:var(--ink-2);max-width:30em;margin:20px 0 0;line-height:1.55;animation:nl-rise .8s .14s both;">
+        <p data-i18n-html="home.hero.sub" style="font-size:clamp(16px,1.5vw,19px);color:var(--ink-2);max-width:30em;margin:20px 0 0;line-height:1.55;animation:nl-rise .8s .14s both;">
           Upload a blood report, scan, or prescription. Nutrolis turns the clinical jargon into <span style="font-family:'Newsreader',serif;font-style:italic;color:var(--ink);">one clear, plain-language explanation</span> — in your language.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:28px;animation:nl-rise .8s .22s both;">
-          <button data-act="enter" style="font:inherit;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:15px 26px;border-radius:14px;cursor:pointer;box-shadow:0 14px 30px -12px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);display:inline-flex;align-items:center;gap:10px;" style-hover="transform:translateY(-3px)">
+          <button data-i18n="home.hero.cta_upload" data-act="enter" style="font:inherit;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:15px 26px;border-radius:14px;cursor:pointer;box-shadow:0 14px 30px -12px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);display:inline-flex;align-items:center;gap:10px;" style-hover="transform:translateY(-3px)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
             Upload a report
           </button>
-          <a href="#how" style="font:inherit;font-size:16px;font-weight:700;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:15px 24px;border-radius:14px;cursor:pointer;text-decoration:none;transition:transform .25s,border-color .25s;display:inline-flex;align-items:center;gap:9px;" style-hover="transform:translateY(-3px);border-color:var(--teal)">
+          <a data-i18n="home.hero.cta_how" href="#how" style="font:inherit;font-size:16px;font-weight:700;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:15px 24px;border-radius:14px;cursor:pointer;text-decoration:none;transition:transform .25s,border-color .25s;display:inline-flex;align-items:center;gap:9px;" style-hover="transform:translateY(-3px);border-color:var(--teal)">
             See how it works
           </a>
         </div>
@@ -216,7 +216,7 @@
             <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--aqua),var(--teal-2));border:2px solid var(--bg);margin-left:-10px;"></span>
             <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--amber),var(--teal));border:2px solid var(--bg);margin-left:-10px;"></span>
           </div>
-          <span><strong style="color:var(--ink-2);">Now in early access</strong> — be one of the first to truly understand your reports.</span>
+          <span data-i18n-html="home.hero.badge"><strong style="color:var(--ink-2);">Now in early access</strong> — be one of the first to truly understand your reports.</span>
         </div>
       </div>
 
@@ -279,10 +279,10 @@
   <!-- ============ STATS ============ -->
   <section style="max-width:1200px;margin:0 auto;padding:0 clamp(18px,4vw,40px) clamp(30px,5vw,60px);">
     <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3vw,34px);box-shadow:0 20px 44px -30px var(--shadow);">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;border-right:1px solid var(--line-2);padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;"><span data-count="20" data-dec="0">0</span>+</div><div style="color:var(--muted);font-size:14px;font-weight:600;">Languages, incl. RTL</div></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;border-right:1px solid var(--line-2);padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;"><span data-count="100" data-dec="0">0</span>%</div><div style="color:var(--muted);font-size:14px;font-weight:600;">Private &amp; secure</div></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;border-right:1px solid var(--line-2);padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.5A3.5 3.5 0 0 1 17 18Z"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;">24/7</div><div style="color:var(--muted);font-size:14px;font-weight:600;">Your records, anywhere</div></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h6l4 4v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M9 13.5h6M9 17h4"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;">All</div><div style="color:var(--muted);font-size:14px;font-weight:600;">Reports — blood, scans &amp; Rx</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;border-right:1px solid var(--line-2);padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;"><span data-count="20" data-dec="0">0</span>+</div><div data-i18n="home.stats.languages" style="color:var(--muted);font-size:14px;font-weight:600;">Languages, incl. RTL</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;border-right:1px solid var(--line-2);padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;"><span data-count="100" data-dec="0">0</span>%</div><div data-i18n="home.stats.private" style="color:var(--muted);font-size:14px;font-weight:600;">Private &amp; secure</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;border-right:1px solid var(--line-2);padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.5A3.5 3.5 0 0 1 17 18Z"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;">24/7</div><div data-i18n="home.stats.anywhere" style="color:var(--muted);font-size:14px;font-weight:600;">Your records, anywhere</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;padding:4px 12px;"><span style="width:38px;height:38px;border-radius:12px;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h6l4 4v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4M9 13.5h6M9 17h4"/></svg></span><div style="font-size:clamp(30px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--teal);line-height:1;">All</div><div data-i18n="home.stats.reports" style="color:var(--muted);font-size:14px;font-weight:600;">Reports — blood, scans &amp; Rx</div></div>
     </div>
   </section>
 
@@ -290,25 +290,25 @@
   <!-- ============ PROBLEM / SOLUTION ============ -->
   <section style="max-width:1200px;margin:0 auto;padding:clamp(50px,7vw,90px) clamp(18px,4vw,40px);">
     <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);max-width:780px;margin:0 auto 46px;text-align:center;">
-      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:0;line-height:1.12;">Your reports weren't written for you.<br><span style="color:var(--teal);">We fix that.</span></h2>
+      <h2 data-i18n-html="home.problem.heading" style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:0;line-height:1.12;">Your reports weren't written for you.<br><span style="color:var(--teal);">We fix that.</span></h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;align-items:stretch;">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1) .04s,transform .7s cubic-bezier(.22,1,.36,1); .04s;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,3vw,34px);box-shadow:0 18px 42px -34px var(--shadow);">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
           <span style="width:44px;height:44px;border-radius:14px;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></span>
-          <div><div style="font-weight:800;font-size:18px;letter-spacing:-.01em;">The problem today</div><div style="font-size:13px;color:var(--muted);">Reading your own report shouldn't feel like this</div></div>
+          <div><div data-i18n="home.problem.title" style="font-weight:800;font-size:18px;letter-spacing:-.01em;">The problem today</div><div data-i18n="home.problem.subtitle" style="font-size:13px;color:var(--muted);">Reading your own report shouldn't feel like this</div></div>
         </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Codes, abbreviations and numbers you simply can't decode.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">“Normal ranges” differ by lab and country — is your value really okay?</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Days of waiting and worry before you can reach a doctor.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Googling your results leads to panic, not answers.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">It's all dense medical English — not your language.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">You arrive at the appointment unsure what to even ask.</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span data-i18n="home.problem.item1" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Codes, abbreviations and numbers you simply can't decode.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span data-i18n="home.problem.item2" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">“Normal ranges” differ by lab and country — is your value really okay?</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span data-i18n="home.problem.item3" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Days of waiting and worry before you can reach a doctor.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span data-i18n="home.problem.item4" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Googling your results leads to panic, not answers.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span data-i18n="home.problem.item5" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">It's all dense medical English — not your language.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--red-bg);color:var(--red);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><span data-i18n="home.problem.item6" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">You arrive at the appointment unsure what to even ask.</span></div>
       </div>
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1) .12s,transform .7s cubic-bezier(.22,1,.36,1); .12s;background:linear-gradient(165deg,var(--surface),var(--teal-bg));border:1.5px solid var(--teal);border-radius:24px;padding:clamp(24px,3vw,34px);box-shadow:0 28px 60px -36px var(--glow);">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
           <span style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;flex:none;box-shadow:0 10px 22px -10px var(--glow);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12.5h4l1.8-4 3.2 9 2.4-6 1.6 3h5.4"/></svg></span>
-          <div><div style="font-weight:800;font-size:18px;letter-spacing:-.01em;">The Nutrolis way</div><div style="font-size:13px;color:var(--teal-ink);">Your report, made human</div></div>
+          <div><div data-i18n="home.solution.title" style="font-weight:800;font-size:18px;letter-spacing:-.01em;">The Nutrolis way</div><div data-i18n="home.solution.subtitle" style="font-size:13px;color:var(--teal-ink);">Your report, made human</div></div>
         </div>
-        <div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Upload any report — we read every term and marker for you.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">One calm, plain-language explanation, in your language (20+).</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Instantly see what's healthy, what's worth a look, and what to do.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Track everything over time with a single PLOS health score.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Walk in with the exact questions to ask your doctor.</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span data-i18n="home.solution.item1" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Upload any report — we read every term and marker for you.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span data-i18n="home.solution.item2" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">One calm, plain-language explanation, in your language (20+).</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span data-i18n="home.solution.item3" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Instantly see what's healthy, what's worth a look, and what to do.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span data-i18n="home.solution.item4" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Track everything over time with a single PLOS health score.</span></div><div style="display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line-2);"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal-bg);color:var(--teal-ink);display:grid;place-items:center;flex:none;margin-top:1px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span data-i18n="home.solution.item5" style="font-size:14.5px;line-height:1.5;color:var(--ink-2);">Walk in with the exact questions to ask your doctor.</span></div>
         <div style="border-top:1px solid var(--line-2);margin-top:18px;padding-top:18px;">
-          <div style="font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-ink);margin-bottom:11px;">What you gain</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>Clarity in minutes</span><span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>Less anxiety</span><span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>Confident doctor visits</span><span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>All reports in one place</span></div>
+          <div data-i18n="home.solution.gain_label" style="font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-ink);margin-bottom:11px;">What you gain</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;"><span data-i18n="home.solution.gain1" style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>Clarity in minutes</span><span data-i18n="home.solution.gain2" style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>Less anxiety</span><span data-i18n="home.solution.gain3" style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>Confident doctor visits</span><span data-i18n="home.solution.gain4" style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--teal-ink);background:var(--surface);border:1px solid var(--teal-bg);padding:7px 13px;border-radius:999px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></span>All reports in one place</span></div>
         </div>
       </div>
     </div>
@@ -317,7 +317,7 @@
   <!-- ============ HOW IT WORKS ============ -->
   <section id="how" style="max-width:1200px;margin:0 auto;padding:clamp(50px,7vw,90px) clamp(18px,4vw,40px);">
     <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);text-align:center;max-width:640px;margin:0 auto 50px;">
-      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.1;">From upload to understanding in three steps.</h2>
+      <h2 data-i18n="home.how.heading" style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.1;">From upload to understanding in three steps.</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1) .05s,transform .7s cubic-bezier(.22,1,.36,1) .05s;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 18px 40px -32px var(--shadow);">
@@ -327,8 +327,8 @@
           </span>
           <span style="font-family:'Newsreader',serif;font-style:italic;font-size:30px;color:var(--line);font-weight:500;">01</span>
         </div>
-        <h3 style="font-size:21px;font-weight:700;margin:20px 0 8px;letter-spacing:-.01em;">Upload anything</h3>
-        <p style="margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.6;">Drag in a PDF, photo, or scan of your blood report, X-ray summary, or prescription. We handle the rest.</p>
+        <h3 data-i18n="home.how.s1_title" style="font-size:21px;font-weight:700;margin:20px 0 8px;letter-spacing:-.01em;">Upload anything</h3>
+        <p data-i18n="home.how.s1_body" style="margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.6;">Drag in a PDF, photo, or scan of your blood report, X-ray summary, or prescription. We handle the rest.</p>
       </div>
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1) .13s,transform .7s cubic-bezier(.22,1,.36,1) .13s;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 18px 40px -32px var(--shadow);">
         <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -337,8 +337,8 @@
           </span>
           <span style="font-family:'Newsreader',serif;font-style:italic;font-size:30px;color:var(--line);font-weight:500;">02</span>
         </div>
-        <h3 style="font-size:21px;font-weight:700;margin:20px 0 8px;letter-spacing:-.01em;">We translate it</h3>
-        <p style="margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.6;">Nutrolis reads every term and marker, then rewrites it the way a kind doctor friend would explain it to you.</p>
+        <h3 data-i18n="home.how.s2_title" style="font-size:21px;font-weight:700;margin:20px 0 8px;letter-spacing:-.01em;">We translate it</h3>
+        <p data-i18n="home.how.s2_body" style="margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.6;">Nutrolis reads every term and marker, then rewrites it the way a kind doctor friend would explain it to you.</p>
       </div>
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1) .21s,transform .7s cubic-bezier(.22,1,.36,1) .21s;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 18px 40px -32px var(--shadow);">
         <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -347,8 +347,8 @@
           </span>
           <span style="font-family:'Newsreader',serif;font-style:italic;font-size:30px;color:var(--line);font-weight:500;">03</span>
         </div>
-        <h3 style="font-size:21px;font-weight:700;margin:20px 0 8px;letter-spacing:-.01em;">Understand &amp; act</h3>
-        <p style="margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.6;">See what's good, what's worth a look, and the exact questions to bring to your next appointment.</p>
+        <h3 data-i18n="home.how.s3_title" style="font-size:21px;font-weight:700;margin:20px 0 8px;letter-spacing:-.01em;">Understand &amp; act</h3>
+        <p data-i18n="home.how.s3_body" style="margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.6;">See what's good, what's worth a look, and the exact questions to bring to your next appointment.</p>
       </div>
     </div>
   </section>
@@ -357,7 +357,7 @@
   <section style="position:relative;background:var(--surface-2);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);">
     <div style="max-width:1200px;margin:0 auto;padding:clamp(50px,7vw,86px) clamp(18px,4vw,40px);">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);text-align:center;max-width:620px;margin:0 auto 44px;">
-        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.1;">See a confusing report become a clear sentence.</h2>
+        <h2 data-i18n="home.demo.heading" style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.1;">See a confusing report become a clear sentence.</h2>
       </div>
 
       <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:clamp(20px,3vw,34px);box-shadow:0 30px 64px -38px var(--shadow);">
@@ -367,7 +367,7 @@
             <div style="position:absolute;left:0;right:0;height:40%;background:linear-gradient(180deg,transparent,var(--teal-bg) 60%,transparent);animation:nl-beam 2.2s linear infinite;"></div>
             <div style="position:absolute;left:0;right:0;height:2px;background:var(--teal);box-shadow:0 0 14px 2px var(--glow);animation:nl-beam 2.2s linear infinite;margin-top:40%;"></div>
           </div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;position:relative;">Patient blood panel</div>
+          <div data-i18n="home.demo.panel_label" style="font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;position:relative;">Patient blood panel</div>
           <div style="font-weight:700;font-size:17px;margin:4px 0 18px;position:relative;">Sample Report.pdf</div>
           <div style="display:flex;flex-direction:column;gap:9px;position:relative;font-size:13px;font-family:'Newsreader',serif;color:var(--ink-2);">
             <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);"><span>Haemoglobin</span><span style="font-weight:600;color:var(--ink);">11.2 g/dL</span></div>
@@ -385,9 +385,9 @@
               <div style="width:64px;height:64px;border-radius:18px;margin:0 auto 18px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;box-shadow:0 14px 30px -12px var(--glow);animation:nl-pulse 2.6s ease-out infinite;">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
               </div>
-              <h3 style="font-size:22px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em;">Start in seconds</h3>
-              <p style="margin:0 auto 22px;color:var(--ink-2);font-size:15px;max-width:30em;line-height:1.6;">Press translate and watch Nutrolis read this report, understand the terms, and explain it gently.</p>
-              <button data-act="rundemo"" style="font:inherit;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:14px 28px;border-radius:13px;cursor:pointer;box-shadow:0 12px 26px -12px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-2px)">Translate this report</button>
+              <h3 data-i18n="home.demo.start_title" style="font-size:22px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em;">Start in seconds</h3>
+              <p data-i18n="home.demo.start_body" style="margin:0 auto 22px;color:var(--ink-2);font-size:15px;max-width:30em;line-height:1.6;">Press translate and watch Nutrolis read this report, understand the terms, and explain it gently.</p>
+              <button data-i18n="home.demo.translate_btn" data-act="rundemo"" style="font:inherit;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:14px 28px;border-radius:13px;cursor:pointer;box-shadow:0 12px 26px -12px var(--glow);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-2px)">Translate this report</button>
             </div>
           </div>
 
@@ -410,7 +410,7 @@
           <!-- DONE -->
           <div class="demo-state" data-demo="done" style="display:none">
             <div style="animation:nl-rise .7s both;">
-              <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--teal-ink);background:var(--teal-bg);padding:6px 13px;border-radius:999px;margin-bottom:16px;">
+              <span data-i18n="home.demo.explained_label" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--teal-ink);background:var(--teal-bg);padding:6px 13px;border-radius:999px;margin-bottom:16px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
                 Explained
               </span>
@@ -418,8 +418,8 @@
                 "Your results are mostly healthy. A few markers — like your <span style="color:var(--amber-ink);font-style:italic;">Vitamin D</span> and <span style="color:var(--amber-ink);font-style:italic;">cholesterol</span> — sit just outside the usual range and are worth a gentle look, not a worry."
               </p>
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <a href="app.html" style="font:inherit;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:12px 22px;border-radius:12px;cursor:pointer;text-decoration:none;">See full explanation</a>
-                <button data-act="reset" style="font:inherit;font-size:15px;font-weight:700;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);padding:12px 20px;border-radius:12px;cursor:pointer;">Run again</button>
+                <a data-i18n="home.demo.see_full" href="app.html" style="font:inherit;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--teal),var(--aqua));border:none;padding:12px 22px;border-radius:12px;cursor:pointer;text-decoration:none;">See full explanation</a>
+                <button data-i18n="home.demo.run_again" data-act="reset" style="font:inherit;font-size:15px;font-weight:700;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);padding:12px 20px;border-radius:12px;cursor:pointer;">Run again</button>
               </div>
             </div>
           </div>
@@ -431,8 +431,8 @@
   <!-- ============ SIGNATURE TERM CARDS ============ -->
   <section id="terms" style="max-width:1200px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
     <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);max-width:680px;margin:0 auto 48px;text-align:center;">
-      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 14px;line-height:1.1;">Every lab term, explained in simple words.</h2>
-      <p style="margin:0;color:var(--ink-2);font-size:17px;line-height:1.6;">Your value, where it sits on the scale, what it means in plain words, and a clear status.</p>
+      <h2 data-i18n="home.demo.terms_heading" style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 14px;line-height:1.1;">Every lab term, explained in simple words.</h2>
+      <p data-i18n="home.demo.terms_sub" style="margin:0;color:var(--ink-2);font-size:17px;line-height:1.6;">Your value, where it sits on the scale, what it means in plain words, and a clear status.</p>
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;">
@@ -453,7 +453,7 @@
           <div style="position:absolute;left:40%;width:35%;top:0;bottom:0;background:var(--teal-bg);border-radius:999px;"></div>
           <div style="position:absolute;left:32%;top:50%;width:16px;height:16px;border-radius:50%;background:var(--amber);border:3px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 2px 6px -1px var(--shadow);"></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">The part of your blood that carries oxygen everywhere. Yours is a touch low, which can sometimes leave you feeling more tired than usual.</p>
+        <p data-i18n="home.demo.mk_hb_desc" style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">The part of your blood that carries oxygen everywhere. Yours is a touch low, which can sometimes leave you feeling more tired than usual.</p>
       </div>
 
       <!-- card: LDL -->
@@ -473,7 +473,7 @@
           <div style="position:absolute;left:0;width:53%;top:0;bottom:0;background:var(--teal-bg);border-radius:999px;"></div>
           <div style="position:absolute;left:59%;top:50%;width:16px;height:16px;border-radius:50%;background:var(--amber);border:3px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 2px 6px -1px var(--shadow);"></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">Often called the "lousy" cholesterol. A little extra can slowly build up in your arteries — small diet and movement changes usually nudge it back down.</p>
+        <p data-i18n="home.demo.mk_ldl_desc" style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">Often called the "lousy" cholesterol. A little extra can slowly build up in your arteries — small diet and movement changes usually nudge it back down.</p>
       </div>
 
       <!-- card: Vitamin D -->
@@ -493,7 +493,7 @@
           <div style="position:absolute;left:40%;width:40%;top:0;bottom:0;background:var(--teal-bg);border-radius:999px;"></div>
           <div style="position:absolute;left:24%;top:50%;width:16px;height:16px;border-radius:50%;background:var(--amber);border:3px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 2px 6px -1px var(--shadow);"></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">The "sunshine vitamin" that keeps your bones and mood strong. Yours is low — very common, especially in winter — and easy to top back up.</p>
+        <p data-i18n="home.demo.mk_vitd_desc" style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">The "sunshine vitamin" that keeps your bones and mood strong. Yours is low — very common, especially in winter — and easy to top back up.</p>
       </div>
 
       <!-- card: TSH good -->
@@ -513,7 +513,7 @@
           <div style="position:absolute;left:7%;width:60%;top:0;bottom:0;background:var(--teal-bg);border-radius:999px;"></div>
           <div style="position:absolute;left:35%;top:50%;width:16px;height:16px;border-radius:50%;background:var(--teal);border:3px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 2px 6px -1px var(--shadow);"></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">A signal from your brain telling your thyroid how hard to work. Yours sits comfortably in the healthy middle — nothing to do here.</p>
+        <p data-i18n="home.demo.mk_tsh_desc" style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">A signal from your brain telling your thyroid how hard to work. Yours sits comfortably in the healthy middle — nothing to do here.</p>
       </div>
       <!-- card: HbA1c -->
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1) .28s,transform .7s cubic-bezier(.22,1,.36,1) .28s;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 20px 46px -34px var(--shadow);">
@@ -532,7 +532,7 @@
           <div style="position:absolute;left:0;width:55%;top:0;bottom:0;background:var(--teal-bg);border-radius:999px;"></div>
           <div style="position:absolute;left:58%;top:50%;width:16px;height:16px;border-radius:50%;background:var(--amber);border:3px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 2px 6px -1px var(--shadow);"></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">Your average blood sugar over the last three months. Yours sits just at the edge — a few easy habit tweaks usually keep it from creeping up.</p>
+        <p data-i18n="home.demo.mk_hba1c_desc" style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">Your average blood sugar over the last three months. Yours sits just at the edge — a few easy habit tweaks usually keep it from creeping up.</p>
       </div>
 
       <!-- card: Creatinine -->
@@ -552,7 +552,7 @@
           <div style="position:absolute;left:15%;width:55%;top:0;bottom:0;background:var(--teal-bg);border-radius:999px;"></div>
           <div style="position:absolute;left:38%;top:50%;width:16px;height:16px;border-radius:50%;background:var(--teal);border:3px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 2px 6px -1px var(--shadow);"></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">A waste product your kidneys clear from your blood. Yours sits right in the healthy middle — a good sign your kidneys are doing their job.</p>
+        <p data-i18n="home.demo.mk_creat_desc" style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">A waste product your kidneys clear from your blood. Yours sits right in the healthy middle — a good sign your kidneys are doing their job.</p>
       </div>
     </div>
   </section>
@@ -561,38 +561,38 @@
   <section id="features" style="background:var(--surface-2);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);">
     <div style="max-width:1200px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);max-width:940px;margin:0 auto 48px;text-align:center;">
-        <h2 style="font-size:clamp(23px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.12;">Your Platform for All Your Reports</h2>
+        <h2 data-i18n="home.features.heading" style="font-size:clamp(23px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.12;">Your Platform for All Your Reports</h2>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;">
         <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.22,1,.36,1) .04s,transform .65s cubic-bezier(.22,1,.36,1) .04s;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-4px);box-shadow:0 24px 48px -34px var(--shadow)">
           <span style="width:48px;height:48px;border-radius:14px;background:var(--teal-bg);display:grid;place-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 10.5a6 6 0 0 1-12 0C6 9.5 12 3 12 3Z"/></svg></span>
-          <h3 style="font-size:19px;font-weight:700;margin:18px 0 7px;">Blood reports</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Every CBC, lipid panel, and metabolic marker, explained line by line.</p>
+          <h3 data-i18n="home.features.f1_t" style="font-size:19px;font-weight:700;margin:18px 0 7px;">Blood reports</h3>
+          <p data-i18n="home.features.f1_b" style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Every CBC, lipid panel, and metabolic marker, explained line by line.</p>
         </div>
         <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.22,1,.36,1) .09s,transform .65s cubic-bezier(.22,1,.36,1) .09s;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-4px);box-shadow:0 24px 48px -34px var(--shadow)">
           <span style="width:48px;height:48px;border-radius:14px;background:var(--teal-bg);display:grid;place-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M3 12h18"/></svg></span>
-          <h3 style="font-size:19px;font-weight:700;margin:18px 0 7px;">Scans &amp; X-rays</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Radiology reports turned into plain words you can actually picture.</p>
+          <h3 data-i18n="home.features.f2_t" style="font-size:19px;font-weight:700;margin:18px 0 7px;">Scans &amp; X-rays</h3>
+          <p data-i18n="home.features.f2_b" style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Radiology reports turned into plain words you can actually picture.</p>
         </div>
         <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.22,1,.36,1) .14s,transform .65s cubic-bezier(.22,1,.36,1) .14s;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-4px);box-shadow:0 24px 48px -34px var(--shadow)">
           <span style="width:48px;height:48px;border-radius:14px;background:var(--teal-bg);display:grid;place-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M12 8v8"/></svg></span>
-          <h3 style="font-size:19px;font-weight:700;margin:18px 0 7px;">Prescriptions</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">What each medicine does, how to take it, and what to watch for.</p>
+          <h3 data-i18n="home.features.f3_t" style="font-size:19px;font-weight:700;margin:18px 0 7px;">Prescriptions</h3>
+          <p data-i18n="home.features.f3_b" style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">What each medicine does, how to take it, and what to watch for.</p>
         </div>
         <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.22,1,.36,1) .04s,transform .65s cubic-bezier(.22,1,.36,1) .04s;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-4px);box-shadow:0 24px 48px -34px var(--shadow)">
           <span style="width:48px;height:48px;border-radius:14px;background:var(--teal-bg);display:grid;place-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h10M4 19h7"/><circle cx="18.5" cy="17" r="3.5"/><path d="M21 19.5 23 21.5"/></svg></span>
-          <h3 style="font-size:19px;font-weight:700;margin:18px 0 7px;">Term simplifier</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Tap any medical term for a simple, plain-language definition.</p>
+          <h3 data-i18n="home.features.f4_t" style="font-size:19px;font-weight:700;margin:18px 0 7px;">Term simplifier</h3>
+          <p data-i18n="home.features.f4_b" style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Tap any medical term for a simple, plain-language definition.</p>
         </div>
         <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.22,1,.36,1) .09s,transform .65s cubic-bezier(.22,1,.36,1) .09s;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-4px);box-shadow:0 24px 48px -34px var(--shadow)">
           <span style="width:48px;height:48px;border-radius:14px;background:var(--teal-bg);display:grid;place-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span>
-          <h3 style="font-size:19px;font-weight:700;margin:18px 0 7px;">Health insights</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Gentle trends over time so you can see the bigger picture.</p>
+          <h3 data-i18n="home.features.f5_t" style="font-size:19px;font-weight:700;margin:18px 0 7px;">Health insights</h3>
+          <p data-i18n="home.features.f5_b" style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Gentle trends over time so you can see the bigger picture.</p>
         </div>
         <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.22,1,.36,1) .14s,transform .65s cubic-bezier(.22,1,.36,1) .14s;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-4px);box-shadow:0 24px 48px -34px var(--shadow)">
           <span style="width:48px;height:48px;border-radius:14px;background:var(--teal-bg);display:grid;place-items:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z"/></svg></span>
-          <h3 style="font-size:19px;font-weight:700;margin:18px 0 7px;">20+ languages</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Read your results in your language — including right-to-left scripts.</p>
+          <h3 data-i18n="home.features.f6_t" style="font-size:19px;font-weight:700;margin:18px 0 7px;">20+ languages</h3>
+          <p data-i18n="home.features.f6_b" style="margin:0;color:var(--ink-2);font-size:15px;line-height:1.6;">Read your results in your language — including right-to-left scripts.</p>
         </div>
       </div>
     </div>
@@ -602,14 +602,14 @@
   <section id="plos" style="max-width:1100px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,4vw,56px);align-items:center;">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);">
-        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 12px;line-height:1.1;">PLOS Score<br><span style="font-size:.46em;font-weight:700;color:var(--muted);letter-spacing:-.005em;">Preventive Lifestyle Operating System</span></h2>
-        <p style="margin:0 0 18px;color:var(--ink-2);font-size:clamp(16px,1.7vw,18px);line-height:1.6;">PLOS — your <strong>Preventive Lifestyle Operating System</strong> — turns a page full of lab values into a single score from 0 to 100. The closer everything sits inside its healthy range, the higher it climbs. One figure you can actually track.</p>
+        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 12px;line-height:1.1;">PLOS Score<br><span data-i18n="home.plos.section_term" style="font-size:.46em;font-weight:700;color:var(--muted);letter-spacing:-.005em;">Preventive Lifestyle Operating System</span></h2>
+        <p data-i18n-html="home.plos.explainer" style="margin:0 0 18px;color:var(--ink-2);font-size:clamp(16px,1.7vw,18px);line-height:1.6;">PLOS — your <strong>Preventive Lifestyle Operating System</strong> — turns a page full of lab values into a single score from 0 to 100. The closer everything sits inside its healthy range, the higher it climbs. One figure you can actually track.</p>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:var(--teal);flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>80–100</strong> · On track</span></div>
           <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:var(--amber);flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>60–80</strong> · Room to improve</span></div>
           <div style="display:flex;align-items:center;gap:11px;"><span style="width:13px;height:13px;border-radius:50%;background:#cc6450;flex:none;"></span><span style="font-size:15px;color:var(--ink-2);"><strong>Under 60</strong> · Needs attention</span></div>
         </div>
-        <button class="plos-cta" data-plos-open type="button">
+        <button data-i18n="home.plos.what_cta" class="plos-cta" data-plos-open type="button">
           <span class="plos-cta-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg></span>
           What is PLOS?
           <svg class="plos-cta-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -639,34 +639,34 @@
           <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a9 9 0 1 1 16 0"/><path d="M12 13a3.5 3.5 0 0 1 0-7"/><path d="M12 13l3.2-3.2"/></svg>
         </span>
         <div>
-          <div style="font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);">PLOS Score</div>
+          <div data-i18n="home.nav.plos" style="font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);">PLOS Score</div>
           <div style="font-size:clamp(22px,3.4vw,27px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:2px;">What is PLOS?</div>
         </div>
       </div>
 
-      <p style="color:var(--ink-2);font-size:15.5px;line-height:1.62;margin:16px 0 6px;">A lab report can carry dozens of numbers. <strong>PLOS</strong> — your <span style="font-family:'Newsreader',serif;font-style:italic;color:var(--ink);">Preventive Lifestyle Operating System</span> — gathers them into one simple score from <strong>0 to 100</strong>, so you always know where your health stands today.</p>
+      <p data-i18n-html="home.plos.modal_para" style="color:var(--ink-2);font-size:15.5px;line-height:1.62;margin:16px 0 6px;">A lab report can carry dozens of numbers. <strong>PLOS</strong> — your <span style="font-family:'Newsreader',serif;font-style:italic;color:var(--ink);">Preventive Lifestyle Operating System</span> — gathers them into one simple score from <strong>0 to 100</strong>, so you always know where your health stands today.</p>
 
       <div style="margin-top:12px;">
         <div class="plos-feat">
           <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a9 9 0 1 1 16 0"/><path d="M12 14a4 4 0 0 1 0-8"/><path d="M12 14l3.5-3.5"/></svg></span>
-          <div><h4>One number, your whole report</h4><p>Every value is checked against its healthy range, then rolled into a single, easy score.</p></div>
+          <div><h4 data-i18n="home.plos.f1_t">One number, your whole report</h4><p data-i18n="home.plos.f1_b">Every value is checked against its healthy range, then rolled into a single, easy score.</p></div>
         </div>
         <div class="plos-feat">
           <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8M21 7v6h-6"/></svg></span>
-          <div><h4>Track it over time</h4><p>Watch one figure climb or dip across reports — no more guessing from scattered results.</p></div>
+          <div><h4 data-i18n="home.plos.f2_t">Track it over time</h4><p data-i18n="home.plos.f2_b">Watch one figure climb or dip across reports — no more guessing from scattered results.</p></div>
         </div>
         <div class="plos-feat">
           <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
-          <div><h4>Catch small drifts early</h4><p>A gentle slide in your score can show up long before anything becomes a worry.</p></div>
+          <div><h4 data-i18n="home.plos.f3_t">Catch small drifts early</h4><p data-i18n="home.plos.f3_b">A gentle slide in your score can show up long before anything becomes a worry.</p></div>
         </div>
         <div class="plos-feat">
           <span class="plos-feat-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>
-          <div><h4>Always in plain words</h4><p>Explained simply, in your language, with calm next steps — never clinical jargon.</p></div>
+          <div><h4 data-i18n="home.plos.f4_t">Always in plain words</h4><p data-i18n="home.plos.f4_b">Explained simply, in your language, with calm next steps — never clinical jargon.</p></div>
         </div>
       </div>
 
       <div style="margin-top:18px;">
-        <div style="font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">What the score means</div>
+        <div data-i18n="home.plos.means_label" style="font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;">What the score means</div>
         <div class="plos-band-row">
           <span class="plos-band"><i style="background:var(--teal);"></i><strong>80–100</strong>&nbsp;· On track</span>
           <span class="plos-band"><i style="background:var(--amber);"></i><strong>60–80</strong>&nbsp;· Room to improve</span>
@@ -674,7 +674,7 @@
         </div>
       </div>
 
-      <p style="font-size:12.5px;color:var(--muted);margin:20px 0 0;line-height:1.55;">A friendly guide to your health, not a diagnosis — your doctor is always the best guide for your care.</p>
+      <p data-i18n="home.plos.means_note" style="font-size:12.5px;color:var(--muted);margin:20px 0 0;line-height:1.55;">A friendly guide to your health, not a diagnosis — your doctor is always the best guide for your care.</p>
     </div>
   </div>
 
@@ -705,8 +705,8 @@
   <section id="languages" style="position:relative;overflow:hidden;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);">
     <div style="max-width:1100px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);text-align:center;max-width:680px;margin:0 auto 44px;">
-        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 12px;line-height:1.1;">A 10-year-old or a 70-year-old can read it.</h2>
-        <p style="margin:0;color:var(--ink-2);font-size:clamp(16px,1.7vw,18px);line-height:1.6;">The same report, explained in plain words — in major Indian languages, English, and European ones. Tap a language, or just watch.</p>
+        <h2 data-i18n="home.langs.heading" style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 12px;line-height:1.1;">A 10-year-old or a 70-year-old can read it.</h2>
+        <p data-i18n="home.langs.sub" style="margin:0;color:var(--ink-2);font-size:clamp(16px,1.7vw,18px);line-height:1.6;">The same report, explained in plain words — in major Indian languages, English, and European ones. Tap a language, or just watch.</p>
       </div>
 
       <!-- morphing report card -->
@@ -804,58 +804,58 @@
   <section id="faq" style="background:var(--surface-2);border-top:1px solid var(--line-2);">
     <div style="max-width:820px;margin:0 auto;padding:clamp(54px,7vw,94px) clamp(18px,4vw,40px);">
       <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);text-align:center;margin-bottom:44px;">
-        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.1;">Questions, answered.</h2>
+        <h2 data-i18n="home.faq.heading" style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.03em;margin:14px 0 0;line-height:1.1;">Questions, answered.</h2>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px;">
         <div data-reveal style="opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;">
   <button data-faq="0" style="width:100%;display:flex;align-items:center;gap:16px;text-align:left;background:none;border:none;cursor:pointer;font:inherit;padding:20px 22px;color:var(--ink);">
-    <span style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">Is this a replacement for my doctor?</span>
+    <span data-i18n="home.faq.q1" style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">Is this a replacement for my doctor?</span>
     <span class="faq-plus" style="width:28px;height:28px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;flex:none;transition:transform .3s cubic-bezier(.34,1.56,.5,1);">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
     </span>
   </button>
   <div class="faq-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .35s;">
-    <p style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">No — and we never pretend to be. Nutrolis helps you understand what your report says and prepare better questions, so your time with your doctor goes further. Always follow your clinician’s advice.</p>
+    <p data-i18n="home.faq.a1" style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">No — and we never pretend to be. Nutrolis helps you understand what your report says and prepare better questions, so your time with your doctor goes further. Always follow your clinician’s advice.</p>
   </div>
 </div><div data-reveal style="opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;">
   <button data-faq="1" style="width:100%;display:flex;align-items:center;gap:16px;text-align:left;background:none;border:none;cursor:pointer;font:inherit;padding:20px 22px;color:var(--ink);">
-    <span style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">How private is my health data?</span>
+    <span data-i18n="home.faq.q2" style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">How private is my health data?</span>
     <span class="faq-plus" style="width:28px;height:28px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;flex:none;transition:transform .3s cubic-bezier(.34,1.56,.5,1);">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
     </span>
   </button>
   <div class="faq-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .35s;">
-    <p style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Deeply. Your documents are read in your browser and never uploaded or stored — only the extracted findings are saved, encrypted, and never sold. You can delete everything in one tap.</p>
+    <p data-i18n="home.faq.a2" style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Deeply. Your documents are read in your browser and never uploaded or stored — only the extracted findings are saved, encrypted, and never sold. You can delete everything in one tap.</p>
   </div>
 </div><div data-reveal style="opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;">
   <button data-faq="2" style="width:100%;display:flex;align-items:center;gap:16px;text-align:left;background:none;border:none;cursor:pointer;font:inherit;padding:20px 22px;color:var(--ink);">
-    <span style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">Which languages do you support?</span>
+    <span data-i18n="home.faq.q3" style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">Which languages do you support?</span>
     <span class="faq-plus" style="width:28px;height:28px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;flex:none;transition:transform .3s cubic-bezier(.34,1.56,.5,1);">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
     </span>
   </button>
   <div class="faq-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .35s;">
-    <p style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Over 20 today, including right-to-left scripts like Arabic and Urdu. The full explanation — every term, status, and suggestion — is translated, not just the headings.</p>
+    <p data-i18n="home.faq.a3" style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Over 20 today, including right-to-left scripts like Arabic and Urdu. The full explanation — every term, status, and suggestion — is translated, not just the headings.</p>
   </div>
 </div><div data-reveal style="opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;">
   <button data-faq="3" style="width:100%;display:flex;align-items:center;gap:16px;text-align:left;background:none;border:none;cursor:pointer;font:inherit;padding:20px 22px;color:var(--ink);">
-    <span style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">What kinds of reports can I upload?</span>
+    <span data-i18n="home.faq.q4" style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">What kinds of reports can I upload?</span>
     <span class="faq-plus" style="width:28px;height:28px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;flex:none;transition:transform .3s cubic-bezier(.34,1.56,.5,1);">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
     </span>
   </button>
   <div class="faq-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .35s;">
-    <p style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Blood panels, metabolic and lipid profiles, radiology and scan summaries, and prescriptions. PDFs and clear photos both work.</p>
+    <p data-i18n="home.faq.a4" style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Blood panels, metabolic and lipid profiles, radiology and scan summaries, and prescriptions. PDFs and clear photos both work.</p>
   </div>
 </div><div data-reveal style="opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;">
   <button data-faq="4" style="width:100%;display:flex;align-items:center;gap:16px;text-align:left;background:none;border:none;cursor:pointer;font:inherit;padding:20px 22px;color:var(--ink);">
-    <span style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">Will it scare me with red warnings?</span>
+    <span data-i18n="home.faq.q5" style="flex:1;font-size:17px;font-weight:700;letter-spacing:-.01em;">Will it scare me with red warnings?</span>
     <span class="faq-plus" style="width:28px;height:28px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;flex:none;transition:transform .3s cubic-bezier(.34,1.56,.5,1);">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
     </span>
   </button>
   <div class="faq-body" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .35s;">
-    <p style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Never. Anything outside the usual range is shown in a calm amber as “worth a look,” not an emergency. Red is reserved only for actions you choose, like deleting your data.</p>
+    <p data-i18n="home.faq.a5" style="margin:0;padding:0 22px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.65;">Never. Anything outside the usual range is shown in a calm amber as “worth a look,” not an emergency. Red is reserved only for actions you choose, like deleting your data.</p>
   </div>
 </div>
       </div>
@@ -867,10 +867,10 @@
     <div data-reveal style="opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;border-radius:30px;background:linear-gradient(135deg,var(--teal-2),var(--teal) 45%,var(--aqua));padding:clamp(40px,6vw,72px) clamp(24px,5vw,60px);text-align:center;box-shadow:0 40px 80px -40px var(--glow);">
       <div style="position:absolute;top:-80px;right:-40px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.16);filter:blur(8px);animation:nl-glow 8s ease-in-out infinite;"></div>
       <div style="position:absolute;bottom:-90px;left:-30px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.12);filter:blur(8px);animation:nl-glow 10s ease-in-out infinite .6s;"></div>
-      <h2 style="position:relative;font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.035em;color:#fff;margin:0 0 16px;line-height:1.08;">Understand your next report in minutes.</h2>
-      <p style="position:relative;color:rgba(255,255,255,.9);font-size:clamp(16px,1.6vw,19px);max-width:32em;margin:0 auto 30px;line-height:1.6;">Upload one report free. See your results turned into one calm, clear explanation in under two minutes.</p>
-      <button data-act="enter" style="position:relative;font:inherit;font-size:17px;font-weight:700;color:var(--teal-ink);background:#fff;border:none;padding:16px 34px;border-radius:14px;cursor:pointer;box-shadow:0 16px 34px -16px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-3px)">Try Nutrolis free</button>
-      <div style="position:relative;margin-top:18px;color:rgba(255,255,255,.78);font-size:13.5px;font-weight:500;">No card required · Private &amp; encrypted · Cancel anytime</div>
+      <h2 data-i18n="home.cta.heading" style="position:relative;font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.035em;color:#fff;margin:0 0 16px;line-height:1.08;">Understand your next report in minutes.</h2>
+      <p data-i18n="home.cta.sub" style="position:relative;color:rgba(255,255,255,.9);font-size:clamp(16px,1.6vw,19px);max-width:32em;margin:0 auto 30px;line-height:1.6;">Upload one report free. See your results turned into one calm, clear explanation in under two minutes.</p>
+      <button data-i18n="home.cta.button" data-act="enter" style="position:relative;font:inherit;font-size:17px;font-weight:700;color:var(--teal-ink);background:#fff;border:none;padding:16px 34px;border-radius:14px;cursor:pointer;box-shadow:0 16px 34px -16px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.34,1.56,.5,1);" style-hover="transform:translateY(-3px)">Try Nutrolis free</button>
+      <div data-i18n="home.cta.reassure" style="position:relative;margin-top:18px;color:rgba(255,255,255,.78);font-size:13.5px;font-weight:500;">No card required · Private &amp; encrypted · Cancel anytime</div>
     </div>
   </section>
 
@@ -883,39 +883,39 @@
             <span style="width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--teal),var(--aqua));display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12.5h4l1.8-4 3.2 9 2.4-6 1.6 3h5.4"/></svg></span>
             <span style="font-weight:800;font-size:19px;letter-spacing:-.02em;">Nutrolis<span style="color:var(--teal);"> AI</span></span>
           </div>
-          <p style="margin:0;color:var(--muted);font-size:14.5px;line-height:1.65;max-width:30em;">Medical reports, turned into a calm, plain-language explanation anyone can understand — in their own language.</p>
+          <p data-i18n="home.footer.tagline" style="margin:0;color:var(--muted);font-size:14.5px;line-height:1.65;max-width:30em;">Medical reports, turned into a calm, plain-language explanation anyone can understand — in their own language.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:48px;">
           <div>
-            <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;">Product</div>
+            <div data-i18n="home.footer.col_product" style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;">Product</div>
             <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px;">
-              <a href="#features" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Features</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Languages</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Pricing</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Security</a>
+              <a data-i18n="home.nav.features" href="#features" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Features</a>
+              <a data-i18n="home.nav.languages" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Languages</a>
+              <a data-i18n="home.footer.pricing" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Pricing</a>
+              <a data-i18n="home.footer.security" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Security</a>
             </div>
           </div>
           <div>
-            <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;">Company</div>
+            <div data-i18n="home.footer.col_company" style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;">Company</div>
             <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px;">
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">About</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Careers</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Blog</a>
+              <a data-i18n="home.footer.about" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">About</a>
+              <a data-i18n="home.footer.careers" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Careers</a>
+              <a data-i18n="home.footer.blog" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Blog</a>
             </div>
           </div>
           <div>
-            <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;">Support</div>
+            <div data-i18n="home.footer.col_support" style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:14px;">Support</div>
             <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px;">
-              <a href="#faq" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Help center</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Contact</a>
-              <a href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Status</a>
+              <a data-i18n="home.footer.help" href="#faq" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Help center</a>
+              <a data-i18n="home.footer.contact" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Contact</a>
+              <a data-i18n="home.footer.status" href="#" style="color:var(--muted);text-decoration:none;" style-hover="color:var(--teal)">Status</a>
             </div>
           </div>
         </div>
       </div>
       <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--line-2);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;">
-        <span>© 2026 Nutrolis AI. Made to lower your heart rate.</span>
-        <span style="max-width:40em;text-align:right;">Nutrolis helps you understand your reports. It is not a medical device and does not replace your doctor.</span>
+        <span data-i18n="home.footer.copyright">© 2026 Nutrolis AI. Made to lower your heart rate.</span>
+        <span data-i18n="home.footer.disclaimer" style="max-width:40em;text-align:right;">Nutrolis helps you understand your reports. It is not a medical device and does not replace your doctor.</span>
       </div>
     </div>
   </footer>
@@ -1134,6 +1134,90 @@
     var p = document.getElementById("nl-install-pill"); if (p) p.remove();
   }
 })();
+</script>
+
+<!-- ============ i18n localizer + language switcher ============ -->
+<script type="module">
+  import { initI18n, t, setLanguage, currentLang, supportedLanguages, langMeta, prewarmAll, onLanguageChange } from "/i18n/i18n.js";
+  import { loadFontForLang } from "/i18n/fonts.js";
+
+  // Public Supabase proxy (anon key is public) — used only to translate the
+  // marketing copy for languages beyond the reviewed English + Hindi.
+  var PROXY = "https://aueoazkbdjskyyeyacci.supabase.co/functions/v1/claude-proxy";
+  var ANON  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1ZW9hemtiZGpza3l5ZXlhY2NpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4ODAxMDMsImV4cCI6MjA5NzQ1NjEwM30.oKbRKjLPjbIu57HPvjTH0wIPSlI_JPCxrSnLB7D2KZo";
+  var HOME_MT = {};                        // { lang: { key: translated } }  cached in localStorage
+  function tt(key){ var c = HOME_MT[currentLang()]; return (c && c[key] != null) ? c[key] : t(key); }
+
+  async function mtHome(src, code){
+    var entries = Object.entries(src), out = {};
+    var sys = "You are a professional website localizer for a warm consumer health brand. Translate each VALUE into " + (langMeta(code).name || code) + " using natural, friendly marketing language. IMPORTANT: if a value contains HTML tags, keep every tag and attribute exactly as-is and only translate the human text between them. Keep keys identical. Return ONLY strict minified JSON with the same keys.";
+    for (var i = 0; i < entries.length; i += 40){
+      var chunk = Object.fromEntries(entries.slice(i, i + 40));
+      try {
+        var r = await fetch(PROXY, { method:"POST", headers:{ "content-type":"application/json", "authorization":"Bearer "+ANON }, body: JSON.stringify({ system: sys, prompt: "Translate every value to "+(langMeta(code).name||code)+", keep keys identical:\n"+JSON.stringify(chunk), max_tokens: 3000 }) });
+        if (r.ok){ var j = await r.json(); if (j && j.text){ Object.assign(out, JSON.parse(j.text.replace(/```json|```/g,"").trim())); } }
+      } catch (e) {}
+    }
+    return Object.keys(out).length ? out : null;
+  }
+  async function ensureHomeLang(code){
+    if (code === "en" || code === "hi" || HOME_MT[code]) return;   // en/hi are static in common.json
+    try { var c = localStorage.getItem("nl-home-"+code); if (c){ HOME_MT[code] = JSON.parse(c); return; } } catch (e) {}
+    var keys = Array.from(new Set(
+      Array.from(document.querySelectorAll("[data-i18n]")).map(function(el){ return el.getAttribute("data-i18n"); })
+      .concat(Array.from(document.querySelectorAll("[data-i18n-html]")).map(function(el){ return el.getAttribute("data-i18n-html"); }))
+    ));
+    var src = {}; keys.forEach(function(k){ src[k] = t(k, { lng:"en" }); });
+    var tbl = await mtHome(src, code);
+    if (tbl){ HOME_MT[code] = tbl; try { localStorage.setItem("nl-home-"+code, JSON.stringify(tbl)); } catch (e) {} }
+  }
+
+  function localizePage(){
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var v = tt(el.getAttribute("data-i18n")); if (v != null) el.textContent = v;
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function(el){
+      var v = tt(el.getAttribute("data-i18n-html")); if (v != null) el.innerHTML = v;
+    });
+  }
+
+  var GLOBE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>';
+
+  function buildSwitcher(){
+    var anchor = document.querySelector('[data-act="theme"]');
+    if (!anchor || document.getElementById("nl-lang")) return;
+    var wrap = document.createElement("div"); wrap.id = "nl-lang"; wrap.style.cssText = "position:relative;flex:none;";
+    var btn = document.createElement("button"); btn.type = "button"; btn.setAttribute("aria-label","Language");
+    btn.style.cssText = "display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:14px;font-weight:600;color:var(--ink-2);background:var(--surface-3);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;";
+    function label(){ btn.innerHTML = GLOBE + '<span>' + langMeta(currentLang()).native + '</span>'; }
+    label();
+    var menu = document.createElement("div");
+    menu.style.cssText = "position:absolute;top:calc(100% + 8px);right:0;z-index:80;min-width:184px;max-height:340px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 50px -24px var(--shadow);padding:6px;display:none;";
+    supportedLanguages().forEach(function(l){
+      var o = document.createElement("button"); o.type = "button"; o.textContent = l.native; o.dir = l.dir || "ltr";
+      o.style.cssText = "display:block;width:100%;text-align:start;font:inherit;font-size:14px;font-weight:600;color:var(--ink-2);background:none;border:none;border-radius:10px;padding:10px 12px;cursor:pointer;";
+      o.addEventListener("mouseenter", function(){ o.style.background = "var(--surface-3)"; });
+      o.addEventListener("mouseleave", function(){ o.style.background = "none"; });
+      o.addEventListener("click", async function(){ menu.style.display = "none"; await setLanguage(l.code); label(); await loadFontForLang(langMeta(l.code)); localizePage(); await ensureHomeLang(l.code); localizePage(); });
+      menu.appendChild(o);
+    });
+    btn.addEventListener("click", function(e){ e.stopPropagation(); menu.style.display = (menu.style.display === "none" ? "block" : "none"); });
+    document.addEventListener("click", function(){ menu.style.display = "none"; });
+    wrap.appendChild(btn); wrap.appendChild(menu);
+    anchor.parentNode.insertBefore(wrap, anchor);
+    onLanguageChange(function(){ label(); });
+  }
+
+  (async function(){
+    try {
+      await initI18n();
+      await loadFontForLang(langMeta(currentLang()));
+      await ensureHomeLang(currentLang());   // returning visitor in another language
+      localizePage();
+      buildSwitcher();
+      setTimeout(prewarmAll, 1800);
+    } catch (e) { console.warn("[Nutrolis] i18n init failed:", e); }
+  })();
 </script>
 </body>
 </html>
