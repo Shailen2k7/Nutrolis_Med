@@ -469,10 +469,11 @@ async function flushContent(){
   _Lbusy=true; APP[lang]=APP[lang]||{};
   const sys="You are a careful localizer for a warm consumer health app. Translate each English string into "+langName(lang)+" using simple, everyday words a 10- or 70-year-old could understand. Keep medical meaning exact and the tone calm. Keep well-known medical terms/abbreviations natural for native speakers. Preserve all numbers, units, %, punctuation and any HTML tags. Return ONLY a strict minified JSON array of the SAME length and order as the input.";
   const chunks=[]; for(let i=0;i<batch.length;i+=45) chunks.push(batch.slice(i,i+45));
-  await Promise.all(chunks.map(async chunk=>{
-    try{ const j=await claudeJSON(sys,"Translate to "+langName(lang)+". Return a JSON array, same length and order:\n"+JSON.stringify(chunk.map(x=>x.engText)),3500);
-      if(Array.isArray(j)) chunk.forEach((it,k)=>{ if(typeof j[k]==="string"&&j[k]) APP[lang][it.storeKey]=j[k]; }); }catch(e){}
+  const results=await Promise.all(chunks.map(async chunk=>{
+    try{ const j=await claudeJSON(sys,"Translate to "+langName(lang)+". Return a JSON array, same length and order:\n"+JSON.stringify(chunk.map(x=>x.engText)),3500); return Array.isArray(j)?j:null; }catch(e){ return null; }
   }));
+  chunks.forEach((chunk,ci)=>{ const j=results[ci];
+    chunk.forEach((it,k)=>{ if(j&&typeof j[k]==="string"&&j[k]) APP[lang][it.storeKey]=j[k]; else _Ldone.delete(it.lang+"\u0001"+it.storeKey); }); });
   _saveApp(lang); _Lbusy=false;
   if(S.user){ render(); reopenDrawer(); }
 }
@@ -492,12 +493,46 @@ async function ensureAppLang(code){
 /* Report CONTENT translates through the same on-demand layer, so a real report's
    summary, findings and questions localize like everything else. */
 function masterOf(r){ return (r&&r.master_json) || (r?{title:r.title,snapshot:r.snapshot,summary:r.summary,good_news:r.good_news||[],attention:r.attention||[],questions:r.questions||[]}:{}); }
+/* Report prose (AI summary, findings, snapshots) is user-specific and can't be
+   pre-bundled, so it ALWAYS translates on demand for every non-English language
+   — including Hindi. Cached in RP[lang][text]; failures are retried (never
+   permanently marked done). */
+const RP={}; const _RPq=[]; let _RPt=null, _RPbusy=false, _RPpending=new Set();
+function rL(text){
+  if(text==null||text===""||typeof text!=="string"||S.lang==="en") return text;
+  const lang=S.lang, hit=RP[lang]&&RP[lang][text];
+  if(hit!=null) return hit;
+  const id=lang+"\u0001"+text;
+  if(!_RPpending.has(id)){ _RPpending.add(id); _RPq.push({lang:lang,text:text}); if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,120); }
+  return text;   // English until the translation lands, then re-render swaps it in
+}
+async function flushReportProse(){
+  const lang=S.lang; if(lang==="en"){ _RPq.length=0; return; }
+  if(_RPbusy){ if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,150); return; }
+  const batch=_RPq.filter(x=>x.lang===lang); _RPq.length=0;
+  if(!batch.length) return;
+  _RPbusy=true; RP[lang]=RP[lang]||{};
+  const sys="You are a careful medical translator for a warm consumer health app. Translate each English string into "+langName(lang)+" in simple, everyday words, keeping medical meaning exact and the tone calm. Preserve numbers, units, %, names and punctuation. Return ONLY a strict minified JSON array, same length and order.";
+  const chunks=[]; for(let i=0;i<batch.length;i+=40) chunks.push(batch.slice(i,i+40));
+  const results=await Promise.all(chunks.map(async chunk=>{
+    try{ const j=await claudeJSON(sys,"Translate to "+langName(lang)+". JSON array, same length and order:\n"+JSON.stringify(chunk.map(x=>x.text)),3600); return Array.isArray(j)?j:null; }catch(e){ return null; }
+  }));
+  chunks.forEach((chunk,ci)=>{ const j=results[ci];
+    chunk.forEach((it,k)=>{
+      if(j&&typeof j[k]==="string"&&j[k]){ RP[lang][it.text]=j[k]; }
+      else { _RPpending.delete(lang+"\u0001"+it.text); }   // failed → allow retry on next render
+    });
+  });
+  _RPbusy=false;
+  if(S.user){ render(); reopenDrawer(); }
+  if(_RPq.length) { if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,120); }
+}
 function rTxt(r,field){
   if(!r) return undefined;
   const v=r[field];
   if(S.lang==="en"||v==null) return v;
-  if(Array.isArray(v)) return v.map(function(x){ return typeof x==="string"?L(x):x; });
-  return typeof v==="string"?L(v):v;
+  if(Array.isArray(v)) return v.map(function(x){ return typeof x==="string"?rL(x):x; });
+  return typeof v==="string"?rL(v):v;
 }
 /* One-time load of the i18n engine (fonts + report cache + language manifest). */
 let _i18nReady=null;
@@ -2357,7 +2392,7 @@ async function applyLangAssets(){                        // strings + script fon
     ensureAppLang(S.lang).then(()=>{ if(S.user){ render(); reopenDrawer(); } });
   }
 }
-const NUTROLIS_BUILD="i18n-instant-2026-07-02a";
+const NUTROLIS_BUILD="i18n-instant-2026-07-02b";
 async function boot(){
   console.log("%cNutrolis build: "+NUTROLIS_BUILD,"color:#0d8c7c;font-weight:700;font-size:13px");
   await initI18nEngine();                                // load fonts + report cache + manifest (20 languages)
