@@ -1,27 +1,64 @@
 {
-  "defaultLanguage": "en",
-  "fallbackLanguage": "en",
-  "namespaces": ["common"],
   "languages": [
-    { "code": "en", "name": "English",   "native": "English",   "dir": "ltr", "font": "latin" },
-    { "code": "hi", "name": "Hindi",     "native": "हिन्दी",      "dir": "ltr", "font": "devanagari" },
-    { "code": "bn", "name": "Bengali",   "native": "বাংলা",       "dir": "ltr", "font": "bengali" },
-    { "code": "ta", "name": "Tamil",     "native": "தமிழ்",       "dir": "ltr", "font": "tamil" },
-    { "code": "te", "name": "Telugu",    "native": "తెలుగు",      "dir": "ltr", "font": "telugu" },
-    { "code": "ml", "name": "Malayalam", "native": "മലയാളം",     "dir": "ltr", "font": "malayalam" },
-    { "code": "kn", "name": "Kannada",   "native": "ಕನ್ನಡ",       "dir": "ltr", "font": "kannada" },
-    { "code": "mr", "name": "Marathi",   "native": "मराठी",       "dir": "ltr", "font": "devanagari" },
-    { "code": "ar", "name": "Arabic",    "native": "العربية",     "dir": "rtl", "font": "arabic" },
-    { "code": "ur", "name": "Urdu",      "native": "اردو",        "dir": "rtl", "font": "arabic" },
-    { "code": "zh", "name": "Chinese",   "native": "中文",         "dir": "ltr", "font": "sc" },
-    { "code": "ja", "name": "Japanese",  "native": "日本語",       "dir": "ltr", "font": "jp" },
-    { "code": "ko", "name": "Korean",    "native": "한국어",       "dir": "ltr", "font": "kr" },
-    { "code": "th", "name": "Thai",      "native": "ไทย",         "dir": "ltr", "font": "thai" },
-    { "code": "vi", "name": "Vietnamese","native": "Tiếng Việt",  "dir": "ltr", "font": "latin" },
-    { "code": "es", "name": "Spanish",   "native": "Español",     "dir": "ltr", "font": "latin" },
-    { "code": "fr", "name": "French",    "native": "Français",    "dir": "ltr", "font": "latin" },
-    { "code": "pt", "name": "Portuguese","native": "Português",   "dir": "ltr", "font": "latin" },
-    { "code": "de", "name": "German",    "native": "Deutsch",     "dir": "ltr", "font": "latin" },
-    { "code": "ru", "name": "Russian",   "native": "Русский",     "dir": "ltr", "font": "cyrillic" }
+    {
+      "code": "en",
+      "native": "English",
+      "dir": "ltr",
+      "font": "latin"
+    },
+    {
+      "code": "hi",
+      "native": "हिन्दी",
+      "dir": "ltr",
+      "font": "devanagari"
+    },
+    {
+      "code": "te",
+      "native": "తెలుగు",
+      "dir": "ltr",
+      "font": "telugu"
+    },
+    {
+      "code": "kn",
+      "native": "ಕನ್ನಡ",
+      "dir": "ltr",
+      "font": "kannada"
+    },
+    {
+      "code": "ml",
+      "native": "മലയാളം",
+      "dir": "ltr",
+      "font": "malayalam"
+    },
+    {
+      "code": "ta",
+      "native": "தமிழ்",
+      "dir": "ltr",
+      "font": "tamil"
+    },
+    {
+      "code": "de",
+      "native": "Deutsch",
+      "dir": "ltr",
+      "font": "latin"
+    },
+    {
+      "code": "fr",
+      "native": "Français",
+      "dir": "ltr",
+      "font": "latin"
+    },
+    {
+      "code": "es",
+      "native": "Español",
+      "dir": "ltr",
+      "font": "latin"
+    },
+    {
+      "code": "pt",
+      "native": "Português",
+      "dir": "ltr",
+      "font": "latin"
+    }
   ]
 }
