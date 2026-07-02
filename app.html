@@ -506,26 +506,40 @@ function rL(text){
   if(!_RPpending.has(id)){ _RPpending.add(id); _RPq.push({lang:lang,text:text}); if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,120); }
   return text;   // English until the translation lands, then re-render swaps it in
 }
+async function _proxyTranslateArray(strings, lang){
+  // One string per line keeps it dead-simple and robust — no JSON parsing to fail on.
+  const sys="You are a careful medical translator for a warm consumer health app. Translate the user's English lines into "+langName(lang)+", one line per input line, in simple everyday words, keeping medical meaning exact and tone calm. Preserve numbers, units, %, names, punctuation. Return the SAME number of lines, in the SAME order, translation only — no numbering, no commentary, no blank lines between.";
+  const prompt=strings.map((s,i)=>(i+1)+". "+s).join("\n");
+  try{
+    const r=await fetch(CLAUDE_PROXY,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+SUPABASE_ANON},body:JSON.stringify({system:sys,prompt:prompt,max_tokens:4000})});
+    if(!r.ok){ console.warn("[Nutrolis i18n] proxy HTTP "+r.status+" for "+lang); return null; }
+    const j=await r.json();
+    const raw=(j&&(j.text||j.completion||j.content))||"";
+    if(!raw){ console.warn("[Nutrolis i18n] empty proxy body for "+lang, j); return null; }
+    let lines=String(raw).split("\n").map(s=>s.replace(/^\s*\d+[\.\)]\s*/,"").trim()).filter(s=>s.length);
+    if(lines.length!==strings.length){ console.warn("[Nutrolis i18n] line count "+lines.length+" != "+strings.length+" for "+lang+"; using what matched"); }
+    return lines;
+  }catch(e){ console.warn("[Nutrolis i18n] proxy error for "+lang, e); return null; }
+}
 async function flushReportProse(){
   const lang=S.lang; if(lang==="en"){ _RPq.length=0; return; }
   if(_RPbusy){ if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,150); return; }
   const batch=_RPq.filter(x=>x.lang===lang); _RPq.length=0;
   if(!batch.length) return;
   _RPbusy=true; RP[lang]=RP[lang]||{};
-  const sys="You are a careful medical translator for a warm consumer health app. Translate each English string into "+langName(lang)+" in simple, everyday words, keeping medical meaning exact and the tone calm. Preserve numbers, units, %, names and punctuation. Return ONLY a strict minified JSON array, same length and order.";
-  const chunks=[]; for(let i=0;i<batch.length;i+=40) chunks.push(batch.slice(i,i+40));
-  const results=await Promise.all(chunks.map(async chunk=>{
-    try{ const j=await claudeJSON(sys,"Translate to "+langName(lang)+". JSON array, same length and order:\n"+JSON.stringify(chunk.map(x=>x.text)),3600); return Array.isArray(j)?j:null; }catch(e){ return null; }
-  }));
-  chunks.forEach((chunk,ci)=>{ const j=results[ci];
+  const chunks=[]; for(let i=0;i<batch.length;i+=25) chunks.push(batch.slice(i,i+25));
+  const results=await Promise.all(chunks.map(chunk=>_proxyTranslateArray(chunk.map(x=>x.text),lang)));
+  let okCount=0;
+  chunks.forEach((chunk,ci)=>{ const lines=results[ci];
     chunk.forEach((it,k)=>{
-      if(j&&typeof j[k]==="string"&&j[k]){ RP[lang][it.text]=j[k]; }
-      else { _RPpending.delete(lang+"\u0001"+it.text); }   // failed → allow retry on next render
+      if(lines&&typeof lines[k]==="string"&&lines[k]){ RP[lang][it.text]=lines[k]; okCount++; }
+      else { _RPpending.delete(lang+"\u0001"+it.text); }   // failed → retry on next render
     });
   });
+  console.log("[Nutrolis i18n] report prose "+lang+": translated "+okCount+"/"+batch.length);
   _RPbusy=false;
   if(S.user){ render(); reopenDrawer(); }
-  if(_RPq.length) { if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,120); }
+  if(_RPq.length){ if(_RPt) clearTimeout(_RPt); _RPt=setTimeout(flushReportProse,120); }
 }
 function rTxt(r,field){
   if(!r) return undefined;
@@ -2392,7 +2406,7 @@ async function applyLangAssets(){                        // strings + script fon
     ensureAppLang(S.lang).then(()=>{ if(S.user){ render(); reopenDrawer(); } });
   }
 }
-const NUTROLIS_BUILD="i18n-instant-2026-07-02b";
+const NUTROLIS_BUILD="i18n-diag-2026-07-02c";
 async function boot(){
   console.log("%cNutrolis build: "+NUTROLIS_BUILD,"color:#0d8c7c;font-weight:700;font-size:13px");
   await initI18nEngine();                                // load fonts + report cache + manifest (20 languages)
