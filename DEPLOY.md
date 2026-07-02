@@ -26,18 +26,24 @@ That's it. No build step, no bundler.
 
 ---
 
+## Where the language control lives
+Dashboard header, Settings, the sign-in screen, and onboarding step 1. The
+marketing homepage has **no** switcher — it simply follows the language the user
+picked inside the app.
+
 ## How the languages work
 
 | Layer | Languages | Speed | Source |
 |---|---|---|---|
-| App + site **UI** | English, Hindi | instant | reviewed static tables (in-file) |
-| App + site **UI** | the other 18 | instant after first load | translated once by Claude, then cached in the browser (and re-used forever) |
-| **Report content** (summary, findings, questions) | all 20 | instant when cached | one English master → translated on demand → cached in `report_translations` |
+| App **UI** | English, Hindi | instant | reviewed static tables (in-file) |
+| App **UI** | the other 18 | **instant** | pre-translated bundles shipped at `/i18n/locales/<lang>/app.json`, prefetched at boot |
+| **AI report prose** (summary, findings, questions) | all 20 | fills in within seconds, then cached | translated on demand via your Claude proxy |
 | **Fonts** (Devanagari, Tamil, Arabic, CJK, Thai…) | all | on demand | loaded per language, no clipping |
 
-- Switching between English/Hindi is instant everywhere.
-- The first time anyone opens a *new* language, its interface is translated once
-  (a second or two) and then cached — every visit and switch after is instant.
+- Every language switch is instant — all 20 interface bundles ship with the product
+  and are prefetched in the background after login.
+- Only the AI-written report prose (unique per user) translates on demand; it
+  appears within a few seconds on first view and is cached after.
 - Language preference follows the user: saved to the browser and, once signed in,
   to their Supabase `profiles.language`. Pick a language on the homepage → sign in
   → the app opens in that language.

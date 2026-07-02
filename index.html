@@ -1181,40 +1181,17 @@
     });
   }
 
-  var GLOBE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>';
-
-  function buildSwitcher(){
-    var anchor = document.querySelector('[data-act="theme"]');
-    if (!anchor || document.getElementById("nl-lang")) return;
-    var wrap = document.createElement("div"); wrap.id = "nl-lang"; wrap.style.cssText = "position:relative;flex:none;";
-    var btn = document.createElement("button"); btn.type = "button"; btn.setAttribute("aria-label","Language");
-    btn.style.cssText = "display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:14px;font-weight:600;color:var(--ink-2);background:var(--surface-3);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;";
-    function label(){ btn.innerHTML = GLOBE + '<span>' + langMeta(currentLang()).native + '</span>'; }
-    label();
-    var menu = document.createElement("div");
-    menu.style.cssText = "position:absolute;top:calc(100% + 8px);right:0;z-index:80;min-width:184px;max-height:340px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 50px -24px var(--shadow);padding:6px;display:none;";
-    supportedLanguages().forEach(function(l){
-      var o = document.createElement("button"); o.type = "button"; o.textContent = l.native; o.dir = l.dir || "ltr";
-      o.style.cssText = "display:block;width:100%;text-align:start;font:inherit;font-size:14px;font-weight:600;color:var(--ink-2);background:none;border:none;border-radius:10px;padding:10px 12px;cursor:pointer;";
-      o.addEventListener("mouseenter", function(){ o.style.background = "var(--surface-3)"; });
-      o.addEventListener("mouseleave", function(){ o.style.background = "none"; });
-      o.addEventListener("click", async function(){ menu.style.display = "none"; await setLanguage(l.code); label(); await loadFontForLang(langMeta(l.code)); localizePage(); await ensureHomeLang(l.code); localizePage(); });
-      menu.appendChild(o);
-    });
-    btn.addEventListener("click", function(e){ e.stopPropagation(); menu.style.display = (menu.style.display === "none" ? "block" : "none"); });
-    document.addEventListener("click", function(){ menu.style.display = "none"; });
-    wrap.appendChild(btn); wrap.appendChild(menu);
-    anchor.parentNode.insertBefore(wrap, anchor);
-    onLanguageChange(function(){ label(); });
-  }
-
   (async function(){
     try {
       await initI18n();
+      // Homepage has NO language switcher — it simply follows the language the
+      // user picked inside the app (Settings / onboarding). Default: English.
+      var saved=null; try{ saved=localStorage.getItem("nutrolis-lang"); }catch(e){}
+      var want=saved||"en";
+      if(currentLang()!==want){ await setLanguage(want); }
       await loadFontForLang(langMeta(currentLang()));
-      await ensureHomeLang(currentLang());   // returning visitor in another language
+      await ensureHomeLang(currentLang());
       localizePage();
-      buildSwitcher();
       setTimeout(prewarmAll, 1800);
     } catch (e) { console.warn("[Nutrolis] i18n init failed:", e); }
   })();
